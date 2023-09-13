@@ -1,7 +1,7 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 
 local entkey
-local key = "testkey"
+local key = "XCD54YYI23"
 
 local Window = Library.CreateLib("Key system", "Midnight")
 
