@@ -32,7 +32,7 @@ end)
 
 while wait(0.5) do
 	if nametrue == true and passwordtrue == true then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/rhack_mobile_v.5.lua"))()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/rhack_mobile_v.6.lua"))()
 		nametrue = false
 		passwordtrue = false
 	end
