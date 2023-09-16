@@ -1,7 +1,7 @@
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 
 
-local roomsurv = game:GetService("ReplicatedStorage").GameStats.Total.Knobs["Rooms Survived"].Value
+--local roomsurv = game:GetService("ReplicatedStorage").GameStats.Total.Knobs["Rooms Survived"].Value
 
 
 local Light = game:GetService("Lighting")
