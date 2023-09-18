@@ -312,10 +312,10 @@ Section:NewToggle("loot esp", "On/Off Esp (loot)", function(state_loesp)
         while wait(0.24) do
             for i, v in ipairs(workspace:GetDescendants()) do
                 if v.Name == "Handle" then
-                    if not v.Parent:FindFirstChild("ChestEsp") then
+                    if not v.Parent:FindFirstChild("LootEsp") then
                         local esp = Instance.new("Highlight",v.Parent)
                         esp.FillColor = Color3.fromRGB(119,136,153)
-                        esp.Name = "ChestEsp"
+                        esp.Name = "LootEsp"
                     end
                 end
             end
@@ -360,6 +360,61 @@ Section:NewToggle("container esp", "On/Off Esp (conteiner)", function(state_cesp
         end
     else
         print("hello")
+    end
+end)
+
+Section:NewToggle("closet esp", "On/Off Esp (closet)", function(state_clesp)
+    if state_clesp then
+        while wait(0.24) do
+            for i, v in ipairs(workspace:GetDescendants()) do
+                if v.Name == "Wardrobe" then
+                    if not v:FindFirstChild("ClosEsp") then
+                        local esp = Instance.new("Highlight",v)
+                        esp.FillColor = Color3.fromRGB(152,251,152)
+                        esp.DepthMode = "AlwaysOnTop"
+                        esp.Name = "ClosEsp"
+                    end
+                end
+            end
+        end
+    else
+        print("hello")
+    end
+end)
+
+Section:NewButton("reload esp", "reload esp (for Doors)", function()
+    for i, v in ipairs(workspace:GetDescendants()) do
+        if v.Name == "DoorEsp" then
+            v:Destroy()
+        end
+
+        if v.Name == "KeyEsp" then
+            v:Destroy()
+        end
+
+        if v.Name == "LockEsp" then
+            v:Destroy()
+        end
+
+        if v.Name == "ChestEsp" then
+            v:Destroy()
+        end
+
+        if v.Name == "LootEsp" then
+            v:Destroy()
+        end
+
+        if v.Name == "GoldEsp" then
+            v:Destroy()
+        end
+
+        if v.Name == "ContEsp" then
+            v:Destroy()
+        end
+
+        if v.Name == "ClosEsp" then
+            v:Destroy()
+        end
     end
 end)
 
