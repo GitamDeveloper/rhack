@@ -47,7 +47,7 @@ Balls.ChildAdded:Connect(function(Ball)
             
             print(`Distance: {Distance}\nVelocity: {Velocity}\nTime: {Distance / Velocity}`)
         
-            if (Distance / Velocity) <= 10 then -- Sorry for the magic number. This just works. No, you don't get a slider for this because it's 2am.
+            if (Distance / Velocity) <= 15 then -- Sorry for the magic number. This just works. No, you don't get a slider for this because it's 2am.
                 Parry()
             end
         end
