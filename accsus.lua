@@ -11,6 +11,8 @@ local Section = Tab:NewSection("login account")
 local nametrue = false
 local passwordtrue = false
 
+local clib = "kavo library"
+
 accounts = {"test","GitamS","YarikDev",};
 passwords = {"123","228","1337",};
 
@@ -30,9 +32,20 @@ Section:NewTextBox("Password", "account password", function(txt_pass)
 	end
 end)
 
+local Section = Tab:NewSection("library")
+
+Section:NewDropdown("library", "library type", {"kavo library", "orion library"}, function(currentlib)
+	clib = currentlib
+end)
+
 while wait(0.5) do
 	if nametrue == true and passwordtrue == true then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/rhack_v9.lua"))()
+		if clib == "kavo library" then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/rhack_mobile_russ.lua"))()
+		end
+		if clib == "orion library" then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/rhack_or_v1.lua"))()
+		end
 		nametrue = false
 		passwordtrue = false
 	end
