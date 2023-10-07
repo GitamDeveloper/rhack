@@ -32,6 +32,8 @@ Section:NewTextBox("Password", "account password", function(txt_pass)
 	end
 end)
 
+local Tab = Window:NewTab("library")
+
 local Section = Tab:NewSection("library")
 
 Section:NewDropdown("library", "library type", {"kavo library", "orion library"}, function(currentlib)
