@@ -71,7 +71,7 @@ local playerl
 
 local eplayer = game:GetService("Players").LocalPlayer
 
-local Window = Library:MakeWindow({Name = "RHACK orion", HidePremium = true, SaveConfig = false, ConfigFolder = "rhack_orion"})
+local Window = Library:MakeWindow({Name = "RHACK orion", HidePremium = true, SaveConfig = false, ConfigFolder = "rhack_orion", IntroEnabled = true, IntroText = "RHACK", IntroIcon = "rbxassetid://14995912169", Icon = "rbxassetid://14995912169"})
 
 local Tab = Window:MakeTab({
 	Name = "Main",
@@ -356,6 +356,118 @@ Tab:AddTextbox({
 	end	  
 })
 
+Tab:AddTextbox({
+	Name = "Jump",
+	Default = "value",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+    	while aac_oo == true and wait(0.01) do
+        	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+    	end
+	end	  
+})
+
+Tab:AddDropdown({
+	Name = "bypass",
+	Default = "default",
+	Options = {"default", "update"},
+	Callback = function(Value)
+		if Value == "default" then
+			aac_oo = false
+		end
+
+		if Value == "update" then
+			aac_oo = true
+		end
+	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Combat",
+	Icon = "",
+	PremiumOnly = false
+})
+
+Tab:AddToggle({
+	Name = "trigger bot",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/VapingCat/Open-Source-TriggerBot/main/script.lua"))()
+		end
+	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Visuals",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local esp_type = "highlight"
+
+Tab:AddDropdown({
+	Name = "type",
+	Default = "highlight",
+	Options = {"3d model", "highlight"},
+	Callback = function(Value)
+		if Value == "3d model" then
+			esp_type = "3d model"
+		end
+
+		if Value == "highlight" then
+			esp_type = "highlight"
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Esp (players)",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			while wait(0.24) do
+            	for i, v in pairs(workspace:GetDescendants()) do
+                	if v:FindFirstChild("Humanoid") then
+                		if esp_type == "highlight" then
+                			if not v:FindFirstChild("highEsp") then
+                        		if v ~= game.Players.LocalPlayer.Character then
+	                            	local esp = Instance.new("Highlight",v)
+	                            	esp.FillColor = Color3.fromRGB(178,34,34)
+                            		esp.Name = "highEsp"
+                        		end
+                    		end
+                		else
+                			print(123)
+                		end
+                	end
+            	end
+        	end
+		end
+	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Movement",
+	Icon = "",
+	PremiumOnly = false
+})
+
+Tab:AddToggle({
+	Name = "air jump",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			aj_oo = true
+		end
+
+		if Value == false then
+			aj_oo = false
+		end
+	end    
+})
+
 local Tab = Window:MakeTab({
 	Name = "Exploits",
 	Icon = "",
@@ -432,4 +544,67 @@ Tab:AddDropdown({
 			bbapbst = true
 		end
 	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Tools",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Reset Character"
+})
+
+Tab:AddButton({
+	Name = "full bright",
+	Callback = function()
+		game.Players.LocalPlayer.Character.Humanoid.Health = 0
+  	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "full bright"
+})
+
+function dofullbright()
+
+    Light.Ambient = Color3.new(1, 1, 1)
+    Light.ColorShift_Bottom = Color3.new(1, 1, 1)
+    Light.ColorShift_Top = Color3.new(1, 1, 1)  
+
+end
+
+Tab:AddButton({
+	Name = "full bright",
+	Callback = function()
+		dofullbright()
+  	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "field of view"
+})
+
+Tab:AddTextbox({
+	Name = "field of view",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		camera.FieldOfView = Value
+	end	  
+})
+
+local Section = Tab:AddSection({
+	Name = "anti afk"
+})
+
+Tab:AddButton({
+	Name = "anti afk",
+	Callback = function()
+		repeat wait() until game:IsLoaded() 
+        	game:GetService("Players").LocalPlayer.Idled:connect(function()
+        	game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+    	end)
+  	end    
 })
