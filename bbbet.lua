@@ -39,7 +39,7 @@ for i,ball in next, workspace.Balls:GetChildren() do
 	if ball.Parent.Name == "Balls" then
 		if typeof(ball) == "Instance" and ball:IsA("BasePart") and ball:IsDescendantOf(Balls) and ball:GetAttribute("realBall") == true then
 			esp(ball)
-    	end
+    		end
 	end
 end
 
@@ -47,6 +47,6 @@ workspace.Balls.ChildAdded:Connect(function(ball)
 	if ball.Parent.Name == "Balls" then
 		if typeof(ball) == "Instance" and ball:IsA("BasePart") and ball:IsDescendantOf(Balls) and ball:GetAttribute("realBall") == true then
 			esp(ball)
-    	end
-	end
+    		end
+	end	
 end)
