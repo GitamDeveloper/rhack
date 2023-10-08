@@ -18,8 +18,8 @@ function esp(ball)
             local ball_pos, ball_onscreen = camera:WorldToViewportPoint(ball.Position)
 
             if ball_onscreen then
+		ballesp.From = Vector2.new(camera.ViewPortSize.X / 2, camera.ViewportSize.Y /2)
             	ballesp.To = Vector2.new(ball_pos.X, ball_pos.Y)
-            	--ballesp.From = Vector2.new(camera.ViewPortSize.X / 2, camera.ViewportSize.Y /2)
                 --ballesp.Position = Vector2.new(ball_pos.X, ball_pos.Y)
                 ballesp.Text = "ball"
                 ballesp.Visible = true
