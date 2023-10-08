@@ -52,7 +52,7 @@ Balls.ChildAdded:Connect(function(Ball)
                 --Parry()
             --end
 
-            if (Distance / Velocity) <= 20 then -- Sorry for the magic number. This just works. No, you don't get a slider for this because it's 2am.
+            if (Distance / Velocity) <= 15 then -- Sorry for the magic number. This just works. No, you don't get a slider for this because it's 2am.
                 game:GetService("ReplicatedStorage").Remotes.Freeze:FireServer()
                 Parry()
             end
