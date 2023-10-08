@@ -12,13 +12,21 @@ function esp(ball)
     ballesp.Color = Color3.fromRGB(0,255,0)
     ballesp.Size = 5
 
+	
+    ballesp.Visible = false
+    ballesp.Center = true
+    ballesp.Outline = true
+    ballesp.Font = 2
+    ballesp.Color = Color3.fromRGB(0,255,0)
+    ballesp.Size = 5
+
     local renderstepped
     renderstepped = runservice.RenderStepped:Connect(function()
         if ball and workspace.Balls:FindFirstChild(ball.Name) then
             local ball_pos, ball_onscreen = camera:WorldToViewportPoint(ball.Position)
 
             if ball_onscreen then
-		ballesp.From = Vector2.new(camera.ViewPortSize.X / 2, camera.ViewportSize.Y /2)
+		--ballesp.From = Vector2.new(camera.ViewPortSize.X / 2, camera.ViewportSize.Y /2)
             	ballesp.To = Vector2.new(ball_pos.X, ball_pos.Y)
                 --ballesp.Position = Vector2.new(ball_pos.X, ball_pos.Y)
                 ballesp.Text = "ball"
