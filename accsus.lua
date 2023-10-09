@@ -13,8 +13,8 @@ local passwordtrue = false
 
 local clib = "kavo library"
 
-accounts = {"test","GitamS","YarikDev",};
-passwords = {"123","228","1337",};
+accounts = {"test","GitamS","YarikDev","bog",};
+passwords = {"123","228","1337","8215",};
 
 Section:NewTextBox("Name", "account name", function(txt_name)
 	for i,v in ipairs(accounts) do
