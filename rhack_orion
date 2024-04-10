@@ -11,6 +11,15 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+
+local ws_oo
+
+local aj_m
+
+local hitb_ff
+local hitb_tp
+local hitb_i
+local hitb_t 
 local hitb_s
 local hitb_oo
 
@@ -95,6 +104,13 @@ local Section = Tab:AddSection({
 	Name = "Humanoid Values"
 })
 
+local hb_tp = Instance.new("Part")
+hb_tp.Anchored = true
+hb_tp.Transparency = 0.5
+hb_tp.CanCollide = false
+hb_tp.Color = Color3.fromRGB(0,255,0)
+
+
 local aplva = Instance.new("Part")
 aplva.Anchored = true
 aplva.Transparency = 1
@@ -110,6 +126,8 @@ local ncc = false
 
 local rgui = Instance.new("ScreenGui", eplayer.PlayerGui)
 local testbutt = Instance.new("TextButton", rgui)
+
+local Mouse = eplayer:GetMouse()
 
 local satp = Instance.new("Part", game.Workspace)
 --jumpcircle.Shape = "Cylinder"
@@ -251,6 +269,11 @@ game:GetService("UserInputService").InputEnded:Connect(function(input, isProcess
     end
 end)
 
+game:GetService("UserInputService").JumpRequest:connect(function()
+	if aj_oo == true and aj_m == "default" then
+		game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+	end
+end)
 
 local aj = false
 local obj = Instance.new("Part", game.Workspace)
@@ -341,7 +364,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, isProcess
 end)
 
 game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
-    if aj_oo == true then
+    if aj_oo == true and aj_m == "platform bypass" then
         aj = true
         
         while aj == true and wait(0.1) do
@@ -417,38 +440,117 @@ Tab:AddToggle({
 	end    
 })
 
+local l_targ
+
+Tab:AddToggle({
+	Name = "wall shot",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			ws_oo = true
+			game.Workspace:FindFirstChild("Decoration"):Clone().Parent = game.Players
+			game.Workspace:FindFirstChild("Decoration").Parent = eplayer.Character
+		else
+			ws_oo = false
+			--eplayer.Character:FindFirstChild("Decoration").Parent = game.Workspace
+		end
+	end    
+})
+
+Tab:AddBind({
+	Name = "load map back",
+	Default = Enum.KeyCode.E,
+	Hold = false,
+	Callback = function()
+		game.Players:FindFirstChild("Decoration"):Clone().Parent = eplayer.Character
+	end    
+})
+
 local Section = Tab:AddSection({
 	Name = "Hit boxes"
 })
 
 Tab:AddToggle({
-	Name = "On/Off",
+	Name = "On_Off",
 	Default = false,
 	Callback = function(Value)
 		if Value == true then
 			hitb_oo = true
-			while wait(0.24) do
-				if hitb_oo == true then
-					for i,v in next, game:GetService('Players'):GetPlayers() do
-                		if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-                    		v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
-                    		v.Character.HumanoidRootPart.Transparency = 0.7
-                    		v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Red")
-                    		v.Character.HumanoidRootPart.Material = "Neon"
-                    		v.Character.HumanoidRootPart.CanCollide = false
-                		end
-            		end
+function hitb()
+	while wait(0.24) do
+		if hitb_oo == true then
+			for i,v in next, game:GetService('Players'):GetPlayers() do
+				if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+					if hitb_t == "root part" then
+						if v.Character.Humanoid.Health >= 1 then
+							v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
+							v.Character.HumanoidRootPart.Transparency = 0.7
+							v.Character.HumanoidRootPart.Color = Color3.new(1, 0, 0.0156863)
+							v.Character.HumanoidRootPart.Material = "Neon"
+							v.Character.HumanoidRootPart.CanCollide = false
+							if hitb_ff == true then
+								if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+									v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
+									v.Character.HumanoidRootPart.Color = Color3.new(0, 145, 255)
+								end
+							end
+							if hitb_i == true then
+								v.Character.HumanoidRootPart.Transparency = 0.99
+							end
+						else
+							v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
+							v.Character.HumanoidRootPart.Transparency = 1
+						end
+					end
+					if hitb_t == "head" then
+						if v.Character.Humanoid.Health >= 1 then
+							v.Character.Head.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
+							v.Character.HumanoidRootPart.Transparency = 0.7
+							v.Character.Head.Color = Color3.new(1, 0, 0.0156863)
+							v.Character.Head.Material = "Neon"
+							v.Character.Head.CanCollide = false
+
+							v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s / 2,hitb_s / 2,hitb_s / 2)
+							v.Character.HumanoidRootPart.Transparency = 0.7
+							v.Character.HumanoidRootPart.Color = Color3.new(1, 0, 0.0156863)
+							v.Character.HumanoidRootPart.Material = "Neon"
+							v.Character.HumanoidRootPart.CanCollide = false
+							if hitb_ff == true then
+								if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+									v.Character.Head.Size = Vector3.new(1,2,1)
+									v.Character.Head.Color = Color3.new(0, 145, 255)
+								end
+							end
+							if hitb_i == true then
+								v.Character.HumanoidRootPart.Transparency = 0.99
+								v.Character.Head.Transparency = 0.99
+							end
+						else
+							v.Character.Head.Size = Vector3.new(1,2,1)
+							v.Character.HumanoidRootPart.Transparency = 1
+						end
+					end
 				end
 			end
+		end
+	end
+end
+hitb()
 		else
 			hitb_oo = false
 			for i,v in next, game:GetService('Players'):GetPlayers() do
                 if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-                    v.Character.HumanoidRootPart.Size = Vector3.new(1,1,1)
+                    v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
                     v.Character.HumanoidRootPart.Transparency = 0.7
                     v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Red")
                     v.Character.HumanoidRootPart.Material = "Neon"
                     v.Character.HumanoidRootPart.CanCollide = false
+
+                    v.Character.Head.Size = Vector3.new(1,2,1)
+                    v.Character.Head.Transparency = 0.7
+                    v.Character.Head.BrickColor = BrickColor.new("Red")
+                    v.Character.Head.Material = "Neon"
+                    v.Character.Head.CanCollide = false
                 end
             end
 		end
@@ -462,6 +564,67 @@ Tab:AddTextbox({
 	Callback = function(Value)
 		hitb_s = Value
 	end	  
+})
+
+Tab:AddDropdown({
+	Name = "body part",
+	Default = "root part",
+	Options = {"root part", "head"},
+	Callback = function(Value)
+		hitb_t = Value
+	end    
+})
+
+Tab:AddBind({
+	Name = "reload",
+	Default = Enum.KeyCode.C,
+	Hold = false,
+	Callback = function()
+		hitb_oo = false
+		--wait(0.5)
+		hitb_oo = true
+		hitb()
+	end    
+})
+
+--Tab:AddToggle({
+	--Name = "forcefield viewer",
+	--Default = false,
+	--Callback = function(Value)
+		--hitb_ff = Value
+	--end    
+--})
+
+--Tab:AddToggle({
+	--Name = "invisible hitbox",
+	--Default = false,
+	--Callback = function(Value)
+		--hitb_i = Value
+	--end    
+--})
+
+local hbt_p
+
+Tab:AddToggle({
+	Name = "teleport hitbox",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			hitb_tp = true
+			hbt_p = eplayer.Character.HumanoidRootPart.Position
+			while hitb_tp == true and wait(0.24) do
+            	for i,v in next, game:GetService("Players"):GetPlayers() do
+                	if v.Name ~= game:GetService("Players").LocalPlayer.Name then
+                    	v.Character.HumanoidRootPart.Size = Vector3.new(10,10,10)
+                    	v.Character.HumanoidRootPart.Position = hbt_p
+                    	v.Character.HumanoidRootPart.CanCollide = false
+                	end
+            	end
+        	end
+		else
+			hitb_tp = false
+		end
+	end    
 })
 
 local Tab = Window:MakeTab({
@@ -571,30 +734,17 @@ Tab:AddToggle({
 	end    
 })
 
-Tab:AddToggle({
-	Name = "далеко в верх лоль",
-	Default = false,
+Tab:AddDropdown({
+	Name = "airjump mode",
+	Default = "default",
+	Options = {"platform bypass", "default"},
 	Callback = function(Value)
-		if Value == true then
-			eplayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 1000 , 0) * 100
+		if Value == "default" then
+			aj_m = "default"
 		end
 
-		if Value == false then
-			eplayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 100 , 0) * 100
-		end
-	end    
-})
-
-Tab:AddToggle({
-	Name = "двлеко в сторону аххаха",
-	Default = false,
-	Callback = function(Value)
-		if Value == true then
-			eplayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, 0 , 1000) * 100
-		end
-
-		if Value == false then
-			eplayer.Character.HumanoidRootPart.Velocity = Vector3.new(1000, 0 , 0) * 100
+		if Value == "platform bypass" then
+			aj_m = "platform bypass"
 		end
 	end    
 })
@@ -695,79 +845,6 @@ Tab:AddDropdown({
 	end    
 })
 
-Tab:AddToggle({
-	Name = "freeze ball",
-	Default = false,
-	Callback = function(Value)
-		if Value == true then
-			bbfr_oo = true
-			while wait(0.01) and bbfr_oo == true do
-				game:GetService("ReplicatedStorage").Remotes.Freeze:FireServer()
-			end
-		else
-			bbfr_oo = false
-		end
-	end    
-})
-
-local Section = Tab:AddSection({
-	Name = "Big paintball (1 - 2)"
-})
-
-Tab:AddToggle({
-	Name = "telekill",
-	Default = false,
-	Callback = function(Value)
-		if Value == true then
-			tlk_oo = true
-			while wait(0.24) and tlk_oo == true do
-				eplayer.Character.HumanoidRootPart.Anchored = true
-        		tlk_oo = true
-        		while wait(0.24) and tlk_oo == true do
-            		for i,v in pairs(game:GetDescendants()) do
-                		if v.ClassName == "Player" then
-                    		if v ~= game.Players.LocalPlayer then
-                        		if v.Character.HumanoidRootPart.Anchored == false then
-                        			if v.TeamColor ~= eplayer.TeamColor then
-                        				v.Anchored = true
-                            			eplayer.Character.HumanoidRootPart.CFrame = v.CFrame
-                            			mouse1click()
-                            			mouse1release()
-                        			end
-                        		end
-                    		end
-                		end
-            		end
-        		end
-			end
-		else
-			eplayer.Character.HumanoidRootPart.Anchored = false
-			tlk_oo = false
-		end
-	end    
-})
-
-Tab:AddToggle({
-	Name = "hitkill",
-	Default = false,
-	Callback = function(Value)
-		if Value == true then
-			hbk_oo = true
-			while wait(0.24) and hbk_oo == true do
-				for i,v in next, game:GetService("Players"):GetPlayers() do
-                	if v.Name ~= game:GetService("Players").LocalPlayer.Name then
-                    	--v.Character.HumanoidRootPart.Size = Vector3.new(10,10,10)
-                    	v.Character.HumanoidRootPart.Position = eplayer.Character.HumanoidRootPart.Position
-                    	v.Character.HumanoidRootPart.CanCollide = false
-                	end
-            	end
-			end
-		else
-			hbk_oo = false
-		end
-	end    
-})
-
 local Tab = Window:MakeTab({
 	Name = "Tools",
 	Icon = "",
@@ -779,7 +856,7 @@ local Section = Tab:AddSection({
 })
 
 Tab:AddButton({
-	Name = "full bright",
+	Name = "Reset",
 	Callback = function()
 		game.Players.LocalPlayer.Character.Humanoid.Health = 0
   	end    
@@ -829,58 +906,4 @@ Tab:AddButton({
         	game:GetService("VirtualUser"):ClickButton2(Vector2.new())
     	end)
   	end    
-})
-
-local Section = Tab:AddSection({
-	Name = "lag server (blade ball)"
-})
-
-Tab:AddButton({
-	Name = "lag server 1m",
-	Callback = function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/bbcs.lua"))()
-  	end    
-})
-
-Tab:AddButton({
-	Name = "lag server 10m",
-	Callback = function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/bbcs10m.lua"))()
-  	end    
-})
-
-Tab:AddButton({
-	Name = "lag server 50m",
-	Callback = function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/bbcs50m.lua"))()
-  	end    
-})
-
-Tab:AddButton({
-	Name = "lag server 75m",
-	Callback = function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/bbcs75m.lua"))()
-  	end    
-})
-
-Tab:AddButton({
-	Name = "lag server 100m (no work)",
-	Callback = function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/bbcs100m.lua"))()
-  	end    
-})
-
-local Section = Tab:AddSection({
-	Name = "go to player"
-})
-
-Tab:AddTextbox({
-	Name = "name",
-	Default = "text",
-	TextDisappear = true,
-	Callback = function(Value)
-		--eplayer.Character.HumanoidRootPart.Position = game.Players:FindFirstChild(Value).Character.HumanoidRootPart.Position
-		wait(0.01)
-		eplayer.Character.HumanoidRootPart.Velocity = game.Players:FindFirstChild(Value).Character.HumanoidRootPart.Position
-	end	  
 })
