@@ -11,6 +11,12 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local frend_nohit = false
+
+local tpto_plr = "null"
+
+local Noclip = nil
+local Clip = nil
 
 local ws_oo
 
@@ -483,20 +489,40 @@ function hitb()
 				if v.Name ~= game:GetService('Players').LocalPlayer.Name then
 					if hitb_t == "root part" then
 						if v.Character.Humanoid.Health >= 1 then
-							v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
-							v.Character.HumanoidRootPart.Transparency = 0.7
-							v.Character.HumanoidRootPart.Color = Color3.new(1, 0, 0.0156863)
-							v.Character.HumanoidRootPart.Material = "Neon"
-							v.Character.HumanoidRootPart.CanCollide = false
-							if hitb_ff == true then
-								if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
-									v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
-									v.Character.HumanoidRootPart.Color = Color3.new(0, 145, 255)
+							if frend_nohit == true then
+                				if v:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+                				else
+                					v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
+									v.Character.HumanoidRootPart.Transparency = 0.7
+									v.Character.HumanoidRootPart.Color = Color3.new(1, 0, 0.0156863)
+									v.Character.HumanoidRootPart.Material = "Neon"
+									v.Character.HumanoidRootPart.CanCollide = false
+									if hitb_ff == true then
+										if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+											v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
+											v.Character.HumanoidRootPart.Color = Color3.new(0, 145, 255)
+										end
+									end
+									if hitb_i == true then
+										v.Character.HumanoidRootPart.Transparency = 0.99
+									end
+                				end
+                			else
+                				v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
+								v.Character.HumanoidRootPart.Transparency = 0.7
+								v.Character.HumanoidRootPart.Color = Color3.new(1, 0, 0.0156863)
+								v.Character.HumanoidRootPart.Material = "Neon"
+								v.Character.HumanoidRootPart.CanCollide = false
+								if hitb_ff == true then
+									if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+										v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
+										v.Character.HumanoidRootPart.Color = Color3.new(0, 145, 255)
+									end
 								end
-							end
-							if hitb_i == true then
-								v.Character.HumanoidRootPart.Transparency = 0.99
-							end
+								if hitb_i == true then
+									v.Character.HumanoidRootPart.Transparency = 0.99
+								end
+                			end
 						else
 							v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
 							v.Character.HumanoidRootPart.Transparency = 1
@@ -504,27 +530,54 @@ function hitb()
 					end
 					if hitb_t == "head" then
 						if v.Character.Humanoid.Health >= 1 then
-							v.Character.Head.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
-							v.Character.HumanoidRootPart.Transparency = 0.7
-							v.Character.Head.Color = Color3.new(1, 0, 0.0156863)
-							v.Character.Head.Material = "Neon"
-							v.Character.Head.CanCollide = false
+							if frend_nohit == true then
+                				if v:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+                				else
+                					v.Character.Head.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
+									v.Character.HumanoidRootPart.Transparency = 0.7
+									v.Character.Head.Color = Color3.new(1, 0, 0.0156863)
+									v.Character.Head.Material = "Neon"
+									v.Character.Head.CanCollide = false
 
-							v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s / 2,hitb_s / 2,hitb_s / 2)
-							v.Character.HumanoidRootPart.Transparency = 0.7
-							v.Character.HumanoidRootPart.Color = Color3.new(1, 0, 0.0156863)
-							v.Character.HumanoidRootPart.Material = "Neon"
-							v.Character.HumanoidRootPart.CanCollide = false
-							if hitb_ff == true then
-								if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
-									v.Character.Head.Size = Vector3.new(1,2,1)
-									v.Character.Head.Color = Color3.new(0, 145, 255)
+									v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s / 2,hitb_s / 2,hitb_s / 2)
+									v.Character.HumanoidRootPart.Transparency = 0.7
+									v.Character.HumanoidRootPart.Color = Color3.new(1, 0, 0.0156863)
+									v.Character.HumanoidRootPart.Material = "Neon"
+									v.Character.HumanoidRootPart.CanCollide = false
+									if hitb_ff == true then
+										if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+											v.Character.Head.Size = Vector3.new(1,2,1)
+											v.Character.Head.Color = Color3.new(0, 145, 255)
+										end
+									end
+									if hitb_i == true then
+										v.Character.HumanoidRootPart.Transparency = 0.99
+										v.Character.Head.Transparency = 0.99
+									end
+                				end
+                			else
+                				v.Character.Head.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
+								v.Character.HumanoidRootPart.Transparency = 0.7
+								v.Character.Head.Color = Color3.new(1, 0, 0.0156863)
+								v.Character.Head.Material = "Neon"
+								v.Character.Head.CanCollide = false
+
+								v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s / 2,hitb_s / 2,hitb_s / 2)
+								v.Character.HumanoidRootPart.Transparency = 0.7
+								v.Character.HumanoidRootPart.Color = Color3.new(1, 0, 0.0156863)
+								v.Character.HumanoidRootPart.Material = "Neon"
+								v.Character.HumanoidRootPart.CanCollide = false
+								if hitb_ff == true then
+									if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+										v.Character.Head.Size = Vector3.new(1,2,1)
+										v.Character.Head.Color = Color3.new(0, 145, 255)
+									end
 								end
-							end
-							if hitb_i == true then
-								v.Character.HumanoidRootPart.Transparency = 0.99
-								v.Character.Head.Transparency = 0.99
-							end
+								if hitb_i == true then
+									v.Character.HumanoidRootPart.Transparency = 0.99
+									v.Character.Head.Transparency = 0.99
+								end
+                			end
 						else
 							v.Character.Head.Size = Vector3.new(1,2,1)
 							v.Character.HumanoidRootPart.Transparency = 1
@@ -615,14 +668,35 @@ Tab:AddToggle({
 			while hitb_tp == true and wait(0.24) do
             	for i,v in next, game:GetService("Players"):GetPlayers() do
                 	if v.Name ~= game:GetService("Players").LocalPlayer.Name then
-                    	v.Character.HumanoidRootPart.Size = Vector3.new(10,10,10)
-                    	v.Character.HumanoidRootPart.Position = hbt_p
-                    	v.Character.HumanoidRootPart.CanCollide = false
+                		if frend_nohit == true then
+                			if v:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+                			else
+                				v.Character.HumanoidRootPart.Size = Vector3.new(10,10,10)
+                    			v.Character.HumanoidRootPart.Position = hbt_p
+                    			v.Character.HumanoidRootPart.CanCollide = false
+                			end
+                		else
+                			v.Character.HumanoidRootPart.Size = Vector3.new(10,10,10)
+                    		v.Character.HumanoidRootPart.Position = hbt_p
+                    		v.Character.HumanoidRootPart.CanCollide = false
+                		end
                 	end
             	end
         	end
 		else
 			hitb_tp = false
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "friends no hitbox",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			frend_nohit = true
+		else
+			frend_nohit = false
 		end
 	end    
 })
@@ -747,6 +821,57 @@ Tab:AddDropdown({
 			aj_m = "platform bypass"
 		end
 	end    
+})
+
+function noclip()
+    Clip = true
+    local function Nocl()
+        if Clip == true and game.Players.LocalPlayer.Character ~= nil then
+            for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+                    v.CanCollide = false
+                end
+            end
+        end
+        wait(0.21)
+    end
+    Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+end
+
+function clip()
+    if Noclip then Noclip:Disconnect() end
+    Clip = false
+end
+
+Tab:AddToggle({
+	Name = "noclip",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			noclip()
+		end
+
+		if Value == false then
+			clip()
+		end
+	end    
+})
+
+Tab:AddButton({
+	Name = "tp to player",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.Position = game.Players:FindFirstChild(tpto_plr).Character.HumanoidRootPart.Position
+  	end    
+})
+
+Tab:AddTextbox({
+	Name = "tp to player name",
+	Default = "user name",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(Value).Character.HumanoidRootPart.CFrame
+		tpto_plr = Value
+	end	  
 })
 
 local Tab = Window:MakeTab({
