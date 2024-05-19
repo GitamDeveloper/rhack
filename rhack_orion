@@ -960,36 +960,6 @@ function Quest_lvl()
 	end
 end
 
-Tab:AddToggle({
-	Name = "auto farm",
-	Default = false,
-	Callback = function(Value)
-		bf_autof = Value
-		while bf_autof == true and wait(0.1) do
-			if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
-				Quest_lvl()
-				tpto_bf(questg.HumanoidRootPart.CFrame)
-				game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",questname,questlvl)
-			else
-				if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
-					for i,v in next, game.Workspace.Enemies:GetDescendants() do
-						if v.Name == enem_name then
-							v.Size = Vector3.new(20,20,20)
-							v.CanCollide = false
-							v.Transparency = 0.3
-
-							tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
-
-							game:GetService"VirtualUser":CaptureController()
-			    			game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
-						end
-					end
-				end
-			end
-		end
-	end    
-})
-
 local Section = Tab:AddSection({
 	Name = "dusty trip"
 })
