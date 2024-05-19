@@ -962,14 +962,14 @@ end
 function Quest_lvl()
 	local lvl = game.Players.LocalPlayer.Data.Level.Value
 	if lvl < 10 then
-		questg = game.Workspace.NPCs:FindFirstChild("Bandit Quest Giver")
+		questg = "Bandit Quest Giver"
 		questpos = CFrame.new()
 		questlvl = 1
 		questname = "BanditQuest1"
 		enem_name = "Bandit"
 	else
 		if lvl < 15 then
-			questg = game.Workspace.NPCs:FindFirstChild("Adventurer")
+			questg = "Adventurer"
 			questpos = CFrame.new(-1598.09, 35.5501, 153.378)
 			questlvl = 10
 			questname = "AdventurerQuest1"
@@ -987,8 +987,8 @@ Tab:AddToggle({
 		while bf_autof == true and wait(0.1) do
 			if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
 				Quest_lvl()
-				if game.Workspace.NPCs:FindFirstChild(questg.Name) then
-					tpto_bf(questg.HumanoidRootPart.CFrame)
+				if game.Workspace.NPCs:FindFirstChild(questg) then
+					tpto_bf(game.Workspace.NPCs:FindFirstChild(questg).HumanoidRootPart.CFrame)
 				else
 					tpto_bf(questpos)
 				end
