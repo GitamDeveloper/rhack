@@ -16,6 +16,7 @@ local questg = game.Workspace.NPCs["Bandit Quest Giver"]
 local questlvl = 0
 local questname = "none"
 local enem_name = "none"
+local questpos = CFrame.new(0,0,0)
 
 local bf_autof_coll = false 
 
