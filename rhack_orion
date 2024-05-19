@@ -17,6 +17,8 @@ local questlvl = 0
 local questname = "none"
 local enem_name = "none" 
 
+local tweenend_time = 1
+
 local bf_hitb = false
 
 local dusty_mfarm_curroad = 1
@@ -950,6 +952,7 @@ function tpto_bf(cframe)
 	local tw_pos = {CFrame = cframe}
 	local tw_info = TweenInfo.new(dist/tw_speed, Enum.EasingStyle.Linear)
 	local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tw_info, tw_pos)
+	tweenend_time = dist/tw_speed
 	tween:Play()
 
 end
@@ -973,14 +976,15 @@ Tab:AddToggle({
 			if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
 				Quest_lvl()
 				tpto_bf(questg.HumanoidRootPart.CFrame)
+				wait(tweenend_time)
 				game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",questname,questlvl)
 			else
 				if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
 					for i,v in next, game.Workspace.Enemies:GetDescendants() do
 						if v.Name == enem_name then
-							v.Size = Vector3.new(20,20,20)
-							v.CanCollide = false
-							v.Transparency = 0.3
+							v.HumanoidRootPart.Size = Vector3.new(20,20,20)
+							v.HumanoidRootPart.CanCollide = false
+							v.HumanoidRootPart.Transparency = 0.3
 
 							tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
 
