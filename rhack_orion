@@ -978,7 +978,7 @@ Tab:AddToggle({
 							v.CanCollide = false
 							v.Transparency = 0.3
 
-							tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0)
+							tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
 
 							game:GetService"VirtualUser":CaptureController()
 			    			game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
