@@ -15,7 +15,9 @@ local bf_autof = false
 local questg = game.Workspace.NPCs["Bandit Quest Giver"]
 local questlvl = 0
 local questname = "none"
-local enem_name = "none" 
+local enem_name = "none"
+
+local bf_autof_coll = false 
 
 local tweenend_time = 1
 
@@ -990,6 +992,9 @@ Tab:AddToggle({
 								v.HumanoidRootPart.Transparency = 0.3
 
 								tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
+								if bf_autof_coll == true then
+									v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+								end
 
 								game:GetService"VirtualUser":CaptureController()
 			    				game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
@@ -1003,6 +1008,14 @@ Tab:AddToggle({
 				end
 			end
 		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "collect enemies",
+	Default = false,
+	Callback = function(Value)
+		bf_autof_coll = Value
 	end    
 })
 
