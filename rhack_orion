@@ -11,6 +11,13 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local bf_autof = false
+
+local bf_hitb = false
+
+local dusty_mfarm_curroad = 1
+local dusty_mfarm = false
+
 local frend_nohit = false
 
 local tpto_plr = "null"
@@ -664,7 +671,7 @@ Tab:AddToggle({
 	Callback = function(Value)
 		if Value == true then
 			hitb_tp = true
-			hbt_p = eplayer.Character.HumanoidRootPart.Position
+			hbt_p = eplayer.Character.HumanoidRootPart.CFrame
 			while hitb_tp == true and wait(0.24) do
             	for i,v in next, game:GetService("Players"):GetPlayers() do
                 	if v.Name ~= game:GetService("Players").LocalPlayer.Name then
@@ -672,12 +679,12 @@ Tab:AddToggle({
                 			if v:IsFriendsWith(game.Players.LocalPlayer.UserId) then
                 			else
                 				v.Character.HumanoidRootPart.Size = Vector3.new(10,10,10)
-                    			v.Character.HumanoidRootPart.Position = hbt_p
+                    			v.Character.HumanoidRootPart.CFrame = hbt_p
                     			v.Character.HumanoidRootPart.CanCollide = false
                 			end
                 		else
                 			v.Character.HumanoidRootPart.Size = Vector3.new(10,10,10)
-                    		v.Character.HumanoidRootPart.Position = hbt_p
+                    		v.Character.HumanoidRootPart.CFrame = hbt_p
                     		v.Character.HumanoidRootPart.CanCollide = false
                 		end
                 	end
@@ -748,6 +755,28 @@ Tab:AddToggle({
         	end
 		end
 	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "bloxfruits"
+})
+
+Tab:AddTextbox({
+	Name = "fake lvl",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Data.Level.Value = Value
+	end	  
+})
+
+Tab:AddTextbox({
+	Name = "fake beli",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Data.Beli.Value = Value
+	end	  
 })
 
 local Section = Tab:AddSection({
@@ -860,7 +889,7 @@ Tab:AddToggle({
 Tab:AddButton({
 	Name = "tp to player",
 	Callback = function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.Position = game.Players:FindFirstChild(tpto_plr).Character.HumanoidRootPart.Position
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(tpto_plr).Character.HumanoidRootPart.CFrame
   	end    
 })
 
@@ -878,6 +907,104 @@ local Tab = Window:MakeTab({
 	Name = "Exploits",
 	Icon = "",
 	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "bloxfruits"
+})
+
+Tab:AddToggle({
+	Name = "hitbox (mobs)",
+	Default = false,
+	Callback = function(Value)
+		bf_hitb = Value
+		while bf_hitb == true and wait(0.1) do
+			for i,v in next, game.Workspace.Enemies:GetDescendants() do
+				if v.Name == "HumanoidRootPart" then
+					v.Size = Vector3.new(20,20,20)
+					v.CanCollide = false
+					v.Transparency = 0.3
+				end
+			end
+		end
+
+	end    
+})
+
+function tpto_bf(cframe)
+	local dist = (cframe.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+	local tw_speed = 200
+	if dist < 100 then
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = cframe
+		tw_speed = 350
+	elseif dist < 1000 then
+		tw_speed = 350
+	elseif dist >= 1000 then
+		tw_speed = 300
+	end
+
+	local tw_pos = {CFrame = cframe}
+	local tw_info = TweenInfo.new(dist/tw_speed, Enum.EasingStyle.Linear)
+	local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tw_info, tw_pos)
+	tween:Play()
+
+end
+
+function Quest_lvl()
+	local lvl = game.Players.LocalPlayer.Data.Level.Value
+	if lvl <= 10 then
+		local questg = game.Workspace.NPCs.["Bandit Quest Giver"]
+		local questlvl = 1
+		local questname = "BanditQuest1"
+		local enem_name = "Bandit"
+	end
+end
+
+Tab:AddToggle({
+	Name = "auto farm",
+	Default = false,
+	Callback = function(Value)
+		bf_autof = Value
+		while bf_autof == true and wait(0.1) do
+			if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
+				Quest_lvl()
+				tpto_bf(questg.HumanoidRootPart.CFrame)
+				game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",questname,questlvl)
+			else
+				if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
+					for i,v in next, game.Workspace.Enemies:GetDescendants() do
+						if v.Name == enem_name then
+							v.Size = Vector3.new(20,20,20)
+							v.CanCollide = false
+							v.Transparency = 0.3
+
+							tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0)
+
+							game:GetService"VirtualUser":CaptureController()
+			    			game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
+						end
+					end
+				end
+			end
+		end
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "dusty trip"
+})
+
+Tab:AddToggle({
+	Name = "meters farm",
+	Default = false,
+	Callback = function(Value)
+		dusty_mfarm = Value
+		while dusty_mfarm == true and wait(0.1) do
+			local tproad = dusty_mfarm_curroad + 1
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.models.roads:FindFirstChild(tproad).CFrame
+			dusty_mfarm_curroad += 1
+		end
+	end    
 })
 
 local Section = Tab:AddSection({
@@ -927,7 +1054,9 @@ Tab:AddToggle({
                     	wait(0.04)
                     	intp = true
                     	eplayer.Character.HumanoidRootPart.CFrame = ball.CFrame * CFrame.new(0, 0, (ball.Velocity).Magnitude * -0.5)
-                    	game:GetService("ReplicatedStorage").Remotes.ParryButtonPress:Fire()
+                    	--local Remotes = game.ReplicatedStorage:WaitForChild("Remotes", 9e9)
+                    	--Remotes:WaitForChild("ParryButtonPress"):FireServer()
+                    	mouse1click()
                     	wait(0.04)
                     	intp = false
                     	eplayer.Character.HumanoidRootPart.CFrame = pos1
@@ -1026,9 +1155,24 @@ local Section = Tab:AddSection({
 Tab:AddButton({
 	Name = "anti afk",
 	Callback = function()
+		game:GetService("VirtualUser"):ClickButton2(Vector2.new())
 		repeat wait() until game:IsLoaded() 
         	game:GetService("Players").LocalPlayer.Idled:connect(function()
         	game:GetService("VirtualUser"):ClickButton2(Vector2.new())
     	end)
   	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "camera zoom dist"
+})
+
+Tab:AddTextbox({
+	Name = "zoom max dist",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.CameraMode = Enum.CameraMode.Classic
+		game.Players.LocalPlayer.CameraMaxZoomDistance = Value
+	end	  
 })
