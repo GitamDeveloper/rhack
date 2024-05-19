@@ -963,7 +963,7 @@ function Quest_lvl()
 	local lvl = game.Players.LocalPlayer.Data.Level.Value
 	if lvl < 10 then
 		questg = "Bandit Quest Giver"
-		questpos = CFrame.new()
+		questpos = CFrame.new(10,10,10)
 		questlvl = 1
 		questname = "BanditQuest1"
 		enem_name = "Bandit"
