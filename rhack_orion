@@ -12,10 +12,10 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
 end
 
 local bf_autof = false
-local questg = game.Workspace.NPCs.["Bandit Quest Giver"]
+local questg = game.Workspace.NPCs["Bandit Quest Giver"]
 local questlvl = 0
 local questname = "none"
-local enem_name = "none"
+local enem_name = "none" 
 
 local bf_hitb = false
 
