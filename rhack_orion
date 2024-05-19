@@ -971,6 +971,7 @@ Tab:AddToggle({
 	Name = "auto farm",
 	Default = false,
 	Callback = function(Value)
+		game.Workspace.Gravity = 100
 		bf_autof = Value
 		while bf_autof == true and wait(0.1) do
 			if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
@@ -982,6 +983,7 @@ Tab:AddToggle({
 				if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
 					for i,v in next, game.Workspace.Enemies:GetDescendants() do
 						if v.Name == enem_name then
+							game.Workspace.Gravity = 0
 							v.HumanoidRootPart.Size = Vector3.new(20,20,20)
 							v.HumanoidRootPart.CanCollide = false
 							v.HumanoidRootPart.Transparency = 0.3
