@@ -985,24 +985,26 @@ Tab:AddToggle({
 				if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
 					for i,v in next, game.Workspace.Enemies:GetDescendants() do
 						if v.Name == enem_name then
-							if v:FindFirstChild(Humanoid).Health > 0 then
-								game.Workspace.Gravity = 0
-								v.HumanoidRootPart.Size = Vector3.new(30,30,30)
-								v.HumanoidRootPart.CanCollide = false
-								v.HumanoidRootPart.Transparency = 0.3
+							if v:FindFirstChild(Humanoid) then
+								if v:FindFirstChild(Humanoid).Health > 0 then
+									game.Workspace.Gravity = 0
+									v.HumanoidRootPart.Size = Vector3.new(30,30,30)
+									v.HumanoidRootPart.CanCollide = false
+									v.HumanoidRootPart.Transparency = 0.3
 
-								tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
-								if bf_autof_coll == true then
-									v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+									tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
+									if bf_autof_coll == true then
+										v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+									end
+
+									game:GetService"VirtualUser":CaptureController()
+			    					game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
+			    					print(bf_autof)
+								else
+									v.HumanoidRootPart.Size = Vector3.new(1,1,1)
+									v.HumanoidRootPart.CanCollide = false
+									v.HumanoidRootPart.Transparency = 0.3
 								end
-
-								game:GetService"VirtualUser":CaptureController()
-			    				game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
-			    				print(bf_autof)
-							else
-								v.HumanoidRootPart.Size = Vector3.new(1,1,1)
-								v.HumanoidRootPart.CanCollide = false
-								v.HumanoidRootPart.Transparency = 0.3
 							end
 						end
 					end
