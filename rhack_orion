@@ -998,6 +998,7 @@ Tab:AddToggle({
 
 								game:GetService"VirtualUser":CaptureController()
 			    				game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
+			    				print(bf_autof)
 							else
 								v.HumanoidRootPart.Size = Vector3.new(1,1,1)
 								v.HumanoidRootPart.CanCollide = false
