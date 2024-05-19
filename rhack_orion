@@ -931,35 +931,6 @@ Tab:AddToggle({
 	end    
 })
 
-function tpto_bf(cframe)
-	local dist = (cframe.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-	local tw_speed = 200
-	if dist < 100 then
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = cframe
-		tw_speed = 350
-	elseif dist < 1000 then
-		tw_speed = 350
-	elseif dist >= 1000 then
-		tw_speed = 300
-	end
-
-	local tw_pos = {CFrame = cframe}
-	local tw_info = TweenInfo.new(dist/tw_speed, Enum.EasingStyle.Linear)
-	local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tw_info, tw_pos)
-	tween:Play()
-
-end
-
-function Quest_lvl()
-	local lvl = game.Players.LocalPlayer.Data.Level.Value
-	if lvl <= 10 then
-		local questg = game.Workspace.NPCs.["Bandit Quest Giver"]
-		local questlvl = 1
-		local questname = "BanditQuest1"
-		local enem_name = "Bandit"
-	end
-end
-
 local Section = Tab:AddSection({
 	Name = "dusty trip"
 })
