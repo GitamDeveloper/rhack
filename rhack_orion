@@ -624,17 +624,19 @@ hitb()
 			hitb_oo = false
 			for i,v in next, game:GetService('Players'):GetPlayers() do
                 if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-                    v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)	
-                    v.Character.HumanoidRootPart.Transparency = 0.7
-                    v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Red")
-                    v.Character.HumanoidRootPart.Material = "Neon"
-                    v.Character.HumanoidRootPart.CanCollide = false
+                	if v.Character:FindFirstChild("HumanoidRootPart") then
+                		v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)	
+                    	v.Character.HumanoidRootPart.Transparency = 0.7
+                    	v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Red")
+                    	v.Character.HumanoidRootPart.Material = "Neon"
+                    	v.Character.HumanoidRootPart.CanCollide = false
 
-                    v.Character.Head.Size = Vector3.new(1,2,1)
-                    v.Character.Head.Transparency = 0.7
-                    v.Character.Head.BrickColor = BrickColor.new("Red")
-                    v.Character.Head.Material = "Neon"
-                    v.Character.Head.CanCollide = false
+                    	v.Character.Head.Size = Vector3.new(1,2,1)
+                    	v.Character.Head.Transparency = 0.7
+                    	v.Character.Head.BrickColor = BrickColor.new("Red")
+                    	v.Character.Head.Material = "Neon"
+                    	v.Character.Head.CanCollide = false
+                	end
                 end
             end
 		end
