@@ -1241,28 +1241,32 @@ Tab:AddToggle({
 												for i,v in next, game.Workspace.Enemies:GetDescendants() do
 													if v:FindFirstChild("aceser") then
 														if v.Name == enem_name then
-															game.Workspace.Gravity = 0
+															if v:FindFirstChild("Humanoid").Health > 0 then
+																game.Workspace.Gravity = 0
 
-											v.HumanoidRootPart.Size = Vector3.new(30,30,30)
-											v.HumanoidRootPart.CanCollide = false
-											v.HumanoidRootPart.Transparency = 1
+																v.HumanoidRootPart.Size = Vector3.new(30,30,30)
+																v.HumanoidRootPart.CanCollide = false
+																v.HumanoidRootPart.Transparency = 1
 
-											if bf_autof_coll == true then
-												local dist = (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-												if dist <= bf_autof_coll_range then
-													v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
-												end
-											end
+																if bf_autof_coll == true then
+																	local dist = (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+																	if dist <= bf_autof_coll_range then
+																		v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+																	end
+																end
 
-											if game.Players.LocalPlayer.Character.HumanoidRootPart.Position == v.HumanoidRootPart.Position then
-											else
-												tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
-												wait(tweenend_time)
-												game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-											end
-											game:GetService"VirtualUser":CaptureController()
-			    							game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
-			    							--print(bf_autof)
+																if game.Players.LocalPlayer.Character.HumanoidRootPart.Position == v.HumanoidRootPart.Position then
+																else
+																	tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
+																	wait(tweenend_time)
+																	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+																end
+																game:GetService"VirtualUser":CaptureController()
+			    												game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
+			    												--print(bf_autof)
+															else
+																v:FindFirstChild("aceser"):Destroy()
+															end
 														end
 													else
 														if v.Name == enem_name then
