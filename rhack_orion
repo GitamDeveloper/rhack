@@ -1266,6 +1266,7 @@ Tab:AddToggle({
 			    												--print(bf_autof)
 															else
 																v:FindFirstChild("aceser"):Destroy()
+																v:Destroy()
 															end
 														end
 													else
