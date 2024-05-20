@@ -1273,6 +1273,19 @@ Tab:AddToggle({
 																	wait(tweenend_time)
 																	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 																end
+
+																if game.Players.LocalPlayer.Character:FindFirstChild(bf_autof_tool) then
+																else
+
+																game.Players.LocalPlayer.Backpack:FindFirstChild(bf_autof_tool).Parent = game.Players.LocalPlayer.Character
+																local args = {
+    																[1] = "weaponChange",
+    																[2] = bf_autof_tool
+																}
+
+																game:GetService("ReplicatedStorage").RigControllerEvent:FireServer(unpack(args))
+
+																end
 																game:GetService"VirtualUser":CaptureController()
 			    												game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
 			    												--print(bf_autof)
@@ -1320,27 +1333,9 @@ Tab:AddDropdown({
 	Default = "null",
 	Options = bf_autof_tools,
 	Callback = function(Value)
+		bf_autof_tool = Value
 	end    
 })
-
-game.Players.LocalPlayer.Backpack.DescendantAdded:Connect(function(tool)
-	local toolName = tool.Name
-	if tool:IsA("Tool") then
-		table.insert(bf_autof_tools, toolName)
-		Dropdown:Refresh(bf_autof_tools,true)
-	end
-end)
-game.Players.LocalPlayer.Backpack.DescendantRemoving:Connect(function(tool)
-	local toolName = tool.Name
-	if tool:IsA("Tool") then
-		for i,v in pairs(bf_autof_tools) do
-			if v == toolName then
-				table.remove(bf_autof_tools, i)
-			end
-		end	
-	end
-	Dropdown:Refresh(bf_autof_tools,true)
-end)
 
 Tab:AddToggle({
 	Name = "collect enemies",
