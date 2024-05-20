@@ -1141,6 +1141,7 @@ local Section = Tab:AddSection({
 function tpto_bf(cframe)
 	local dist = (cframe.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
 	local tw_speed = 200
+	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 	if dist < 100 then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = cframe
 		tw_speed = 350
@@ -1192,6 +1193,7 @@ Tab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		game.Workspace.Gravity = 100
+		game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 		bf_autof = Value
 		while bf_autof == true and wait(0.1) do
 			if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
@@ -1206,39 +1208,39 @@ Tab:AddToggle({
 			else
 				if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
 					for i,v in next, game.Workspace.Enemies:GetDescendants() do
-						if v.Name == enem_name then
-							if v:FindFirstChild("HumanoidRootPart") then
-								if v:FindFirstChild("Humanoid") then
-									if v:FindFirstChild("Humanoid").Health > 0 then
-										game.Workspace.Gravity = 0
-										v.HumanoidRootPart.Size = Vector3.new(30,30,30)
-										v.HumanoidRootPart.CanCollide = false
-										v.HumanoidRootPart.Transparency = 0.3
+						if game.Workspace.Enemies:FindFirstChild(enem_name) then
+							if v.Name == enem_name then
+								if v:FindFirstChild("HumanoidRootPart") then
+									if v:FindFirstChild("Humanoid") then
+										if v:FindFirstChild("Humanoid").Health > 0 then
+											game.Workspace.Gravity = 0
+											v.HumanoidRootPart.Size = Vector3.new(30,30,30)
+											v.HumanoidRootPart.CanCollide = false
+											v.HumanoidRootPart.Transparency = 0.3
 
-										if bf_autof_coll == true then
-											local dist = (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-											if dist <= bf_autof_coll_range then
-												v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+											if bf_autof_coll == true then
+												local dist = (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+												if dist <= bf_autof_coll_range then
+													v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+												end
 											end
-										end
 
-										if game.Workspace.Enemies:FindFirstChild(enem_name) then
 											tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
-										else
-											local enem_spawn = game.Workspace._WorldOrigin.EnemySpawns:FindFirstChild(enem_name)
-											tpto_bf(enem_spawn.CFrame * CFrame.new(0,20,0))
-										end
 
-										game:GetService"VirtualUser":CaptureController()
-			    						game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
-			    						--print(bf_autof)
-									else
-										v.HumanoidRootPart.Size = Vector3.new(1,1,1)
-										v.HumanoidRootPart.CanCollide = false
-										v.HumanoidRootPart.Transparency = 0.3
+											game:GetService"VirtualUser":CaptureController()
+			    							game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
+			    							--print(bf_autof)
+										else
+											v.HumanoidRootPart.Size = Vector3.new(1,1,1)
+											v.HumanoidRootPart.CanCollide = false
+											v.HumanoidRootPart.Transparency = 0.3
+										end
 									end
 								end
 							end
+						else
+							local enem_spawn = game.Workspace._WorldOrigin.EnemySpawns:FindFirstChild(enem_name)
+							tpto_bf(enem_spawn.CFrame * CFrame.new(0,20,0))
 						end
 					end
 				end
