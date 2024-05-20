@@ -13,12 +13,13 @@ end
 
 local bf_autof = false
 local questg = "Bandit Quest Giver"
-local questlvl = 0
+local questnum = 0
 local questname = "none"
 local enem_name = "none"
 local questpos = CFrame.new(0,0,0)
 
 local bf_autof_coll = false 
+local bf_autof_coll_range = 50
 
 local tweenend_time = 1
 
@@ -609,7 +610,7 @@ hitb()
 			hitb_oo = false
 			for i,v in next, game:GetService('Players'):GetPlayers() do
                 if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-                    v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
+                    v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)	
                     v.Character.HumanoidRootPart.Transparency = 0.7
                     v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Red")
                     v.Character.HumanoidRootPart.Material = "Neon"
@@ -919,128 +920,6 @@ local Tab = Window:MakeTab({
 })
 
 local Section = Tab:AddSection({
-	Name = "bloxfruits"
-})
-
-Tab:AddToggle({
-	Name = "hitbox (mobs)",
-	Default = false,
-	Callback = function(Value)
-		bf_hitb = Value
-		while bf_hitb == true and wait(0.1) do
-			for i,v in next, game.Workspace.Enemies:GetDescendants() do
-				if v.Name == "HumanoidRootPart" then
-					v.Size = Vector3.new(20,20,20)
-					v.CanCollide = false
-					v.Transparency = 0.3
-				end
-			end
-		end
-
-	end    
-})
-
-function tpto_bf(cframe)
-	local dist = (cframe.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-	local tw_speed = 200
-	if dist < 100 then
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = cframe
-		tw_speed = 350
-	elseif dist < 1000 then
-		tw_speed = 350
-	elseif dist >= 1000 then
-		tw_speed = 300
-	end
-
-	local tw_pos = {CFrame = cframe}
-	local tw_info = TweenInfo.new(dist/tw_speed, Enum.EasingStyle.Linear)
-	local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tw_info, tw_pos)
-	tweenend_time = dist/tw_speed
-	tween:Play()
-
-end
-
-function Quest_lvl()
-	local lvl = game.Players.LocalPlayer.Data.Level.Value
-	if lvl < 10 then
-		questg = "Bandit Quest Giver"
-		questpos = CFrame.new(10,10,10)
-		questlvl = 1
-		questname = "BanditQuest1"
-		enem_name = "Bandit"
-	elseif lvl < 15 then
-		questg = "Adventurer"
-		questpos = CFrame.new(-1598.09, 35.5501, 153.378)
-		questlvl = 1
-		questname = "JungleQuest"
-		enem_name = "Monkey"
-	end
-end
-
-Tab:AddToggle({
-	Name = "auto farm",
-	Default = false,
-	Callback = function(Value)
-		game.Workspace.Gravity = 100
-		bf_autof = Value
-		while bf_autof == true and wait(0.1) do
-			if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
-				Quest_lvl()
-				if game.Workspace.NPCs:FindFirstChild(questg) then
-					tpto_bf(game.Workspace.NPCs:FindFirstChild(questg).HumanoidRootPart.CFrame)
-				else
-					tpto_bf(questpos)
-				end
-				wait(tweenend_time)
-				game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",questname,questlvl)
-			else
-				if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
-					for i,v in next, game.Workspace.Enemies:GetDescendants() do
-						if v.Name == enem_name then
-							if v:FindFirstChild("HumanoidRootPart") then
-								if v:FindFirstChild("Humanoid") then
-									if v:FindFirstChild("Humanoid").Health > 0 then
-										game.Workspace.Gravity = 0
-										v.HumanoidRootPart.Size = Vector3.new(30,30,30)
-										v.HumanoidRootPart.CanCollide = false
-										v.HumanoidRootPart.Transparency = 0.3
-
-										if bf_autof_coll == true then
-											local dist = (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-											if dist <= 100 then
-												v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
-											end
-										end
-
-										tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
-
-										game:GetService"VirtualUser":CaptureController()
-			    						game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
-			    						--print(bf_autof)
-									else
-										v.HumanoidRootPart.Size = Vector3.new(1,1,1)
-										v.HumanoidRootPart.CanCollide = false
-										v.HumanoidRootPart.Transparency = 0.3
-									end
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-	end    
-})
-
-Tab:AddToggle({
-	Name = "collect enemies",
-	Default = false,
-	Callback = function(Value)
-		bf_autof_coll = Value
-	end    
-})
-
-local Section = Tab:AddSection({
 	Name = "dusty trip"
 })
 
@@ -1224,5 +1103,163 @@ Tab:AddTextbox({
 	Callback = function(Value)
 		game.Players.LocalPlayer.CameraMode = Enum.CameraMode.Classic
 		game.Players.LocalPlayer.CameraMaxZoomDistance = Value
+	end	  
+})
+
+local Tab = Window:MakeTab({
+	Name = "BF",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "main"
+})
+
+Tab:AddToggle({
+	Name = "hitbox (mobs)",
+	Default = false,
+	Callback = function(Value)
+		bf_hitb = Value
+		while bf_hitb == true and wait(0.1) do
+			for i,v in next, game.Workspace.Enemies:GetDescendants() do
+				if v.Name == "HumanoidRootPart" then
+					v.Size = Vector3.new(20,20,20)
+					v.CanCollide = false
+					v.Transparency = 0.3
+				end
+			end
+		end
+
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "auto farm lvl"
+})
+
+function tpto_bf(cframe)
+	local dist = (cframe.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+	local tw_speed = 200
+	if dist < 100 then
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = cframe
+		tw_speed = 350
+	elseif dist < 1000 then
+		tw_speed = 350
+	elseif dist >= 1000 then
+		tw_speed = 300
+	end
+
+	local tw_pos = {CFrame = cframe}
+	local tw_info = TweenInfo.new(dist/tw_speed, Enum.EasingStyle.Linear)
+	local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tw_info, tw_pos)
+	tweenend_time = dist/tw_speed
+	tween:Play()
+
+end
+
+function Quest_lvl()
+	local lvl = game.Players.LocalPlayer.Data.Level.Value
+	if lvl < 10 then
+		questg = "Bandit Quest Giver"
+		questpos = CFrame.new(10,10,10)
+		questnum = 1
+		questname = "BanditQuest1"
+		enem_name = "Bandit"
+	elseif lvl < 15 then
+		questg = "Adventurer"
+		questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+		questnum = 1
+		questname = "JungleQuest"
+		enem_name = "Monkey"
+	elseif lvl < 20 then
+		questg = "Adventurer"
+		questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+		questnum = 2
+		questname = "JungleQuest"
+		enem_name = "Gorilla"
+	elseif lvl >= 20 then
+		questg = "Adventurer"
+		questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+		questnum = 3
+		questname = "JungleQuest"
+		enem_name = "The Gorilla King"
+	end
+end
+
+Tab:AddToggle({
+	Name = "auto farm",
+	Default = false,
+	Callback = function(Value)
+		game.Workspace.Gravity = 100
+		bf_autof = Value
+		while bf_autof == true and wait(0.1) do
+			if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
+				Quest_lvl()
+				if game.Workspace.NPCs:FindFirstChild(questg) then
+					tpto_bf(game.Workspace.NPCs:FindFirstChild(questg).HumanoidRootPart.CFrame)
+				else
+					tpto_bf(questpos)
+				end
+				wait(tweenend_time)
+				game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",questname,questnum)
+			else
+				if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
+					for i,v in next, game.Workspace.Enemies:GetDescendants() do
+						if v.Name == enem_name then
+							if v:FindFirstChild("HumanoidRootPart") then
+								if v:FindFirstChild("Humanoid") then
+									if v:FindFirstChild("Humanoid").Health > 0 then
+										game.Workspace.Gravity = 0
+										v.HumanoidRootPart.Size = Vector3.new(30,30,30)
+										v.HumanoidRootPart.CanCollide = false
+										v.HumanoidRootPart.Transparency = 0.3
+
+										if bf_autof_coll == true then
+											local dist = (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+											if dist <= bf_autof_coll_range then
+												v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+											end
+										end
+
+										if game.Workspace.Enemies:FindFirstChild(enem_name) then
+											tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
+										else
+											local enem_spawn = game.Workspace._WorldOrigin.EnemySpawns:FindFirstChild(enem_name)
+											tpto_bf(enem_spawn.CFrame * CFrame.new(0,20,0))
+										end
+
+										game:GetService"VirtualUser":CaptureController()
+			    						game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
+			    						--print(bf_autof)
+									else
+										v.HumanoidRootPart.Size = Vector3.new(1,1,1)
+										v.HumanoidRootPart.CanCollide = false
+										v.HumanoidRootPart.Transparency = 0.3
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "collect enemies",
+	Default = false,
+	Callback = function(Value)
+		bf_autof_coll = Value
+	end    
+})
+
+Tab:AddTextbox({
+	Name = "collect range",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		bf_autof_coll_range = Value
 	end	  
 })
