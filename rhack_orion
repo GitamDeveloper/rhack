@@ -23,6 +23,8 @@ for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 	end
 end
 
+
+
 local questg = "Bandit Quest Giver"
 local questnum = 0
 local questname = "none"
@@ -1314,12 +1316,31 @@ Tab:AddToggle({
 })
 
 Tab:AddDropdown({
-	Name = "farm tool",
-	Default = "",
+	Name = "farm_tool",
+	Default = "null",
 	Options = bf_autof_tools,
 	Callback = function(Value)
 	end    
 })
+
+game.Players.LocalPlayer.Backpack.DescendantAdded:Connect(function(tool)
+	local toolName = tool.Name
+	if tool:IsA("Tool") then
+		table.insert(bf_autof_tools, toolName)
+		farm_tool:Refresh(bf_autof_tools,true)
+	end
+end)
+game.Players.LocalPlayer.Backpack.DescendantRemoving:Connect(function(tool)
+	local toolName = tool.Name
+	if tool:IsA("Tool") then
+		for i,v in pairs(bf_autof_tools) do
+			if v == toolName then
+				table.remove(bf_autof_tools, i)
+			end
+		end	
+	end
+	farm_tool:Refresh(bf_autof_tools,true)
+end)
 
 Tab:AddToggle({
 	Name = "collect enemies",
