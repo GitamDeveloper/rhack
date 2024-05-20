@@ -1173,6 +1173,28 @@ function tpto_bf(cframe)
 
 end
 
+function getto_closest(object, search_name)
+	local nearby
+	local nearby_dist
+
+	for i,v in next, object:GetDescendants() do
+		if v.Name == search_name then
+			local dist = (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+
+			if nearby then
+				if nearby_dist > dist then
+					nearby_dist = dist
+					nearby = v
+				end
+			end
+
+		end
+	end
+
+	tpto_bf(nearby.CFrame)
+	
+end
+
 function Quest_lvl()
 	local lvl = game.Players.LocalPlayer.Data.Level.Value
 	if bf_autof_skip_bos_quest == true then
@@ -1374,11 +1396,12 @@ Tab:AddToggle({
 		bf_autocf = Value
 		while bf_autocf == true and wait(0.1) do
 			if game.Workspace:FindFirstChild("Chest3") then
-				tpto_bf(game.Workspace:FindFirstChild("Chest3").CFrame)
+				getto_closest(game.Workspace, "Chest3")
+				--tpto_bf(game.Workspace:FindFirstChild("Chest3").CFrame)
 			elseif game.Workspace:FindFirstChild("Chest2") then
-				tpto_bf(game.Workspace:FindFirstChild("Chest2").CFrame)
+				--tpto_bf(game.Workspace:FindFirstChild("Chest2").CFrame)
 			elseif game.Workspace:FindFirstChild("Chest1") then
-				tpto_bf(game.Workspace:FindFirstChild("Chest1").CFrame)
+				--tpto_bf(game.Workspace:FindFirstChild("Chest1").CFrame)
 			end
 		end
 	end    
