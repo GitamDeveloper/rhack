@@ -23,6 +23,7 @@ for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 	end
 end
 
+local bf_autocf = false
 
 
 local questg = "Bandit Quest Giver"
@@ -1359,5 +1360,26 @@ Tab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		bf_autof_skip_bos_quest = Value
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "auto chest farm"
+})
+
+Tab:AddToggle({
+	Name = "auto farm",
+	Default = false,
+	Callback = function(Value)
+		bf_autocf = Value
+		while bf_autocf == true and wait(0.1) do
+			if game.Workspace:FindFirstChild("Chest3") then
+				tpto_bf(game.Workspace:FindFirstChild("Chest3").CFrame)
+			elseif game.Workspace:FindFirstChild("Chest2") then
+				tpto_bf(game.Workspace:FindFirstChild("Chest2").CFrame)
+			elseif game.Workspace:FindFirstChild("Chest1") then
+				tpto_bf(game.Workspace:FindFirstChild("Chest1").CFrame)
+			end
+		end
 	end    
 })
