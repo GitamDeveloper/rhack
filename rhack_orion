@@ -24,6 +24,7 @@ for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 end
 
 local bf_autocf = false
+local bf_autocf_esp = false
 
 
 local questg = "Bandit Quest Giver"
@@ -1175,7 +1176,7 @@ function tpto_bf(cframe)
 
 end
 
-function getto_closest(object, search_name)
+function getto_closest(object, search_name, esp, esp_color)
 	local nearby
 	local nearby_dist
 
@@ -1197,6 +1198,11 @@ function getto_closest(object, search_name)
 	end
 
 	tpto_bf(nearby.CFrame)
+	if esp == true then
+		local espp = Instance.new("Highlight",nearby)
+	    espp.FillColor = esp_color
+        espp.Name = "ProccEsp"
+	end
 	
 end
 
@@ -1401,7 +1407,7 @@ Tab:AddToggle({
 		bf_autocf = Value
 		while bf_autocf == true and wait(0.1) do
 			if game.Workspace:FindFirstChild("Chest3") then
-				getto_closest(game.Workspace, "Chest3")
+				getto_closest(game.Workspace, "Chest3", true, Color3.fromRGB(123, 182, 232))
 				wait(tweenend_time)
 			elseif game.Workspace:FindFirstChild("Chest2") then
 				getto_closest(game.Workspace, "Chest2")
@@ -1411,5 +1417,13 @@ Tab:AddToggle({
 				wait(tweenend_time)
 			end
 		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "process esp",
+	Default = false,
+	Callback = function(Value)
+		bf_autocf_esp = Value
 	end    
 })
