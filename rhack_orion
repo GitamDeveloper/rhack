@@ -1190,6 +1190,7 @@ function getto_closest(object, search_name)
 				end
 			else
 				nearby = object:FindFirstChild(search_name)
+				nearby_dist = (object:FindFirstChild(search_name).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
 			end
 
 		end
