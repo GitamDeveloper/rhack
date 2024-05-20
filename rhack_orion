@@ -1402,11 +1402,13 @@ Tab:AddToggle({
 		while bf_autocf == true and wait(0.1) do
 			if game.Workspace:FindFirstChild("Chest3") then
 				getto_closest(game.Workspace, "Chest3")
-				--tpto_bf(game.Workspace:FindFirstChild("Chest3").CFrame)
+				wait(tweenend_time)
 			elseif game.Workspace:FindFirstChild("Chest2") then
-				--tpto_bf(game.Workspace:FindFirstChild("Chest2").CFrame)
+				getto_closest(game.Workspace, "Chest2")
+				wait(tweenend_time)
 			elseif game.Workspace:FindFirstChild("Chest1") then
-				--tpto_bf(game.Workspace:FindFirstChild("Chest1").CFrame)
+				getto_closest(game.Workspace, "Chest1")
+				wait(tweenend_time)
 			end
 		end
 	end    
