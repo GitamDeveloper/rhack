@@ -1260,6 +1260,6 @@ Tab:AddTextbox({
 	Default = "number",
 	TextDisappear = true,
 	Callback = function(Value)
-		bf_autof_coll_range = Value
+		bf_autof_coll_range = tonumber(Value)
 	end	  
 })
