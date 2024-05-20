@@ -12,11 +12,12 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
 end
 
 local bf_autof = false
+local bf_autof_skip_bos_quest = false
 local questg = "Bandit Quest Giver"
 local questnum = 0
 local questname = "none"
 local enem_name = "none"
-local questpos = CFrame.new(0,0,0)
+local questpos = CFrame.new(0,0,0)   
 
 local bf_autof_coll = false 
 local bf_autof_coll_range = 50
@@ -1161,7 +1162,28 @@ end
 
 function Quest_lvl()
 	local lvl = game.Players.LocalPlayer.Data.Level.Value
-	if lvl < 10 then
+	if bf_autof_skip_bos_quest == true then
+		if lvl < 10 then
+		questg = "Bandit Quest Giver"
+		questpos = CFrame.new(10,10,10)
+		questnum = 1
+		questname = "BanditQuest1"
+		enem_name = "Bandit"
+	elseif lvl < 15 then
+		questg = "Adventurer"
+		questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+		questnum = 1
+		questname = "JungleQuest"
+		enem_name = "Monkey"
+	elseif lvl < 20 then
+		questg = "Adventurer"
+		questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+		questnum = 2
+		questname = "JungleQuest"
+		enem_name = "Gorilla"
+	end
+	else
+		if lvl < 10 then
 		questg = "Bandit Quest Giver"
 		questpos = CFrame.new(10,10,10)
 		questnum = 1
@@ -1185,6 +1207,7 @@ function Quest_lvl()
 		questnum = 3
 		questname = "JungleQuest"
 		enem_name = "The Gorilla King"
+	end
 	end
 end
 
@@ -1244,7 +1267,12 @@ Tab:AddToggle({
 							end
 						else
 							local enem_spawn = game.Workspace._WorldOrigin.EnemySpawns:FindFirstChild(enem_name)
-							tpto_bf(enem_spawn.CFrame * CFrame.new(0,20,0))
+							if game.Players.LocalPlayer.Character.HumanoidRootPart.Position == enem_spawn.Position then
+							else
+								tpto_bf(enem_spawn.CFrame * CFrame.new(0,20,0))
+								wait(tweenend_time)
+								game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+							end
 						end
 					end
 				end
@@ -1268,4 +1296,12 @@ Tab:AddTextbox({
 	Callback = function(Value)
 		bf_autof_coll_range = tonumber(Value)
 	end	  
+})
+
+Tab:AddToggle({
+	Name = "skip boss quests",
+	Default = false,
+	Callback = function(Value)
+		bf_autof_skip_bos_quest = Value
+	end    
 })
