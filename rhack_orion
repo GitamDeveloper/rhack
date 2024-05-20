@@ -1240,13 +1240,8 @@ Tab:AddToggle({
 											else
 												for i,v in next, game.Workspace.Enemies:GetDescendants() do
 													if v:FindFirstChild("aceser") then
-													else
-														local aceser = Instance.new("Part",game.Workspace.Enemies:FindFirstChild(enem_name))
-														aceser.CanCollide = false
-														aceser.Transparency = 1
-														aceser.Name = "aceser"
-
-														game.Workspace.Gravity = 0
+														if v.Name == enem_name then
+															game.Workspace.Gravity = 0
 
 											v.HumanoidRootPart.Size = Vector3.new(30,30,30)
 											v.HumanoidRootPart.CanCollide = false
@@ -1268,9 +1263,16 @@ Tab:AddToggle({
 											game:GetService"VirtualUser":CaptureController()
 			    							game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
 			    							--print(bf_autof)
+														end
+													else
+														if v.Name == enem_name then
+															local aceser = Instance.new("Part",game.Workspace.Enemies:FindFirstChild(enem_name))
+															aceser.CanCollide = false
+															aceser.Transparency = 1
+															aceser.Name = "aceser"
+														end
 													end
 												end
-
 											end
 										else
 											v.HumanoidRootPart.Size = Vector3.new(1,1,1)
