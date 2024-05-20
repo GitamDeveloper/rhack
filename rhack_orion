@@ -1310,7 +1310,11 @@ Tab:AddToggle({
 																if bf_autof_coll == true then
 																	local dist = (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
 																	if dist <= bf_autof_coll_range then
-																		v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+																		for i,v in next, game.Workspace.Enemies:GetDescendants() do
+																			if v.Name == enem_name then
+																				v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+																			end
+																		end
 																	end
 																end
 
