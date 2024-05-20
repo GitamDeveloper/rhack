@@ -13,6 +13,7 @@ end
 
 local bf_autof = false
 local bf_autof_skip_bos_quest = false
+local bf_autof_esp = false
 
 local bf_autof_tool = "null"
 local bf_autof_tools = {"null"}
@@ -1269,10 +1270,22 @@ Tab:AddToggle({
 				Quest_lvl()
 				if game.Workspace.NPCs:FindFirstChild(questg) then
 					tpto_bf(game.Workspace.NPCs:FindFirstChild(questg).HumanoidRootPart.CFrame)
+					if bf_autof_esp == true then
+						local espp = Instance.new("Highlight",game.Workspace.NPCs:FindFirstChild(questg))
+	    				espp.FillColor = Color3.fromRGB(75, 151, 75)
+        				espp.Name = "ProccEsp"
+					end
+
+        			wait(tweenend_time)
+
+        			if bf_autof_esp == true then
+        				espp:Destroy()
+        			end
 				else
 					tpto_bf(questpos)
+
+					wait(tweenend_time)
 				end
-				wait(tweenend_time)
 				game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",questname,questnum)
 			else
 				if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
@@ -1304,7 +1317,18 @@ Tab:AddToggle({
 																if game.Players.LocalPlayer.Character.HumanoidRootPart.Position == v.HumanoidRootPart.Position then
 																else
 																	tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
+
+																	if bf_autof_esp == true then
+																		local espp = Instance.new("Highlight",v)
+	    																espp.FillColor = Color3.fromRGB(196, 40, 28)
+        																espp.Name = "ProccEsp"
+																	end
+
 																	wait(tweenend_time)
+
+																	if bf_autof_esp == true then
+																		espp:Destroy()
+																	end
 																	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 																end
 
@@ -1396,6 +1420,14 @@ Tab:AddToggle({
 	end    
 })
 
+Tab:AddToggle({
+	Name = "process esp",
+	Default = false,
+	Callback = function(Value)
+		bf_autof_esp = Value
+	end    
+})
+
 local Section = Tab:AddSection({
 	Name = "auto chest farm"
 })
@@ -1407,13 +1439,25 @@ Tab:AddToggle({
 		bf_autocf = Value
 		while bf_autocf == true and wait(0.1) do
 			if game.Workspace:FindFirstChild("Chest3") then
-				getto_closest(game.Workspace, "Chest3", true, Color3.fromRGB(123, 182, 232))
+				if bf_autocf_esp == true then
+					getto_closest(game.Workspace, "Chest3", true, Color3.fromRGB(75, 151, 75))
+				else
+					getto_closest(game.Workspace, "Chest3")
+				end
 				wait(tweenend_time)
 			elseif game.Workspace:FindFirstChild("Chest2") then
-				getto_closest(game.Workspace, "Chest2")
+				if bf_autocf_esp == true then
+					getto_closest(game.Workspace, "Chest2", true, Color3.fromRGB(75, 151, 75))
+				else
+					getto_closest(game.Workspace, "Chest2")
+				end
 				wait(tweenend_time)
 			elseif game.Workspace:FindFirstChild("Chest1") then
-				getto_closest(game.Workspace, "Chest1")
+				if bf_autocf_esp == true then
+					getto_closest(game.Workspace, "Chest1", true, Color3.fromRGB(75, 151, 75))
+				else
+					getto_closest(game.Workspace, "Chest1")
+				end
 				wait(tweenend_time)
 			end
 		end
