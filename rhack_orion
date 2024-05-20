@@ -1279,7 +1279,7 @@ Tab:AddToggle({
         			wait(tweenend_time)
 
         			if bf_autof_esp == true then
-        				espp:Destroy()
+        				espp.Enabled = false
         			end
 				else
 					tpto_bf(questpos)
@@ -1327,7 +1327,7 @@ Tab:AddToggle({
 																	wait(tweenend_time)
 
 																	if bf_autof_esp == true then
-																		espp:Destroy()
+																		espp.Enabled = false
 																	end
 																	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 																end
@@ -1445,6 +1445,10 @@ Tab:AddToggle({
 					getto_closest(game.Workspace, "Chest3")
 				end
 				wait(tweenend_time)
+
+				if bf_autocf_esp == true then
+					espp.Enabled = false
+				end
 			elseif game.Workspace:FindFirstChild("Chest2") then
 				if bf_autocf_esp == true then
 					getto_closest(game.Workspace, "Chest2", true, Color3.fromRGB(75, 151, 75))
@@ -1452,6 +1456,10 @@ Tab:AddToggle({
 					getto_closest(game.Workspace, "Chest2")
 				end
 				wait(tweenend_time)
+
+				if bf_autocf_esp == true then
+					espp.Enabled = false
+				end
 			elseif game.Workspace:FindFirstChild("Chest1") then
 				if bf_autocf_esp == true then
 					getto_closest(game.Workspace, "Chest1", true, Color3.fromRGB(75, 151, 75))
@@ -1459,6 +1467,10 @@ Tab:AddToggle({
 					getto_closest(game.Workspace, "Chest1")
 				end
 				wait(tweenend_time)
+
+				if bf_autocf_esp == true then
+					espp.Enabled = false
+				end
 			end
 		end
 	end    
