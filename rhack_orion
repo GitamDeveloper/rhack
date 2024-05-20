@@ -1005,10 +1005,14 @@ Tab:AddToggle({
 										v.HumanoidRootPart.CanCollide = false
 										v.HumanoidRootPart.Transparency = 0.3
 
-										tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
 										if bf_autof_coll == true then
-											v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+											local dist = (v.HumanoidRootPart.CFrame - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+											if dist <= 100 then
+												v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+											end
 										end
+
+										tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
 
 										game:GetService"VirtualUser":CaptureController()
 			    						game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
