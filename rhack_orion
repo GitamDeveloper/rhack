@@ -1164,50 +1164,50 @@ function Quest_lvl()
 	local lvl = game.Players.LocalPlayer.Data.Level.Value
 	if bf_autof_skip_bos_quest == true then
 		if lvl < 10 then
-		questg = "Bandit Quest Giver"
-		questpos = CFrame.new(10,10,10)
-		questnum = 1
-		questname = "BanditQuest1"
-		enem_name = "Bandit"
-	elseif lvl < 15 then
-		questg = "Adventurer"
-		questpos = CFrame.new(-1598.09, 35.5501, 153.378)
-		questnum = 1
-		questname = "JungleQuest"
-		enem_name = "Monkey"
-	elseif lvl < 20 then
-		questg = "Adventurer"
-		questpos = CFrame.new(-1598.09, 35.5501, 153.378)
-		questnum = 2
-		questname = "JungleQuest"
-		enem_name = "Gorilla"
-	end
+			questg = "Bandit Quest Giver"
+			questpos = CFrame.new(10,10,10)
+			questnum = 1
+			questname = "BanditQuest1"
+			enem_name = "Bandit"
+		elseif lvl < 15 then
+			questg = "Adventurer"
+			questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+			questnum = 1
+			questname = "JungleQuest"
+			enem_name = "Monkey"
+		elseif lvl >= 20 then
+			questg = "Adventurer"
+			questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+			questnum = 2
+			questname = "JungleQuest"
+			enem_name = "Gorilla"
+		end
 	else
 		if lvl < 10 then
-		questg = "Bandit Quest Giver"
-		questpos = CFrame.new(10,10,10)
-		questnum = 1
-		questname = "BanditQuest1"
-		enem_name = "Bandit"
-	elseif lvl < 15 then
-		questg = "Adventurer"
-		questpos = CFrame.new(-1598.09, 35.5501, 153.378)
-		questnum = 1
-		questname = "JungleQuest"
-		enem_name = "Monkey"
-	elseif lvl < 20 then
-		questg = "Adventurer"
-		questpos = CFrame.new(-1598.09, 35.5501, 153.378)
-		questnum = 2
-		questname = "JungleQuest"
-		enem_name = "Gorilla"
-	elseif lvl >= 20 then
-		questg = "Adventurer"
-		questpos = CFrame.new(-1598.09, 35.5501, 153.378)
-		questnum = 3
-		questname = "JungleQuest"
-		enem_name = "The Gorilla King"
-	end
+			questg = "Bandit Quest Giver"
+			questpos = CFrame.new(10,10,10)
+			questnum = 1
+			questname = "BanditQuest1"
+			enem_name = "Bandit"
+		elseif lvl < 15 then
+			questg = "Adventurer"
+			questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+			questnum = 1
+			questname = "JungleQuest"
+			enem_name = "Monkey"
+		elseif lvl < 20 then
+			questg = "Adventurer"
+			questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+			questnum = 2
+			questname = "JungleQuest"
+			enem_name = "Gorilla"
+		elseif lvl >= 20 then
+			questg = "Adventurer"
+			questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+			questnum = 3
+			questname = "JungleQuest"
+			enem_name = "The Gorilla King"
+		end
 	end
 end
 
