@@ -1188,6 +1188,8 @@ function getto_closest(object, search_name)
 					nearby_dist = dist
 					nearby = v
 				end
+			else
+				nearby = object:FindFirstChild(search_name)
 			end
 
 		end
