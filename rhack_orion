@@ -1327,7 +1327,7 @@ game.Players.LocalPlayer.Backpack.DescendantAdded:Connect(function(tool)
 	local toolName = tool.Name
 	if tool:IsA("Tool") then
 		table.insert(bf_autof_tools, toolName)
-		farm_tool:Refresh(bf_autof_tools,true)
+		Dropdown:Refresh(bf_autof_tools,true)
 	end
 end)
 game.Players.LocalPlayer.Backpack.DescendantRemoving:Connect(function(tool)
@@ -1339,7 +1339,7 @@ game.Players.LocalPlayer.Backpack.DescendantRemoving:Connect(function(tool)
 			end
 		end	
 	end
-	farm_tool:Refresh(bf_autof_tools,true)
+	Dropdown:Refresh(bf_autof_tools,true)
 end)
 
 Tab:AddToggle({
