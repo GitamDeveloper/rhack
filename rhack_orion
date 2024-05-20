@@ -13,6 +13,16 @@ end
 
 local bf_autof = false
 local bf_autof_skip_bos_quest = false
+
+local bf_autof_tool = "null"
+local bf_autof_tools = {"null"}
+
+for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+	if v:IsA("Tool") then
+		table.insert(bf_autof_tools, v.Name)
+	end
+end
+
 local questg = "Bandit Quest Giver"
 local questnum = 0
 local questname = "none"
@@ -1300,6 +1310,14 @@ Tab:AddToggle({
 				end
 			end
 		end
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "farm tool",
+	Default = "",
+	Options = bf_autof_tools,
+	Callback = function(Value)
 	end    
 })
 
