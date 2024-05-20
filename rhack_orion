@@ -1242,7 +1242,7 @@ Tab:AddToggle({
 													if v:FindFirstChild("aceser") then
 													else
 														local aceser = Instance.new("Part",game.Workspace.Enemies:FindFirstChild(enem_name))
-														ceser.CanCollide = false
+														aceser.CanCollide = false
 														aceser.Transparency = 1
 														aceser.Name = "aceser"
 
