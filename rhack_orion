@@ -11,6 +11,9 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local bf_autosb = false
+local bf_autosb_dir = "x+"
+
 local bf_autof = false
 local bf_autof_skip_bos_quest = false
 local bf_autof_esp = false
@@ -1485,5 +1488,22 @@ Tab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		bf_autocf_esp = Value
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "auto sea events"
+})
+
+Tab:AddToggle({
+	Name = "sail boat",
+	Default = false,
+	Callback = function(Value)
+		bf_autosb = Value
+		while bf_autosb == true and wait(0.1) do
+			if bf_autosb_dir == "x+" then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + CFrame.new(10,0,0)
+			end
+		end
 	end    
 })
