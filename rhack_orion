@@ -1360,7 +1360,7 @@ Tab:AddToggle({
 															else
 																v:FindFirstChild("aceser"):Destroy()
 																v:Destroy()
-															endaq
+															end
 														end
 													else
 														if v.Name == enem_name then
