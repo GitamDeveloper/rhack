@@ -1584,7 +1584,7 @@ Tab:AddToggle({
 								if v:FindFirstChild("aceser") then
 									if v.Name == kingl_autof_enemname then
 										if v:FindFirstChild("Humanoid").Health > 0 then
-											local enem_pos = v.HumanoidRootPart.CFrame * CFrame.new(0,5,0)
+											local enem_pos = v:GetPivot() + CFrame.new(0, 0, 3)
 											game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = enem_pos
 
 											kingl_attack()
