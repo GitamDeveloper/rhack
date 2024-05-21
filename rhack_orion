@@ -14,6 +14,7 @@ end
 local kingl_autof = false
 local kingl_autof_enemname = "Soldier [Lv. 1]"
 local kingl_autof_tool = "None"
+local kingl_autof_tools = {"null"}
 
 local bf_autosb = false
 local bf_autosb_dir = "x+"
@@ -28,6 +29,12 @@ local bf_autof_tools = {"null"}
 for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 	if v:IsA("Tool") then
 		table.insert(bf_autof_tools, v.Name)
+	end
+end
+
+for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+	if v:IsA("Tool") then
+		table.insert(kingl_autof_tools, v.Name)
 	end
 end
 
@@ -1558,6 +1565,9 @@ function kingl_attack()
 
 		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
 	end
+
+	local tool_name = "FS_" .. kingl_autof_tool .. "_M1"
+	print(tool_name)
 end
 
 Tab:AddToggle({
@@ -1580,5 +1590,14 @@ Tab:AddToggle({
 				end
 			end
 		end
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "farm_tool",
+	Default = "null",
+	Options = kingl_autof_tools,
+	Callback = function(Value)
+		kingl_autof_tool = Value
 	end    
 })
