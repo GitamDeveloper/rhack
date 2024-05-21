@@ -1595,7 +1595,7 @@ Tab:AddToggle({
 									end
 								else
 									if v.Name == kingl_autof_enemname then
-										local aceser = Instance.new("Part",game.Workspace.Enemies:FindFirstChild(enem_name))
+										local aceser = Instance.new("Part", game.Workspace.Monster.Mon:FindFirstChild(kingl_autof_enemname))
 										aceser.CanCollide = false
 										aceser.Transparency = 1
 										aceser.Name = "aceser"
