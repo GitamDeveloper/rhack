@@ -1604,5 +1604,6 @@ Tab:AddToggle({
 	Callback = function(Value)
 		for i,v in next, game.Workspace.Monster.Mon:GetDescendants() do
 			v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame	
-		end    
+		end
+	end    
 })
