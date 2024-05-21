@@ -1580,9 +1580,9 @@ Tab:AddToggle({
 					if v.Name == kingl_autof_enemname then
 						if v:FindFirstChild("aceser") then
 						else
-							for i,v in next, game.Workspace.Enemies:GetDescendants() do
+							for i,v in next, game.Workspace.Monster.Mon:GetDescendants() do
 								if v:FindFirstChild("aceser") then
-									if v.Name == enem_name then
+									if v.Name == kingl_autof_enemname then
 										if v:FindFirstChild("Humanoid").Health > 0 then
 											local enem_pos = v.HumanoidRootPart.CFrame * CFrame.new(0,5,0)
 											game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = enem_pos
@@ -1594,7 +1594,7 @@ Tab:AddToggle({
 										end
 									end
 								else
-									if v.Name == enem_name then
+									if v.Name == kingl_autof_enemname then
 										local aceser = Instance.new("Part",game.Workspace.Enemies:FindFirstChild(enem_name))
 										aceser.CanCollide = false
 										aceser.Transparency = 1
