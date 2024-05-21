@@ -11,6 +11,9 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local kingl_autof = false
+local kingl_autof_enemname = "Soldier [Lv. 1]"
+
 local bf_autosb = false
 local bf_autosb_dir = "x+"
 
@@ -1357,7 +1360,7 @@ Tab:AddToggle({
 															else
 																v:FindFirstChild("aceser"):Destroy()
 																v:Destroy()
-															end
+															endaq
 														end
 													else
 														if v.Name == enem_name then
@@ -1507,3 +1510,70 @@ Tab:AddToggle({
 		end
 	end    
 })
+
+local Tab = Window:MakeTab({
+	Name = "KINGL",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "auto farm lvl"
+})
+
+function kingl_getquest()
+	local lvl = game.Players.LocalPlayer.PlayerStats.lvl.Value
+	if lvl < 10 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 4 Soldiers"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 20 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 5 Clown Pirates"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	end
+end
+
+function kingl_getenem_name()
+	local lvl = game.Players.LocalPlayer.PlayerStats.lvl.Value
+	if lvl < 10 then
+		kingl_autof_enemname = "Soldier [Lv. 1]"
+	elseif lvl < 20 then
+		kingl_autof_enemname = "Clown Pirate [Lv. 10]"
+	end
+end
+
+Tab:AddToggle({
+	Name = "auto farm",
+	Default = false,
+	Callback = function(Value)
+		kingl_autof = Value
+		while kingl_autof == true and wait(0.1) do
+			if game.Players.LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
+				kingl_getquest()
+			else
+				kingl_getenem_name()
+				for i,v in next, game.Workspace.Monster.Mon:GetDescendants() do
+					if v.Name == kingl_autof_enemname then
+						local enem_pos = v.HumanoidRootPart.CFrame * CFrame.new(0,2,0)
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = enem_pos
+					end
+				end
+			end
+		end
+	end    
+})
+
+
+
+local args = {
+    [1] = "FS_DarkLeg_M1"
+}
+
+game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
