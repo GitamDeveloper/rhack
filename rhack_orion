@@ -1599,7 +1599,7 @@ Tab:AddDropdown({
 })
 
 Tab:AddToggle({
-	Name = "sail boat",
+	Name = "testtttt",
 	Default = false,
 	Callback = function(Value)
 		for i,v in next, game.Workspace.Monster.Mon:GetDescendants() do
