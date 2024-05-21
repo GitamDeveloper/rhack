@@ -13,6 +13,7 @@ end
 
 local kingl_autof = false
 local kingl_autof_enemname = "Soldier [Lv. 1]"
+local kingl_autof_tool = "None"
 
 local bf_autosb = false
 local bf_autosb_dir = "x+"
@@ -1549,6 +1550,16 @@ function kingl_getenem_name()
 	end
 end
 
+function kingl_attack()
+	if kingl_autof_tool == "None" then
+		local args = {
+    		[1] = "FS_None_M1"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+	end
+end
+
 Tab:AddToggle({
 	Name = "auto farm",
 	Default = false,
@@ -1563,17 +1574,11 @@ Tab:AddToggle({
 					if v.Name == kingl_autof_enemname then
 						local enem_pos = v.HumanoidRootPart.CFrame * CFrame.new(0,2,0)
 						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = enem_pos
+
+						kingl_attack()
 					end
 				end
 			end
 		end
 	end    
 })
-
-
-
-local args = {
-    [1] = "FS_DarkLeg_M1"
-}
-
-game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
