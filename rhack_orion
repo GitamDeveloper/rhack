@@ -11,10 +11,19 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local kingl_stats = false
+local kingl_stats_Melee = false
+local kingl_stats_Defence = false
+local kingl_stats_Sword = false
+local kingl_stats_Fruit = false
+
 local kingl_autof = false
 local kingl_autof_enemname = "Soldier [Lv. 1]"
 local kingl_autof_tool = "None"
 local kingl_autof_tools = {"null"}
+local kingl_autof_dist = 8.5
+local kingl_autof_area = "StarterIsland"
+local kingl_autof_isboss = false
 
 local bf_autosb = false
 local bf_autosb_dir = "x+"
@@ -1545,6 +1554,34 @@ function kingl_getquest()
 		}
 
 		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 30 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 1 Smoky"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 50 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 1 Tashi"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 75 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 6 Clown Swordman"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 100 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 1 The Clown"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
 	end
 end
 
@@ -1552,8 +1589,34 @@ function kingl_getenem_name()
 	local lvl = game.Players.LocalPlayer.PlayerStats.lvl.Value
 	if lvl < 10 then
 		kingl_autof_enemname = "Soldier [Lv. 1]"
+		kingl_autof_area = "StarterIsland"
+		kingl_autof_isboss = false
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
 	elseif lvl < 20 then
 		kingl_autof_enemname = "Clown Pirate [Lv. 10]"
+		kingl_autof_area = "StarterIsland"
+		kingl_autof_isboss = false
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 30 then
+		kingl_autof_enemname = "Smoky [Lv. 20]"
+		kingl_autof_area = "StarterIsland"
+		kingl_autof_isboss = true
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 50 then
+		kingl_autof_enemname = "Tashi [Lv. 30]"
+		kingl_autof_area = "StarterIsland"
+		kingl_autof_isboss = true
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 75 then
+		kingl_autof_enemname = "Clown Swordman [Lv. 50]"
+		kingl_autof_area = "PirateIsland"
+		kingl_autof_isboss = false
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 100 then
+		kingl_autof_enemname = "The Clown [Lv. 75]"
+		kingl_autof_area = "PirateIsland"
+		kingl_autof_isboss = true
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
 	end
 end
 
@@ -1576,32 +1639,57 @@ Tab:AddToggle({
 				kingl_getquest()
 			else
 				kingl_getenem_name()
-				for i,v in next, game.Workspace.Monster.Mon:GetDescendants() do
-					if v.Name == kingl_autof_enemname then
-						if v:FindFirstChild("aceser") then
-						else
-							for i,v in next, game.Workspace.Monster.Mon:GetDescendants() do
+				for i,v in next, game.Workspace.Monster:GetDescendants() do
+					if kingl_autof_isboss == false then
+						if game.Workspace.Monster.Mon:FindFirstChild(kingl_autof_enemname) then
+							if v.Name == kingl_autof_enemname then
 								if v:FindFirstChild("aceser") then
-									if v.Name == kingl_autof_enemname then
-										if v:FindFirstChild("Humanoid").Health > 0 then
-											local enem_pos = v:GetPivot() + CFrame.new(0, 0, 3)
-											game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = enem_pos
-
-											kingl_attack()
-										else
-											v:FindFirstChild("aceser"):Destroy()
-											v:Destroy()
-										end
-									end
 								else
-									if v.Name == kingl_autof_enemname then
-										local aceser = Instance.new("Part", game.Workspace.Monster.Mon:FindFirstChild(kingl_autof_enemname))
-										aceser.CanCollide = false
-										aceser.Transparency = 1
-										aceser.Name = "aceser"
+									for i,v in next, game.Workspace.Monster.Mon:GetDescendants() do
+										if v:FindFirstChild("aceser") then
+											if v.Name == kingl_autof_enemname then
+												if v:FindFirstChild("Humanoid").Health > 0 then
+													local pivot = v:GetPivot()
+													game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, kingl_autof_dist)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+
+													kingl_attack()
+												else
+													v:FindFirstChild("aceser"):Destroy()
+													v:Destroy()
+												end
+											end
+										else
+											if v.Name == kingl_autof_enemname then
+												local aceser = Instance.new("Part", game.Workspace.Monster.Mon:FindFirstChild(kingl_autof_enemname))
+												aceser.CanCollide = false
+												aceser.Transparency = 1
+												aceser.Name = "aceser"
+											end
+										end
 									end
 								end
 							end
+						else
+							local tppos = game.Workspace.Areas:FindFirstChild(kingl_autof_area).CFrame + Vector3.new(0,20,0)
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = tppos
+						end
+					else
+						if game.Workspace.Monster.Boss:FindFirstChild(kingl_autof_enemname) then
+							if v.Name == kingl_autof_enemname then
+								for i,v in next, game.Workspace.Monster.Boss:GetDescendants() do
+									if v.Name == kingl_autof_enemname then
+										if v:FindFirstChild("Humanoid").Health > 0 then
+											local pivot = v:GetPivot()
+											game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, kingl_autof_dist)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+
+											kingl_attack()
+										end
+									end
+								end
+							end
+						else
+							local tppos = game.Workspace.Areas:FindFirstChild(kingl_autof_area).CFrame + Vector3.new(0,20,0)
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = tppos
 						end
 					end
 				end
@@ -1617,4 +1705,91 @@ Tab:AddDropdown({
 	Callback = function(Value)
 		kingl_autof_tool = Value
 	end    
-})	
+})
+
+Tab:AddTextbox({
+	Name = "tp dist",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		kingl_autof_dist = Value
+	end	  
+})
+
+local Section = Tab:AddSection({
+	Name = "auto stats"
+})
+
+Tab:AddToggle({
+	Name = "enable",
+	Default = false,
+	Callback = function(Value)
+		kingl_stats = Value
+		while kingl_stats == true and wait(0.1) do
+			if kingl_stats_Melee == true then
+				local args = {
+    				[1] = "Melee",
+    				[2] = 1
+				}
+
+				game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.StatsFrame.RemoteEvent:FireServer(unpack(args))
+			end
+			if kingl_stats_Defence == true then
+				local args = {
+    				[1] = "Defence",
+    				[2] = 1
+				}
+
+				game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.StatsFrame.RemoteEvent:FireServer(unpack(args))
+			end
+			if kingl_stats_Sword == true then
+				local args = {
+    				[1] = "Sword",
+    				[2] = 1
+				}
+
+				game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.StatsFrame.RemoteEvent:FireServer(unpack(args))
+			end
+			if kingl_stats_Fruit == true then
+				local args = {
+    				[1] = "Fruit",
+    				[2] = 1
+				}
+
+				game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.StatsFrame.RemoteEvent:FireServer(unpack(args))
+			end
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Melee",
+	Default = false,
+	Callback = function(Value)
+		kingl_stats_Melee = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Defence",
+	Default = false,
+	Callback = function(Value)
+		kingl_stats_Defence = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Sword",
+	Default = false,
+	Callback = function(Value)
+		kingl_stats_Sword = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Fruit",
+	Default = false,
+	Callback = function(Value)
+		kingl_stats_Fruit = Value
+	end    
+})
