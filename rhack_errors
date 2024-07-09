@@ -11,6 +11,9 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local gravity_err = true
+local hitbox_findfirst_err = true
+
 local kingl_stats = false
 local kingl_stats_Melee = false
 local kingl_stats_Defence = false
@@ -554,9 +557,11 @@ function hitb()
 									v.Character.HumanoidRootPart.Material = "Neon"
 									v.Character.HumanoidRootPart.CanCollide = false
 									if hitb_ff == true then
-										if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
-											v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
-											v.Character.HumanoidRootPart.Color = Color3.new(0, 145, 255)
+										if hitbox_findfirst_err == false then
+											if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+												v.Character.Head.Size = Vector3.new(1,2,1)
+												v.Character.Head.Color = Color3.new(0, 145, 255)
+											end
 										end
 									end
 									if hitb_i == true then
@@ -570,9 +575,11 @@ function hitb()
 								v.Character.HumanoidRootPart.Material = "Neon"
 								v.Character.HumanoidRootPart.CanCollide = false
 								if hitb_ff == true then
-									if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
-										v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
-										v.Character.HumanoidRootPart.Color = Color3.new(0, 145, 255)
+									if hitbox_findfirst_err == false then
+										if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+											v.Character.Head.Size = Vector3.new(1,2,1)
+											v.Character.Head.Color = Color3.new(0, 145, 255)
+										end
 									end
 								end
 								if hitb_i == true then
@@ -601,9 +608,11 @@ function hitb()
 									v.Character.HumanoidRootPart.Material = "Neon"
 									v.Character.HumanoidRootPart.CanCollide = false
 									if hitb_ff == true then
-										if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
-											v.Character.Head.Size = Vector3.new(1,2,1)
-											v.Character.Head.Color = Color3.new(0, 145, 255)
+										if hitbox_findfirst_err == false then
+											if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+												v.Character.Head.Size = Vector3.new(1,2,1)
+												v.Character.Head.Color = Color3.new(0, 145, 255)
+											end
 										end
 									end
 									if hitb_i == true then
@@ -624,9 +633,11 @@ function hitb()
 								v.Character.HumanoidRootPart.Material = "Neon"
 								v.Character.HumanoidRootPart.CanCollide = false
 								if hitb_ff == true then
-									if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
-										v.Character.Head.Size = Vector3.new(1,2,1)
-										v.Character.Head.Color = Color3.new(0, 145, 255)
+									if hitbox_findfirst_err == false then
+										if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+											v.Character.Head.Size = Vector3.new(1,2,1)
+											v.Character.Head.Color = Color3.new(0, 145, 255)
+										end
 									end
 								end
 								if hitb_i == true then
@@ -649,18 +660,20 @@ hitb()
 			hitb_oo = false
 			for i,v in next, game:GetService('Players'):GetPlayers() do
                 if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-                	if v.Character:FindFirstChild("HumanoidRootPart") then
-                		v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)	
-                    	v.Character.HumanoidRootPart.Transparency = 0.7
-                    	v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Red")
-                    	v.Character.HumanoidRootPart.Material = "Neon"
-                    	v.Character.HumanoidRootPart.CanCollide = false
+                	if hitbox_findfirst_err == false then
+                		if v.Character:FindFirstChild("HumanoidRootPart") then
+                			v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)	
+                    		v.Character.HumanoidRootPart.Transparency = 0.7
+                    		v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Red")
+                    		v.Character.HumanoidRootPart.Material = "Neon"
+                    		v.Character.HumanoidRootPart.CanCollide = false
 
-                    	v.Character.Head.Size = Vector3.new(1,2,1)
-                    	v.Character.Head.Transparency = 0.7
-                    	v.Character.Head.BrickColor = BrickColor.new("Red")
-                    	v.Character.Head.Material = "Neon"
-                    	v.Character.Head.CanCollide = false
+                    		v.Character.Head.Size = Vector3.new(1,2,1)
+                    		v.Character.Head.Transparency = 0.7
+                    		v.Character.Head.BrickColor = BrickColor.new("Red")
+                    		v.Character.Head.Material = "Neon"
+                    		v.Character.Head.CanCollide = false
+                		end
                 	end
                 end
             end
@@ -1012,7 +1025,9 @@ Tab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		if Value == true then
-			workspace.Gravity = 10
+			if gravity_err == false then
+				workspace.Gravity = 10
+			end
 			local p = false
         	local intp = false
         	bbapb_oo = true
@@ -1048,7 +1063,9 @@ Tab:AddToggle({
             	end
         	end
 		else
-			workspace.Gravity = 196.2
+			if gravity_err == false then
+				workspace.Gravity = 196.2
+			end
         	bbapb_oo = false
 		end
 	end    
@@ -1068,6 +1085,26 @@ Tab:AddDropdown({
 		end
 	end    
 })
+
+local Section = Tab:AddSection({
+	Name = "heaven stand"
+})
+
+Tab:AddToggle({
+	Name = "auto farm box",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			for i,v in next, workspace.Map.itemSpawnner.Box do
+				if v.Name == "Box" then
+					v.Base.ProximityPrompt:FireProximityPrompt()
+				end
+			end
+		end
+	end    
+})
+
+
 
 local Tab = Window:MakeTab({
 	Name = "Tools",
@@ -1285,7 +1322,9 @@ Tab:AddToggle({
 	Name = "auto farm",
 	Default = false,
 	Callback = function(Value)
-		game.Workspace.Gravity = 100
+		if gravity_err == false then
+			game.Workspace.Gravity = 100
+		end
 		game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 		bf_autof = Value
 		while bf_autof == true and wait(0.1) do
@@ -1324,7 +1363,9 @@ Tab:AddToggle({
 													if v:FindFirstChild("aceser") then
 														if v.Name == enem_name then
 															if v:FindFirstChild("Humanoid").Health > 0 then
-																game.Workspace.Gravity = 0
+																if gravity_err == false then
+																	game.Workspace.Gravity = 0
+																end
 
 																v.HumanoidRootPart.Size = Vector3.new(30,30,30)
 																v.HumanoidRootPart.CanCollide = false
@@ -1582,6 +1623,48 @@ function kingl_getquest()
 		}
 
 		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 120 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 4 Commander"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 145 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 1 Captain"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 180 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 1 The Barbaric"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 200 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 4 Fighter Fishmans"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 230 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 1 Karate Fishman"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 260 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 1 Shark Man"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
 	end
 end
 
@@ -1589,32 +1672,62 @@ function kingl_getenem_name()
 	local lvl = game.Players.LocalPlayer.PlayerStats.lvl.Value
 	if lvl < 10 then
 		kingl_autof_enemname = "Soldier [Lv. 1]"
-		kingl_autof_area = "StarterIsland"
+		kingl_autof_area = "Starter Island Quest"
 		kingl_autof_isboss = false
 		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
 	elseif lvl < 20 then
 		kingl_autof_enemname = "Clown Pirate [Lv. 10]"
-		kingl_autof_area = "StarterIsland"
+		kingl_autof_area = "Starter Island Quest"
 		kingl_autof_isboss = false
 		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
 	elseif lvl < 30 then
 		kingl_autof_enemname = "Smoky [Lv. 20]"
-		kingl_autof_area = "StarterIsland"
+		kingl_autof_area = "Starter Island Quest"
 		kingl_autof_isboss = true
 		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
 	elseif lvl < 50 then
 		kingl_autof_enemname = "Tashi [Lv. 30]"
-		kingl_autof_area = "StarterIsland"
+		kingl_autof_area = "Starter Island Quest"
 		kingl_autof_isboss = true
 		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
 	elseif lvl < 75 then
 		kingl_autof_enemname = "Clown Swordman [Lv. 50]"
-		kingl_autof_area = "PirateIsland"
+		kingl_autof_area = "Pirate Island Quest"
 		kingl_autof_isboss = false
 		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
 	elseif lvl < 100 then
 		kingl_autof_enemname = "The Clown [Lv. 75]"
-		kingl_autof_area = "PirateIsland"
+		kingl_autof_area = "Pirate Island Quest"
+		kingl_autof_isboss = true
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 120 then
+		kingl_autof_enemname = "Commander [Lv. 100]"
+		kingl_autof_area = "Soldier Town Quest"
+		kingl_autof_isboss = false
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 145 then
+		kingl_autof_enemname = "Captain [Lv. 120]"
+		kingl_autof_area = "Soldier Town Quest"
+		kingl_autof_isboss = true
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 180 then
+		kingl_autof_enemname = "The Barbaric [Lv. 145]"
+		kingl_autof_area = "Soldier Town Quest"
+		kingl_autof_isboss = true
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 200 then
+		kingl_autof_enemname = "Fighter Fishman [Lv. 180]"
+		kingl_autof_area = "Shark Island Quest"
+		kingl_autof_isboss = false
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 230 then
+		kingl_autof_enemname = "Karate Fishman [Lv. 200]"
+		kingl_autof_area = "Shark Island Quest"
+		kingl_autof_isboss = true
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 260 then
+		kingl_autof_enemname = "Shark Man [Lv. 230]"
+		kingl_autof_area = "Shark Island Quest"
 		kingl_autof_isboss = true
 		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
 	end
@@ -1670,7 +1783,7 @@ Tab:AddToggle({
 								end
 							end
 						else
-							local tppos = game.Workspace.Areas:FindFirstChild(kingl_autof_area).CFrame + Vector3.new(0,20,0)
+							local tppos = game.Workspace.AllNPC:FindFirstChild(kingl_autof_area).CFrame
 							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = tppos
 						end
 					else
@@ -1688,7 +1801,7 @@ Tab:AddToggle({
 								end
 							end
 						else
-							local tppos = game.Workspace.Areas:FindFirstChild(kingl_autof_area).CFrame + Vector3.new(0,20,0)
+							local tppos = game.Workspace.AllNPC:FindFirstChild(kingl_autof_area).CFrame
 							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = tppos
 						end
 					end
@@ -1793,3 +1906,8 @@ Tab:AddToggle({
 		kingl_stats_Fruit = Value
 	end    
 })
+
+--while wait(0.1) do
+    --game.Players.LocalPlayer.CameraMode = Enum.CameraMode.Classic
+    --game.Players.LocalPlayer.CameraMaxZoomDistance = 100
+--end
