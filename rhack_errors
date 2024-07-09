@@ -1,0 +1,1795 @@
+local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+-- upd 2
+local StarterGui = game:GetService("StarterGui")
+
+local function SendNotification(TitleArg, DescriptionArg, DurationArg)
+    StarterGui:SetCore("SendNotification", {
+        Title = TitleArg,
+        Text = DescriptionArg,
+        Duration = DurationArg
+    })
+end
+
+local kingl_stats = false
+local kingl_stats_Melee = false
+local kingl_stats_Defence = false
+local kingl_stats_Sword = false
+local kingl_stats_Fruit = false
+
+local kingl_autof = false
+local kingl_autof_enemname = "Soldier [Lv. 1]"
+local kingl_autof_tool = "None"
+local kingl_autof_tools = {"null"}
+local kingl_autof_dist = 8.5
+local kingl_autof_area = "StarterIsland"
+local kingl_autof_isboss = false
+
+local bf_autosb = false
+local bf_autosb_dir = "x+"
+
+local bf_autof = false
+local bf_autof_skip_bos_quest = false
+local bf_autof_esp = false
+
+local bf_autof_tool = "null"
+local bf_autof_tools = {"null"}
+
+for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+	if v:IsA("Tool") then
+		table.insert(bf_autof_tools, v.Name)
+	end
+end
+
+for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+	if v:IsA("Tool") then
+		table.insert(kingl_autof_tools, v.Name)
+	end
+end
+
+local bf_autocf = false
+local bf_autocf_esp = false
+
+
+local questg = "Bandit Quest Giver"
+local questnum = 0
+local questname = "none"
+local enem_name = "none"
+local questpos = CFrame.new(0,0,0)   
+
+local bf_autof_coll = false 
+local bf_autof_coll_range = 50
+
+local tweenend_time = 1
+
+local bf_hitb = false
+
+local dusty_mfarm_curroad = 1
+local dusty_mfarm = false
+
+local frend_nohit = false
+
+local tpto_plr = "null"
+
+local Noclip = nil
+local Clip = nil
+
+local ws_oo
+
+local aj_m
+
+local hitb_ff
+local hitb_tp
+local hitb_i
+local hitb_t 
+local hitb_s
+local hitb_oo
+
+local Light = game:GetService("Lighting")
+local camera = Workspace.Camera
+
+local Balls = workspace:FindFirstChild("Balls")
+
+local atk_oo = false
+local la_oo = false
+local aud_oo = false
+local acd_oo = false
+local bbapb_oo = false
+local bbbe_oo = false
+local bbfr_oo = false
+local bbaplf_oo = false
+
+local tlk_oo = false
+local hbk_oo = false
+
+local aplva_oo = false
+local spp_oo = false
+
+local bbapbst = false
+
+local fb_oo = false
+local Noclip = nil
+local Clip = nil
+
+local ncb = false
+
+local httat = 50
+local hbsize = 5
+
+local bbsb_oo = false
+local bbsbkb = false
+local bbap = false
+local bbapl_oo = false
+
+local hb_oo = false
+
+local bbap_oo = false
+
+local sat_oo = false
+local wsoo = false
+local ncb_oo = false
+local nc_oo = false
+local an_oo = false
+local jplus_oo = false
+local jp_oo = false
+local aj_oo = false
+local pesp_oo = false
+local oaf_oo = false
+local gaf_oo = false
+local haf_oo = false
+local aac_oo = false
+local ak_oo = false
+local tilen = 1
+
+txt_speed = 16
+txt_jump = 50
+txt_health = 100
+txt_maxhealth = 100
+
+local tptoname
+local tpp
+local ptpt
+
+local playerl
+
+local eplayer = game:GetService("Players").LocalPlayer
+
+local Window = Library:MakeWindow({Name = "RHACK orion", HidePremium = true, SaveConfig = false, ConfigFolder = "rhack_orion", IntroEnabled = true, IntroText = "RHACK", IntroIcon = "rbxassetid://14995912169", Icon = "rbxassetid://14995912169"})
+
+local Tab = Window:MakeTab({
+	Name = "Main",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Humanoid Values"
+})
+
+local hb_tp = Instance.new("Part")
+hb_tp.Anchored = true
+hb_tp.Transparency = 0.5
+hb_tp.CanCollide = false
+hb_tp.Color = Color3.fromRGB(0,255,0)
+
+
+local aplva = Instance.new("Part")
+aplva.Anchored = true
+aplva.Transparency = 1
+aplva.CanCollide = false
+aplva.Color = Color3.fromRGB(0,255,0)
+
+local ncw = false
+local ncs = false
+local ncd = false
+local nca = false
+local ncsp = false
+local ncc = false
+
+local rgui = Instance.new("ScreenGui", eplayer.PlayerGui)
+local testbutt = Instance.new("TextButton", rgui)
+
+local Mouse = eplayer:GetMouse()
+
+local satp = Instance.new("Part", game.Workspace)
+--jumpcircle.Shape = "Cylinder"
+--local jc = false
+--local jcs = 5
+satp.Anchored = true
+satp.Transparency = 0.30
+satp.Color = Color3.new(255,140,0)
+satp.CanCollide = false
+satp.Material = "Neon"
+--jumpcircle.CFrame.Rotation = 
+satp.Size = Vector3.new(2,4,2)
+satp.CFrame = eplayer.Character.HumanoidRootPart.CFrame
+satp.Position -= Vector3.new(0,0,0)
+
+
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+    if nc_oo == true then
+        if input.KeyCode == Enum.KeyCode.W then
+            ncw = true
+            while ncw == true and wait(0.1) do
+                eplayer.Character.HumanoidRootPart.CFrame += Vector3.new(10,0,0)
+            end
+        end
+    end
+end)
+
+game:GetService("UserInputService").InputEnded:Connect(function(input, isProcessed)
+    if nc_oo == true then
+        if input.KeyCode == Enum.KeyCode.W then
+            ncw = false
+        end
+    end
+end)
+
+
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+    if nc_oo == true then
+        if input.KeyCode == Enum.KeyCode.S then
+            ncs = true
+            while ncs == true and wait(0.1) do
+                eplayer.Character.HumanoidRootPart.CFrame -= Vector3.new(10,0,0)
+            end
+        end
+    end
+end)
+
+game:GetService("UserInputService").InputEnded:Connect(function(input, isProcessed)
+    if nc_oo == true then
+        if input.KeyCode == Enum.KeyCode.S then
+            ncs = false
+        end
+    end
+end)
+
+
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+    if nc_oo == true then
+        if input.KeyCode == Enum.KeyCode.D then
+            ncd = true
+            while ncd == true and wait(0.1) do
+                eplayer.Character.HumanoidRootPart.CFrame += Vector3.new(0,0,10)
+            end
+        end
+    end
+end)
+
+game:GetService("UserInputService").InputEnded:Connect(function(input, isProcessed)
+    if nc_oo == true then
+        if input.KeyCode == Enum.KeyCode.D then
+            ncd = false
+        end
+    end
+end)
+
+
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+    if nc_oo == true then
+        if input.KeyCode == Enum.KeyCode.A then
+            nca = true
+            while nca == true and wait(0.1) do
+                eplayer.Character.HumanoidRootPart.CFrame -= Vector3.new(0,0,10)
+            end
+        end
+    end
+end)
+
+game:GetService("UserInputService").InputEnded:Connect(function(input, isProcessed)
+    if nc_oo == true then
+        if input.KeyCode == Enum.KeyCode.A then
+            nca = false
+        end
+    end
+end)
+
+
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+    if nc_oo == true then
+        if input.KeyCode == Enum.KeyCode.Space then
+            ncsp = true
+            while ncsp == true and wait(0.1) do
+                eplayer.Character.HumanoidRootPart.CFrame += Vector3.new(0,10,0)
+            end
+        end
+    end
+end)
+
+game:GetService("UserInputService").InputEnded:Connect(function(input, isProcessed)
+    if nc_oo == true then
+        if input.KeyCode == Enum.KeyCode.Space then
+            ncsp = false
+        end
+    end
+end)
+
+
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+    if nc_oo == true then
+        if input.KeyCode == Enum.KeyCode.C then
+            ncc = true
+            while ncc == true and wait(0.1) do
+                eplayer.Character.HumanoidRootPart.CFrame -= Vector3.new(0,10,0)
+            end
+        end
+    end
+end)
+
+game:GetService("UserInputService").InputEnded:Connect(function(input, isProcessed)
+    if nc_oo == true then
+        if input.KeyCode == Enum.KeyCode.C then
+            ncc = false
+        end
+    end
+end)
+
+game:GetService("UserInputService").JumpRequest:connect(function()
+	if aj_oo == true and aj_m == "default" then
+		game:GetService"Players".LocalPlayer.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+	end
+end)
+
+local aj = false
+local obj = Instance.new("Part", game.Workspace)
+obj.Anchored = true
+obj.Transparency = 0.70
+obj.Color = Color3.new(1, 0.47451, 0.482353)
+--obj.Shape = "Cylinder"
+--obj.Rotation = Vector3.new(0,0,90)
+obj.Size = Vector3.new(5,1,5)
+
+local an = false
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+    if an_oo == true then
+        if input.KeyCode == Enum.KeyCode.G then
+            if an == false then
+                eplayer.Character.HumanoidRootPart.Anchored = true
+                an = true
+            else
+                eplayer.Character.HumanoidRootPart.Anchored = false
+                an = false
+            end
+        end
+    end
+end)
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+    if jplus_oo == true then
+        if input.KeyCode == Enum.KeyCode.Space then
+            --script.Parent.HumanoidRootPart.Position += Vector3.new(0,10,0)
+            game.Players.LocalPlayer.Character.Humanoid.JumpPower = 1000
+            wait(0.01)
+            game.Players.LocalPlayer.Character.Humanoid.JumpPower = 16
+        end
+    end
+end)
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+    if jp_oo == true then
+        if input.KeyCode == Enum.KeyCode.Space then
+            local jumpcircle = Instance.new("Part", game.Workspace)
+            --jumpcircle.Shape = "Cylinder"
+            local jc = false
+            local jcs = 5
+            jumpcircle.Anchored = true
+            jumpcircle.Transparency = 0.70
+            jumpcircle.Color = Color3.new(0.556863, 0.992157, 1)
+            jumpcircle.CanCollide = false
+            jumpcircle.Material = "Neon"
+            --jumpcircle.CFrame.Rotation = 
+            jumpcircle.Size = Vector3.new(0,0.1,0)
+                
+            jcs = 5
+            jumpcircle.Transparency = 0
+            jc = true
+            jumpcircle.CFrame = eplayer.Character.HumanoidRootPart.CFrame
+            jumpcircle.Position -= Vector3.new(0,3,0)
+            while jc == true and wait(0.01) do
+                jcs += 1
+                if jcs >= 50  then
+                    jumpcircle.Transparency = 0.10
+                    wait(0.1)
+                    jumpcircle.Transparency = 0.20
+                    wait(0.1)
+                    jumpcircle.Transparency = 0.30
+                    wait(0.1)
+                    jumpcircle.Transparency = 0.40
+                    wait(0.1)
+                    jumpcircle.Transparency = 0.50
+                    wait(0.1)
+                    jumpcircle.Transparency = 0.60
+                    wait(0.1)
+                    jumpcircle.Transparency = 0.70
+                    wait(0.1)
+                    jumpcircle.Transparency = 0.80
+                    wait(0.1)
+                    jumpcircle.Transparency = 0.90
+                    wait(0.1)
+                    jumpcircle.Transparency = 1
+                    jumpcircle.Size = Vector3.new(0,0.1,0)
+                    jumpcircle:Destroy()
+                    jc = false
+                    jcs = 5
+                end
+                jumpcircle.Size += Vector3.new(0.1,0,0.1)
+            end
+        end
+    end
+end)
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+    if aj_oo == true and aj_m == "platform bypass" then
+        aj = true
+        
+        while aj == true and wait(0.1) do
+            if input.KeyCode == Enum.KeyCode.Space then
+            --script.Parent.Humanoid.WalkSpeed += 10
+            obj.CFrame = eplayer.Character.HumanoidRootPart.CFrame
+            obj.Position -= Vector3.new(0,1,0)
+            end
+        end
+    end
+end)
+
+game:GetService("UserInputService").InputEnded:Connect(function(input, isProcessed)
+    if input.KeyCode == Enum.KeyCode.Space then
+        if aj_oo == true then
+            aj = false
+        end
+    end
+end)
+
+Tab:AddTextbox({
+	Name = "Speed",
+	Default = "value",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+    	while aac_oo == true and wait(0.01) do
+        	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+    	end
+	end	  
+})
+
+Tab:AddTextbox({
+	Name = "Jump",
+	Default = "value",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+    	while aac_oo == true and wait(0.01) do
+        	game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+    	end
+	end	  
+})
+
+Tab:AddDropdown({
+	Name = "bypass",
+	Default = "default",
+	Options = {"default", "update"},
+	Callback = function(Value)
+		if Value == "default" then
+			aac_oo = false
+		end
+
+		if Value == "update" then
+			aac_oo = true
+		end
+	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Combat",
+	Icon = "",
+	PremiumOnly = false
+})
+
+Tab:AddToggle({
+	Name = "trigger bot",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/VapingCat/Open-Source-TriggerBot/main/script.lua"))()
+		end
+	end    
+})
+
+local l_targ
+
+Tab:AddToggle({
+	Name = "wall shot",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			ws_oo = true
+			game.Workspace:FindFirstChild("Decoration"):Clone().Parent = game.Players
+			game.Workspace:FindFirstChild("Decoration").Parent = eplayer.Character
+		else
+			ws_oo = false
+			--eplayer.Character:FindFirstChild("Decoration").Parent = game.Workspace
+		end
+	end    
+})
+
+Tab:AddBind({
+	Name = "load map back",
+	Default = Enum.KeyCode.E,
+	Hold = false,
+	Callback = function()
+		game.Players:FindFirstChild("Decoration"):Clone().Parent = eplayer.Character
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Hit boxes"
+})
+
+Tab:AddToggle({
+	Name = "On_Off",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			hitb_oo = true
+function hitb()
+	while wait(0.24) do
+		if hitb_oo == true then
+			for i,v in next, game:GetService('Players'):GetPlayers() do
+				if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+					if hitb_t == "root part" then
+						if v.Character.Humanoid.Health >= 1 then
+							if frend_nohit == true then
+                				if v:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+                				else
+                					v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
+									v.Character.HumanoidRootPart.Transparency = 0.7
+									v.Character.HumanoidRootPart.Color = Color3.new(1, 0, 0.0156863)
+									v.Character.HumanoidRootPart.Material = "Neon"
+									v.Character.HumanoidRootPart.CanCollide = false
+									if hitb_ff == true then
+										if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+											v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
+											v.Character.HumanoidRootPart.Color = Color3.new(0, 145, 255)
+										end
+									end
+									if hitb_i == true then
+										v.Character.HumanoidRootPart.Transparency = 0.99
+									end
+                				end
+                			else
+                				v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
+								v.Character.HumanoidRootPart.Transparency = 0.7
+								v.Character.HumanoidRootPart.Color = Color3.new(1, 0, 0.0156863)
+								v.Character.HumanoidRootPart.Material = "Neon"
+								v.Character.HumanoidRootPart.CanCollide = false
+								if hitb_ff == true then
+									if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+										v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
+										v.Character.HumanoidRootPart.Color = Color3.new(0, 145, 255)
+									end
+								end
+								if hitb_i == true then
+									v.Character.HumanoidRootPart.Transparency = 0.99
+								end
+                			end
+						else
+							v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)
+							v.Character.HumanoidRootPart.Transparency = 1
+						end
+					end
+					if hitb_t == "head" then
+						if v.Character.Humanoid.Health >= 1 then
+							if frend_nohit == true then
+                				if v:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+                				else
+                					v.Character.Head.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
+									v.Character.HumanoidRootPart.Transparency = 0.7
+									v.Character.Head.Color = Color3.new(1, 0, 0.0156863)
+									v.Character.Head.Material = "Neon"
+									v.Character.Head.CanCollide = false
+
+									v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s / 2,hitb_s / 2,hitb_s / 2)
+									v.Character.HumanoidRootPart.Transparency = 0.7
+									v.Character.HumanoidRootPart.Color = Color3.new(1, 0, 0.0156863)
+									v.Character.HumanoidRootPart.Material = "Neon"
+									v.Character.HumanoidRootPart.CanCollide = false
+									if hitb_ff == true then
+										if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+											v.Character.Head.Size = Vector3.new(1,2,1)
+											v.Character.Head.Color = Color3.new(0, 145, 255)
+										end
+									end
+									if hitb_i == true then
+										v.Character.HumanoidRootPart.Transparency = 0.99
+										v.Character.Head.Transparency = 0.99
+									end
+                				end
+                			else
+                				v.Character.Head.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
+								v.Character.HumanoidRootPart.Transparency = 0.7
+								v.Character.Head.Color = Color3.new(1, 0, 0.0156863)
+								v.Character.Head.Material = "Neon"
+								v.Character.Head.CanCollide = false
+
+								v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s / 2,hitb_s / 2,hitb_s / 2)
+								v.Character.HumanoidRootPart.Transparency = 0.7
+								v.Character.HumanoidRootPart.Color = Color3.new(1, 0, 0.0156863)
+								v.Character.HumanoidRootPart.Material = "Neon"
+								v.Character.HumanoidRootPart.CanCollide = false
+								if hitb_ff == true then
+									if v.Character:FindFirstChildOfClass("ForceField") or v:FindFirstChildOfClass("ForceField") then
+										v.Character.Head.Size = Vector3.new(1,2,1)
+										v.Character.Head.Color = Color3.new(0, 145, 255)
+									end
+								end
+								if hitb_i == true then
+									v.Character.HumanoidRootPart.Transparency = 0.99
+									v.Character.Head.Transparency = 0.99
+								end
+                			end
+						else
+							v.Character.Head.Size = Vector3.new(1,2,1)
+							v.Character.HumanoidRootPart.Transparency = 1
+						end
+					end
+				end
+			end
+		end
+	end
+end
+hitb()
+		else
+			hitb_oo = false
+			for i,v in next, game:GetService('Players'):GetPlayers() do
+                if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+                	if v.Character:FindFirstChild("HumanoidRootPart") then
+                		v.Character.HumanoidRootPart.Size = Vector3.new(1,2,1)	
+                    	v.Character.HumanoidRootPart.Transparency = 0.7
+                    	v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Red")
+                    	v.Character.HumanoidRootPart.Material = "Neon"
+                    	v.Character.HumanoidRootPart.CanCollide = false
+
+                    	v.Character.Head.Size = Vector3.new(1,2,1)
+                    	v.Character.Head.Transparency = 0.7
+                    	v.Character.Head.BrickColor = BrickColor.new("Red")
+                    	v.Character.Head.Material = "Neon"
+                    	v.Character.Head.CanCollide = false
+                	end
+                end
+            end
+		end
+	end    
+})
+
+Tab:AddTextbox({
+	Name = "Size",
+	Default = "size",
+	TextDisappear = true,
+	Callback = function(Value)
+		hitb_s = Value
+	end	  
+})
+
+Tab:AddDropdown({
+	Name = "body part",
+	Default = "root part",
+	Options = {"root part", "head"},
+	Callback = function(Value)
+		hitb_t = Value
+	end    
+})
+
+Tab:AddBind({
+	Name = "reload",
+	Default = Enum.KeyCode.C,
+	Hold = false,
+	Callback = function()
+		hitb_oo = false
+		--wait(0.5)
+		hitb_oo = true
+		hitb()
+	end    
+})
+
+--Tab:AddToggle({
+	--Name = "forcefield viewer",
+	--Default = false,
+	--Callback = function(Value)
+		--hitb_ff = Value
+	--end    
+--})
+
+--Tab:AddToggle({
+	--Name = "invisible hitbox",
+	--Default = false,
+	--Callback = function(Value)
+		--hitb_i = Value
+	--end    
+--})
+
+local hbt_p
+
+Tab:AddToggle({
+	Name = "teleport hitbox",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			hitb_tp = true
+			hbt_p = eplayer.Character.HumanoidRootPart.CFrame
+			while hitb_tp == true and wait(0.24) do
+            	for i,v in next, game:GetService("Players"):GetPlayers() do
+                	if v.Name ~= game:GetService("Players").LocalPlayer.Name then
+                		if frend_nohit == true then
+                			if v:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+                			else
+                				v.Character.HumanoidRootPart.Size = Vector3.new(10,10,10)
+                    			v.Character.HumanoidRootPart.CFrame = hbt_p
+                    			v.Character.HumanoidRootPart.CanCollide = false
+                			end
+                		else
+                			v.Character.HumanoidRootPart.Size = Vector3.new(10,10,10)
+                    		v.Character.HumanoidRootPart.CFrame = hbt_p
+                    		v.Character.HumanoidRootPart.CanCollide = false
+                		end
+                	end
+            	end
+        	end
+		else
+			hitb_tp = false
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "friends no hitbox",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			frend_nohit = true
+		else
+			frend_nohit = false
+		end
+	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Visuals",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local esp_type = "highlight"
+
+Tab:AddDropdown({
+	Name = "type",
+	Default = "highlight",
+	Options = {"3d model", "highlight"},
+	Callback = function(Value)
+		if Value == "3d model" then
+			esp_type = "3d model"
+		end
+
+		if Value == "highlight" then
+			esp_type = "highlight"
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Esp (players)",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			while wait(0.24) do
+            	for i, v in pairs(workspace:GetDescendants()) do
+                	if v:FindFirstChild("Humanoid") then
+                		if esp_type == "highlight" then
+                			if not v:FindFirstChild("highEsp") then
+                        		if v ~= game.Players.LocalPlayer.Character then
+	                            	local esp = Instance.new("Highlight",v)
+	                            	esp.FillColor = Color3.fromRGB(178,34,34)
+                            		esp.Name = "highEsp"
+                        		end
+                    		end
+                		else
+                			print(123)
+                		end
+                	end
+            	end
+        	end
+		end
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "bloxfruits"
+})
+
+Tab:AddTextbox({
+	Name = "fake lvl",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Data.Level.Value = Value
+	end	  
+})
+
+Tab:AddTextbox({
+	Name = "fake beli",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Data.Beli.Value = Value
+	end	  
+})
+
+local Section = Tab:AddSection({
+	Name = "blade ball"
+})
+
+Tab:AddToggle({
+	Name = "auto parry lite view angle",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			aplva_oo = true
+
+			aplva.Parent = eplayer.Character
+			aplva.Transparency = 0.7
+			while aplva_oo == true and wait(0.01) do
+				aplva.Shape = "Ball"
+				aplva.Size = Vector3.new(10,10,10)
+				aplva.Position = eplayer.Character.HumanoidRootPart.Position
+			end
+		end
+
+		if Value == false then
+			aplva_oo = false
+			aplva.Parent = workspace
+			aplva.Transparency = 1
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "ball tracers (ball)",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/bbbet.lua"))()
+		end
+	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Movement",
+	Icon = "",
+	PremiumOnly = false
+})
+
+Tab:AddToggle({
+	Name = "air jump",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			aj_oo = true
+		end
+
+		if Value == false then
+			aj_oo = false
+		end
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "airjump mode",
+	Default = "default",
+	Options = {"platform bypass", "default"},
+	Callback = function(Value)
+		if Value == "default" then
+			aj_m = "default"
+		end
+
+		if Value == "platform bypass" then
+			aj_m = "platform bypass"
+		end
+	end    
+})
+
+function noclip()
+    Clip = true
+    local function Nocl()
+        if Clip == true and game.Players.LocalPlayer.Character ~= nil then
+            for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
+                    v.CanCollide = false
+                end
+            end
+        end
+        wait(0.21)
+    end
+    Noclip = game:GetService('RunService').Stepped:Connect(Nocl)
+end
+
+function clip()
+    if Noclip then Noclip:Disconnect() end
+    Clip = false
+end
+
+Tab:AddToggle({
+	Name = "noclip",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			noclip()
+		end
+
+		if Value == false then
+			clip()
+		end
+	end    
+})
+
+Tab:AddButton({
+	Name = "tp to player",
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(tpto_plr).Character.HumanoidRootPart.CFrame
+  	end    
+})
+
+Tab:AddTextbox({
+	Name = "tp to player name",
+	Default = "user name",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(Value).Character.HumanoidRootPart.CFrame
+		tpto_plr = Value
+	end	  
+})
+
+local Tab = Window:MakeTab({
+	Name = "Exploits",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "dusty trip"
+})
+
+Tab:AddToggle({
+	Name = "meters farm",
+	Default = false,
+	Callback = function(Value)
+		dusty_mfarm = Value
+		while dusty_mfarm == true and wait(0.1) do
+			local tproad = dusty_mfarm_curroad + 1
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.models.roads:FindFirstChild(tproad).CFrame
+			dusty_mfarm_curroad += 1
+		end
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "blade ball"
+})
+
+Tab:AddToggle({
+	Name = "auto parry lite",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/bbapl.lua"))()
+			--loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/bbaplf.lua"))()
+		end
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "auto parry lite mode",
+	Default = "default",
+	Options = {"default", "freeze"},
+	Callback = function(Value)
+		if Value == "default" then
+			bbaplf_oo = false
+		end
+
+		if Value == "freeze" then
+			bbaplf_oo = true
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "auto parry ball",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			workspace.Gravity = 10
+			local p = false
+        	local intp = false
+        	bbapb_oo = true
+        	while bbapb_oo == true and wait(0.01) do
+            	for _,ball in next, workspace.Balls:GetChildren() do
+                	if eplayer.Character:FindFirstChild("Highlight") then
+                    	local pos1 = CFrame.new(0,0,0)
+                    	pos1 = eplayer.Character.HumanoidRootPart.CFrame
+                    	wait(0.04)
+                    	intp = true
+                    	eplayer.Character.HumanoidRootPart.CFrame = ball.CFrame * CFrame.new(0, 0, (ball.Velocity).Magnitude * -0.5)
+                    	--local Remotes = game.ReplicatedStorage:WaitForChild("Remotes", 9e9)
+                    	--Remotes:WaitForChild("ParryButtonPress"):FireServer()
+                    	mouse1click()
+                    	wait(0.04)
+                    	intp = false
+                    	eplayer.Character.HumanoidRootPart.CFrame = pos1
+                	else
+                    	if bbapbst == true then
+                        	if eplayer.Character:FindFirstChild("Highlight") then
+                            	print(123)
+                        	else
+                            	if ball.Velocity == 0 then
+                                	print(123)
+                            	else
+                                	if eplayer.Character.Parent.Name == "Alive" then
+                                    	eplayer.Character.HumanoidRootPart.CFrame = ball.CFrame * CFrame.new(0, 100, (ball.Velocity).Magnitude * -0.5)
+                                	end
+                            	end
+                        	end
+                    	end
+                	end
+            	end
+        	end
+		else
+			workspace.Gravity = 196.2
+        	bbapb_oo = false
+		end
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "auto parry ball mode",
+	Default = "default",
+	Options = {"default", "safe tp"},
+	Callback = function(Value)
+		if Value == "default" then
+			bbapbst = false
+		end
+
+		if Value == "safe tp" then
+			bbapbst = true
+		end
+	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "Tools",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Reset Character"
+})
+
+Tab:AddButton({
+	Name = "Reset",
+	Callback = function()
+		game.Players.LocalPlayer.Character.Humanoid.Health = 0
+  	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "full bright"
+})
+
+function dofullbright()
+
+    Light.Ambient = Color3.new(1, 1, 1)
+    Light.ColorShift_Bottom = Color3.new(1, 1, 1)
+    Light.ColorShift_Top = Color3.new(1, 1, 1)  
+
+end
+
+Tab:AddButton({
+	Name = "full bright",
+	Callback = function()
+		dofullbright()
+  	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "field of view"
+})
+
+Tab:AddTextbox({
+	Name = "field of view",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		camera.FieldOfView = Value
+	end	  
+})
+
+local Section = Tab:AddSection({
+	Name = "anti afk"
+})
+
+Tab:AddButton({
+	Name = "anti afk",
+	Callback = function()
+		game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+		repeat wait() until game:IsLoaded() 
+        	game:GetService("Players").LocalPlayer.Idled:connect(function()
+        	game:GetService("VirtualUser"):ClickButton2(Vector2.new())
+    	end)
+  	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "camera zoom dist"
+})
+
+Tab:AddTextbox({
+	Name = "zoom max dist",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		game.Players.LocalPlayer.CameraMode = Enum.CameraMode.Classic
+		game.Players.LocalPlayer.CameraMaxZoomDistance = Value
+	end	  
+})
+
+local Tab = Window:MakeTab({
+	Name = "BF",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "main"
+})
+
+Tab:AddToggle({
+	Name = "hitbox (mobs)",
+	Default = false,
+	Callback = function(Value)
+		bf_hitb = Value
+		while bf_hitb == true and wait(0.1) do
+			for i,v in next, game.Workspace.Enemies:GetDescendants() do
+				if v.Name == "HumanoidRootPart" then
+					v.Size = Vector3.new(20,20,20)
+					v.CanCollide = false
+					v.Transparency = 0.3
+				end
+			end
+		end
+
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "auto farm lvl"
+})
+
+function tpto_bf(cframe)
+	local dist = (cframe.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+	local tw_speed = 200
+	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+	if dist < 100 then
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = cframe
+		tw_speed = 350
+	elseif dist < 1000 then
+		tw_speed = 350
+	elseif dist >= 1000 then
+		tw_speed = 300
+	end
+
+	local tw_pos = {CFrame = cframe}
+	local tw_info = TweenInfo.new(dist/tw_speed, Enum.EasingStyle.Linear)
+	local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tw_info, tw_pos)
+	tweenend_time = dist/tw_speed
+	tween:Play()
+
+end
+
+function getto_closest(object, search_name, esp, esp_color)
+	local nearby
+	local nearby_dist
+
+	for i,v in next, object:GetDescendants() do
+		if v.Name == search_name then
+			local dist = (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+
+			if nearby then
+				if nearby_dist > dist then
+					nearby_dist = dist
+					nearby = v
+				end
+			else
+				nearby = object:FindFirstChild(search_name)
+				nearby_dist = (object:FindFirstChild(search_name).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+			end
+
+		end
+	end
+
+	tpto_bf(nearby.CFrame)
+	if esp == true then
+		local espp = Instance.new("Highlight",nearby)
+	    espp.FillColor = esp_color
+        espp.Name = "ProccEsp"
+	end
+	
+end
+
+function Quest_lvl()
+	local lvl = game.Players.LocalPlayer.Data.Level.Value
+	if bf_autof_skip_bos_quest == true then
+		if lvl < 10 then
+			questg = "Bandit Quest Giver"
+			questpos = CFrame.new(10,10,10)
+			questnum = 1
+			questname = "BanditQuest1"
+			enem_name = "Bandit"
+		elseif lvl < 15 then
+			questg = "Adventurer"
+			questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+			questnum = 1
+			questname = "JungleQuest"
+			enem_name = "Monkey"
+		elseif lvl >= 20 then
+			questg = "Adventurer"
+			questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+			questnum = 2
+			questname = "JungleQuest"
+			enem_name = "Gorilla"
+		end
+	else
+		if lvl < 10 then
+			questg = "Bandit Quest Giver"
+			questpos = CFrame.new(10,10,10)
+			questnum = 1
+			questname = "BanditQuest1"
+			enem_name = "Bandit"
+		elseif lvl < 15 then
+			questg = "Adventurer"
+			questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+			questnum = 1
+			questname = "JungleQuest"
+			enem_name = "Monkey"
+		elseif lvl < 20 then
+			questg = "Adventurer"
+			questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+			questnum = 2
+			questname = "JungleQuest"
+			enem_name = "Gorilla"
+		elseif lvl >= 20 then
+			questg = "Adventurer"
+			questpos = CFrame.new(-1598.09, 35.5501, 153.378)
+			questnum = 3
+			questname = "JungleQuest"
+			enem_name = "The Gorilla King"
+		end
+	end
+end
+
+Tab:AddToggle({
+	Name = "auto farm",
+	Default = false,
+	Callback = function(Value)
+		game.Workspace.Gravity = 100
+		game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+		bf_autof = Value
+		while bf_autof == true and wait(0.1) do
+			if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
+				Quest_lvl()
+				if game.Workspace.NPCs:FindFirstChild(questg) then
+					tpto_bf(game.Workspace.NPCs:FindFirstChild(questg).HumanoidRootPart.CFrame)
+					if bf_autof_esp == true then
+						local espp = Instance.new("Highlight",game.Workspace.NPCs:FindFirstChild(questg))
+	    				espp.FillColor = Color3.fromRGB(75, 151, 75)
+        				espp.Name = "ProccEsp"
+					end
+
+        			wait(tweenend_time)
+
+        			if bf_autof_esp == true then
+        				espp.Enabled = false
+        			end
+				else
+					tpto_bf(questpos)
+
+					wait(tweenend_time)
+				end
+				game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("StartQuest",questname,questnum)
+			else
+				if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == true then
+					for i,v in next, game.Workspace.Enemies:GetDescendants() do
+						if game.Workspace.Enemies:FindFirstChild(enem_name) then
+							if v.Name == enem_name then
+								if v:FindFirstChild("HumanoidRootPart") then
+									if v:FindFirstChild("Humanoid") then
+										if v:FindFirstChild("Humanoid").Health > 0 then
+											if v:FindFirstChild("aceser") then
+											else
+												for i,v in next, game.Workspace.Enemies:GetDescendants() do
+													if v:FindFirstChild("aceser") then
+														if v.Name == enem_name then
+															if v:FindFirstChild("Humanoid").Health > 0 then
+																game.Workspace.Gravity = 0
+
+																v.HumanoidRootPart.Size = Vector3.new(30,30,30)
+																v.HumanoidRootPart.CanCollide = false
+																v.HumanoidRootPart.Transparency = 1
+
+																if bf_autof_coll == true then
+																	local dist = (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+																	if dist <= bf_autof_coll_range then
+																		for i,v in next, game.Workspace.Enemies:GetDescendants() do
+																			if v.Name == enem_name then
+																				v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+																			end
+																		end
+																	end
+																end
+
+																if game.Players.LocalPlayer.Character.HumanoidRootPart.Position == v.HumanoidRootPart.Position then
+																else
+																	tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
+
+																	if bf_autof_esp == true then
+																		local espp = Instance.new("Highlight",v)
+	    																espp.FillColor = Color3.fromRGB(196, 40, 28)
+        																espp.Name = "ProccEsp"
+																	end
+
+																	wait(tweenend_time)
+
+																	if bf_autof_esp == true then
+																		espp.Enabled = false
+																	end
+																	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+																end
+
+																if game.Players.LocalPlayer.Character:FindFirstChild(bf_autof_tool) then
+																else
+
+																game.Players.LocalPlayer.Backpack:FindFirstChild(bf_autof_tool).Parent = game.Players.LocalPlayer.Character
+																local args = {
+    																[1] = "weaponChange",
+    																[2] = bf_autof_tool
+																}
+
+																game:GetService("ReplicatedStorage").RigControllerEvent:FireServer(unpack(args))
+
+																end
+																game:GetService"VirtualUser":CaptureController()
+			    												game:GetService"VirtualUser":Button1Down(Vector2.new(0,1,0,1))
+			    												--print(bf_autof)
+															else
+																v:FindFirstChild("aceser"):Destroy()
+																v:Destroy()
+															end
+														end
+													else
+														if v.Name == enem_name then
+															local aceser = Instance.new("Part",game.Workspace.Enemies:FindFirstChild(enem_name))
+															aceser.CanCollide = false
+															aceser.Transparency = 1
+															aceser.Name = "aceser"
+														end
+													end
+												end
+											end
+										else
+											v.HumanoidRootPart.Size = Vector3.new(1,1,1)
+											v.HumanoidRootPart.CanCollide = false
+											v.HumanoidRootPart.Transparency = 0.3
+										end
+									end
+								end
+							end
+						else
+							local enem_spawn = game.Workspace._WorldOrigin.EnemySpawns:FindFirstChild(enem_name)
+							if game.Players.LocalPlayer.Character.HumanoidRootPart.Position == enem_spawn.Position then
+							else
+								tpto_bf(enem_spawn.CFrame * CFrame.new(0,20,0))
+								wait(tweenend_time)
+								game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+							end
+						end
+					end
+				end
+			end
+		end
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "farm_tool",
+	Default = "null",
+	Options = bf_autof_tools,
+	Callback = function(Value)
+		bf_autof_tool = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "collect enemies",
+	Default = false,
+	Callback = function(Value)
+		bf_autof_coll = Value
+	end    
+})
+
+Tab:AddTextbox({
+	Name = "collect range",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		bf_autof_coll_range = tonumber(Value)
+	end	  
+})
+
+Tab:AddToggle({
+	Name = "skip boss quests",
+	Default = false,
+	Callback = function(Value)
+		bf_autof_skip_bos_quest = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "process esp",
+	Default = false,
+	Callback = function(Value)
+		bf_autof_esp = Value
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "auto chest farm"
+})
+
+Tab:AddToggle({
+	Name = "auto farm",
+	Default = false,
+	Callback = function(Value)
+		bf_autocf = Value
+		while bf_autocf == true and wait(0.1) do
+			if game.Workspace:FindFirstChild("Chest3") then
+				if bf_autocf_esp == true then
+					getto_closest(game.Workspace, "Chest3", true, Color3.fromRGB(75, 151, 75))
+				else
+					getto_closest(game.Workspace, "Chest3")
+				end
+				wait(tweenend_time)
+
+				if bf_autocf_esp == true then
+					espp.Enabled = false
+				end
+			elseif game.Workspace:FindFirstChild("Chest2") then
+				if bf_autocf_esp == true then
+					getto_closest(game.Workspace, "Chest2", true, Color3.fromRGB(75, 151, 75))
+				else
+					getto_closest(game.Workspace, "Chest2")
+				end
+				wait(tweenend_time)
+
+				if bf_autocf_esp == true then
+					espp.Enabled = false
+				end
+			elseif game.Workspace:FindFirstChild("Chest1") then
+				if bf_autocf_esp == true then
+					getto_closest(game.Workspace, "Chest1", true, Color3.fromRGB(75, 151, 75))
+				else
+					getto_closest(game.Workspace, "Chest1")
+				end
+				wait(tweenend_time)
+
+				if bf_autocf_esp == true then
+					espp.Enabled = false
+				end
+			end
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "process esp",
+	Default = false,
+	Callback = function(Value)
+		bf_autocf_esp = Value
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "auto sea events"
+})
+
+Tab:AddToggle({
+	Name = "sail boat",
+	Default = false,
+	Callback = function(Value)
+		bf_autosb = Value
+		while bf_autosb == true and wait(0.1) do
+			if bf_autosb_dir == "x+" then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += Vector3.new(10,0,0)
+			end
+		end
+	end    
+})
+
+local Tab = Window:MakeTab({
+	Name = "KINGL",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "auto farm lvl"
+})
+
+function kingl_getquest()
+	local lvl = game.Players.LocalPlayer.PlayerStats.lvl.Value
+	if lvl < 10 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 4 Soldiers"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 20 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 5 Clown Pirates"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 30 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 1 Smoky"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 50 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 1 Tashi"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 75 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 6 Clown Swordman"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	elseif lvl < 100 then
+		local args = {
+    		[1] = "take",
+    		[2] = "Kill 1 The Clown"
+		}
+
+		game:GetService("ReplicatedStorage").Chest.Remotes.Functions.Quest:InvokeServer(unpack(args))
+	end
+end
+
+function kingl_getenem_name()
+	local lvl = game.Players.LocalPlayer.PlayerStats.lvl.Value
+	if lvl < 10 then
+		kingl_autof_enemname = "Soldier [Lv. 1]"
+		kingl_autof_area = "StarterIsland"
+		kingl_autof_isboss = false
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 20 then
+		kingl_autof_enemname = "Clown Pirate [Lv. 10]"
+		kingl_autof_area = "StarterIsland"
+		kingl_autof_isboss = false
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 30 then
+		kingl_autof_enemname = "Smoky [Lv. 20]"
+		kingl_autof_area = "StarterIsland"
+		kingl_autof_isboss = true
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 50 then
+		kingl_autof_enemname = "Tashi [Lv. 30]"
+		kingl_autof_area = "StarterIsland"
+		kingl_autof_isboss = true
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 75 then
+		kingl_autof_enemname = "Clown Swordman [Lv. 50]"
+		kingl_autof_area = "PirateIsland"
+		kingl_autof_isboss = false
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	elseif lvl < 100 then
+		kingl_autof_enemname = "The Clown [Lv. 75]"
+		kingl_autof_area = "PirateIsland"
+		kingl_autof_isboss = true
+		print("quest taked: " .. "| enemy - " .. kingl_autof_enemname .. " | area - " .. kingl_autof_area .. " |")
+	end
+end
+
+function kingl_attack()
+	local tool_name = "FS_" .. kingl_autof_tool .. "_M1"
+	local args = {
+    	[1] = tool_name
+	}
+
+	game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+end
+
+Tab:AddToggle({
+	Name = "auto farm",
+	Default = false,
+	Callback = function(Value)
+		kingl_autof = Value
+		while kingl_autof == true and wait(0.1) do
+			if game.Players.LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
+				kingl_getquest()
+			else
+				kingl_getenem_name()
+				for i,v in next, game.Workspace.Monster:GetDescendants() do
+					if kingl_autof_isboss == false then
+						if game.Workspace.Monster.Mon:FindFirstChild(kingl_autof_enemname) then
+							if v.Name == kingl_autof_enemname then
+								if v:FindFirstChild("aceser") then
+								else
+									for i,v in next, game.Workspace.Monster.Mon:GetDescendants() do
+										if v:FindFirstChild("aceser") then
+											if v.Name == kingl_autof_enemname then
+												if v:FindFirstChild("Humanoid").Health > 0 then
+													local pivot = v:GetPivot()
+													game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, kingl_autof_dist)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+
+													kingl_attack()
+												else
+													v:FindFirstChild("aceser"):Destroy()
+													v:Destroy()
+												end
+											end
+										else
+											if v.Name == kingl_autof_enemname then
+												local aceser = Instance.new("Part", game.Workspace.Monster.Mon:FindFirstChild(kingl_autof_enemname))
+												aceser.CanCollide = false
+												aceser.Transparency = 1
+												aceser.Name = "aceser"
+											end
+										end
+									end
+								end
+							end
+						else
+							local tppos = game.Workspace.Areas:FindFirstChild(kingl_autof_area).CFrame + Vector3.new(0,20,0)
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = tppos
+						end
+					else
+						if game.Workspace.Monster.Boss:FindFirstChild(kingl_autof_enemname) then
+							if v.Name == kingl_autof_enemname then
+								for i,v in next, game.Workspace.Monster.Boss:GetDescendants() do
+									if v.Name == kingl_autof_enemname then
+										if v:FindFirstChild("Humanoid").Health > 0 then
+											local pivot = v:GetPivot()
+											game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, kingl_autof_dist)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+
+											kingl_attack()
+										end
+									end
+								end
+							end
+						else
+							local tppos = game.Workspace.Areas:FindFirstChild(kingl_autof_area).CFrame + Vector3.new(0,20,0)
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = tppos
+						end
+					end
+				end
+			end
+		end
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "farm_tool",
+	Default = "null",
+	Options = kingl_autof_tools,
+	Callback = function(Value)
+		kingl_autof_tool = Value
+	end    
+})
+
+Tab:AddTextbox({
+	Name = "tp dist",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		kingl_autof_dist = Value
+	end	  
+})
+
+local Section = Tab:AddSection({
+	Name = "auto stats"
+})
+
+Tab:AddToggle({
+	Name = "enable",
+	Default = false,
+	Callback = function(Value)
+		kingl_stats = Value
+		while kingl_stats == true and wait(0.1) do
+			if kingl_stats_Melee == true then
+				local args = {
+    				[1] = "Melee",
+    				[2] = 1
+				}
+
+				game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.StatsFrame.RemoteEvent:FireServer(unpack(args))
+			end
+			if kingl_stats_Defence == true then
+				local args = {
+    				[1] = "Defence",
+    				[2] = 1
+				}
+
+				game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.StatsFrame.RemoteEvent:FireServer(unpack(args))
+			end
+			if kingl_stats_Sword == true then
+				local args = {
+    				[1] = "Sword",
+    				[2] = 1
+				}
+
+				game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.StatsFrame.RemoteEvent:FireServer(unpack(args))
+			end
+			if kingl_stats_Fruit == true then
+				local args = {
+    				[1] = "Fruit",
+    				[2] = 1
+				}
+
+				game:GetService("Players").LocalPlayer.PlayerGui.MainGui.StarterFrame.StatsFrame.RemoteEvent:FireServer(unpack(args))
+			end
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Melee",
+	Default = false,
+	Callback = function(Value)
+		kingl_stats_Melee = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Defence",
+	Default = false,
+	Callback = function(Value)
+		kingl_stats_Defence = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Sword",
+	Default = false,
+	Callback = function(Value)
+		kingl_stats_Sword = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Fruit",
+	Default = false,
+	Callback = function(Value)
+		kingl_stats_Fruit = Value
+	end    
+})
