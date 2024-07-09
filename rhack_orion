@@ -31,6 +31,7 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local build_aboat_farmgold_type = "tp"
 local build_aboat_farmgold_count = 0
 local build_aboat_farmgold = false
 local build_aboat_farmgold_time = 0.5
@@ -1133,9 +1134,17 @@ Tab:AddToggle({
 	end    
 })
 
+Tab:AddButton({
+	Name = "take gunpowder quest",
+	Callback = function()
+		fireproximityprompt(workspace.Map.NPCs.Gunpowder.HumanoidRootPart.ProximityPrompt)
+  	end    
+})
+
 local Section = Tab:AddSection({
 	Name = "build a boat"
 })
+
 
 Tab:AddToggle({
 	Name = "auto farm gold",
@@ -1143,8 +1152,122 @@ Tab:AddToggle({
 	Callback = function(Value)
 		if Value == true then
 			build_aboat_farmgold = Value
-			while build_aboat_farmgold == true and wait(0.1) do
-				if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+			if build_aboat_farmgold_type == "tp" then
+				while build_aboat_farmgold == true and wait(0.1) do
+					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						build_aboat_farmgold_count = 0
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage1.StonePart.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						wait(build_aboat_farmgold_time)
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage2.StonePart.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						wait(build_aboat_farmgold_time)
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage3.StonePart.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						wait(build_aboat_farmgold_time)
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage4.StonePart.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						wait(build_aboat_farmgold_time)
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage5.StonePart.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						wait(build_aboat_farmgold_time)
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage6.StonePart.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						wait(build_aboat_farmgold_time)
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage7.StonePart.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						wait(build_aboat_farmgold_time)
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage8.StonePart.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						wait(build_aboat_farmgold_time)
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage9.StonePart.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						wait(build_aboat_farmgold_time)
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage10.StonePart.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						wait(build_aboat_farmgold_time)
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						wait(1)
+					end
+				end
+			else
+				if build_aboat_farmgold_type == "tween" then
 					build_aboat_farmgold_count = 0
 					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 						if build_aboat_farmgold_count == 0 then
@@ -1153,109 +1276,33 @@ Tab:AddToggle({
 					else
 						build_aboat_farmgold_count = 1
 					end
-			
-					wait(build_aboat_farmgold_time)
-			
-					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-						if build_aboat_farmgold_count == 0 then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage2.StonePart.CFrame
-						end
-					else
-						build_aboat_farmgold_count = 1
-					end
-			
-					wait(build_aboat_farmgold_time)
-			
-					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-						if build_aboat_farmgold_count == 0 then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage3.StonePart.CFrame
-						end
-					else
-						build_aboat_farmgold_count = 1
-					end
-			
-					wait(build_aboat_farmgold_time)
-			
-					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-						if build_aboat_farmgold_count == 0 then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage4.StonePart.CFrame
-						end
-					else
-						build_aboat_farmgold_count = 1
-					end
-			
-					wait(build_aboat_farmgold_time)
-			
-					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-						if build_aboat_farmgold_count == 0 then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage5.StonePart.CFrame
-						end
-					else
-						build_aboat_farmgold_count = 1
-					end
-			
-					wait(build_aboat_farmgold_time)
-			
-					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-						if build_aboat_farmgold_count == 0 then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage6.StonePart.CFrame
-						end
-					else
-						build_aboat_farmgold_count = 1
-					end
-				
-					wait(build_aboat_farmgold_time)
-			
-					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-						if build_aboat_farmgold_count == 0 then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage7.StonePart.CFrame
-						end
-					else
-						build_aboat_farmgold_count = 1
-					end
-			
-					wait(build_aboat_farmgold_time)
-			
-					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-						if build_aboat_farmgold_count == 0 then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage8.StonePart.CFrame
-						end
-					else
-						build_aboat_farmgold_count = 1
-					end
-			
-					wait(build_aboat_farmgold_time)
-			
-					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-						if build_aboat_farmgold_count == 0 then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage9.StonePart.CFrame
-						end
-					else
-						build_aboat_farmgold_count = 1
-					end
-			
-					wait(build_aboat_farmgold_time)
-			
-					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-						if build_aboat_farmgold_count == 0 then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage10.StonePart.CFrame
-						end
-					else
-						build_aboat_farmgold_count = 1
-					end
-			
-					wait(build_aboat_farmgold_time)
 
-					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-						if build_aboat_farmgold_count == 0 then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame
-						end
-					else
-						build_aboat_farmgold_count = 1
-					end
-					wait(1)
+					local tween_to_end1_goal = {Position = workspace.BoatStages.NormalStages.CaveStage10.StonePart.Position}
+					local tween_to_end1_info = TweenInfo.new(5)
+					local tween_to_end1 = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tween_to_end1_info, tween_to_end1_goal)
+
+					tween_to_end1:Play()
+
+					wait(5)
+
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame
 				end
 			end
+		end
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "move mode",
+	Default = "tp",
+	Options = {"tp", "tween"},
+	Callback = function(Value)
+		if Value == "tp" then
+			build_aboat_farmgold_type = "tp"
+		end
+
+		if Value == "tween" then
+			build_aboat_farmgold_type = "tween"
 		end
 	end    
 })
@@ -1339,6 +1386,23 @@ Tab:AddTextbox({
 		game.Players.LocalPlayer.CameraMaxZoomDistance = Value
 	end	  
 })
+
+local Section = Tab:AddSection({
+	Name = "for dev"
+})
+
+Tab:AddButton({
+	Name = "activate all ProximityPrompt",
+	Callback = function()
+		for i,v in next, game:GetDescendants() do
+			if v.ClassName == "ProximityPrompt" then
+				fireproximityprompt(v)
+			end
+		end
+  	end    
+})
+
+
 
 local Tab = Window:MakeTab({
 	Name = "BF",
