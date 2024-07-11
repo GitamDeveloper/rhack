@@ -31,6 +31,16 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local bb_look_ball = false
+local bb_autoparry_x = 3
+local bb_autoparry_speed = 0.1
+local bb_autoparry_dist = 15
+local bb_autoparry = false
+
+local towerhell_farmmoney_rejoin = false
+local towerhell_farmmoney = false
+
+local build_aboat_farmgold_movetime = tonumber(6)
 local build_aboat_farmgold_type = "tp"
 local build_aboat_farmgold_count = 0
 local build_aboat_farmgold = false
@@ -870,44 +880,6 @@ Tab:AddTextbox({
 	end	  
 })
 
-local Section = Tab:AddSection({
-	Name = "blade ball"
-})
-
-Tab:AddToggle({
-	Name = "auto parry lite view angle",
-	Default = false,
-	Callback = function(Value)
-		if Value == true then
-			aplva_oo = true
-
-			aplva.Parent = eplayer.Character
-			aplva.Transparency = 0.7
-			while aplva_oo == true and wait(0.01) do
-				aplva.Shape = "Ball"
-				aplva.Size = Vector3.new(10,10,10)
-				aplva.Position = eplayer.Character.HumanoidRootPart.Position
-			end
-		end
-
-		if Value == false then
-			aplva_oo = false
-			aplva.Parent = workspace
-			aplva.Transparency = 1
-		end
-	end    
-})
-
-Tab:AddToggle({
-	Name = "ball tracers (ball)",
-	Default = false,
-	Callback = function(Value)
-		if Value == true then
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/bbbet.lua"))()
-		end
-	end    
-})
-
 local Tab = Window:MakeTab({
 	Name = "Movement",
 	Icon = "",
@@ -1025,26 +997,54 @@ Tab:AddToggle({
 	Name = "auto parry lite",
 	Default = false,
 	Callback = function(Value)
+		bb_autoparry = Value
 		if Value == true then
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/bbapl.lua"))()
-			--loadstring(game:HttpGet("https://raw.githubusercontent.com/GitamDeveloper/rhack/main/bbaplf.lua"))()
+			while bb_autoparry == true and wait(bb_autoparry_speed) do
+				for _,ball in next, workspace.Balls:GetChildren() do
+					if game.Players.LocalPlayer.Character:FindFirstChild("Highlight") then
+						local dist = (ball.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+						local vel = ball.AssemblyLinearVelocity.Magnitude
+
+						--local print = dist + vel
+						print("dist - ".. tostring(dist).. "parrydist - ".. tostring((vel / bb_autoparry_dist)))
+						if (dist) <= (bb_autoparry_dist + vel / bb_autoparry_x) then
+							game:GetService("ReplicatedStorage").Remotes.ParryButtonPress:Fire()
+
+							mouse1click()
+							print("parry try")
+						end
+					end
+				end
+			end
 		end
 	end    
 })
 
-Tab:AddDropdown({
-	Name = "auto parry lite mode",
-	Default = "default",
-	Options = {"default", "freeze"},
+Tab:AddTextbox({
+	Name = "parry distance",
+	Default = "number",
+	TextDisappear = true,
 	Callback = function(Value)
-		if Value == "default" then
-			bbaplf_oo = false
-		end
+		bb_autoparry_dist = tonumber(Value)
+	end	  
+})
 
-		if Value == "freeze" then
-			bbaplf_oo = true
-		end
-	end    
+Tab:AddTextbox({
+	Name = "update speed",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		bb_autoparry_speed = tonumber(Value)
+	end	  
+})
+
+Tab:AddTextbox({
+	Name = "division force",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		bb_autoparry_x = tonumber(Value)
+	end	  
 })
 
 Tab:AddToggle({
@@ -1121,8 +1121,8 @@ Tab:AddToggle({
 	Name = "auto farm box",
 	Default = false,
 	Callback = function(Value)
+		heav_stand_boxfarm = Value
 		if Value == true then
-			heav_stand_boxfarm = Value
 			while heav_stand_boxfarm == true and wait(0.1) do
 				for i,v in next, workspace.Map.itemSpawnner.Box:GetDescendants() do
 					if v.Name == "ProximityPrompt" then
@@ -1150,8 +1150,8 @@ Tab:AddToggle({
 	Name = "auto farm gold",
 	Default = false,
 	Callback = function(Value)
+		build_aboat_farmgold = Value
 		if Value == true then
-			build_aboat_farmgold = Value
 			if build_aboat_farmgold_type == "tp" then
 				while build_aboat_farmgold == true and wait(0.1) do
 					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
@@ -1268,24 +1268,168 @@ Tab:AddToggle({
 				end
 			else
 				if build_aboat_farmgold_type == "tween" then
-					build_aboat_farmgold_count = 0
-					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-						if build_aboat_farmgold_count == 0 then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage1.StonePart.CFrame
+					while build_aboat_farmgold == true and wait(0.1) do
+						build_aboat_farmgold_count = 0
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage1.StonePart.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
 						end
-					else
-						build_aboat_farmgold_count = 1
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								local tween_to_end1_goal = {Position = workspace.BoatStages.NormalStages.CaveStage10.StonePart.Position}
+								local tween_to_end1_info = TweenInfo.new(build_aboat_farmgold_movetime, Enum.EasingStyle.Linear)
+								local tween_to_end1 = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tween_to_end1_info, tween_to_end1_goal)
+
+								tween_to_end1:Play()
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						--time lap
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(build_aboat_farmgold_movetime / 10)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(build_aboat_farmgold_movetime / 10)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(build_aboat_farmgold_movetime / 10)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(build_aboat_farmgold_movetime / 10)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(build_aboat_farmgold_movetime / 10)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(build_aboat_farmgold_movetime / 10)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(build_aboat_farmgold_movetime / 10)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(build_aboat_farmgold_movetime / 10)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(build_aboat_farmgold_movetime / 10)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(build_aboat_farmgold_movetime / 10)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame
+								--workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								--game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+						--time lap2
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(1)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(1)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(1)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(1)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								wait(1)
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
+
+
+
+						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+							if build_aboat_farmgold_count == 0 then
+								--game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+							end
+						else
+							build_aboat_farmgold_count = 1
+						end
 					end
-
-					local tween_to_end1_goal = {Position = workspace.BoatStages.NormalStages.CaveStage10.StonePart.Position}
-					local tween_to_end1_info = TweenInfo.new(5)
-					local tween_to_end1 = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tween_to_end1_info, tween_to_end1_goal)
-
-					tween_to_end1:Play()
-
-					wait(5)
-
-					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame
 				end
 			end
 		end
@@ -1306,6 +1450,47 @@ Tab:AddDropdown({
 		end
 	end    
 })
+
+Tab:AddTextbox({
+	Name = "move time",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		build_aboat_farmgold_movetime = tonumber(Value)
+	end	  
+})
+
+local Section = Tab:AddSection({
+	Name = "tower of hell"
+})
+
+Tab:AddToggle({
+	Name = "auto farm money",
+	Default = false,
+	Callback = function(Value)
+		towerhell_farmmoney = Value
+		if Value == true then
+			while towerhell_farmmoney == true and wait(0.1) do
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.tower.finishes.Finish.CFrame
+				wait(5)
+				if towerhell_farmmoney_rejoin == true then
+					local ts = game:GetService("TeleportService")
+					local p = game:GetService("Players").LocalPlayer
+					ts:Teleport(game.PlaceId, p)
+				end
+			end
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "rejoin",
+	Default = false,
+	Callback = function(Value)
+		towerhell_farmmoney_rejoin = Value
+	end    
+})
+
 
 
 
