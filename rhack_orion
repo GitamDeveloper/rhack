@@ -1591,17 +1591,44 @@ Tab:AddButton({
 		local pos = CFrame.new(0,0,0)
 		pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 
+		if game.Players.LocalPlayer.Backpack:FindFirstChild("Flowing Water") then
+			game.Players.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Character
+		else
+			if game.Players.LocalPlayer.Backpack:FindFirstChild("Foul Ball") then
+				game.Players.LocalPlayer.Backpack:FindFirstChild("Foul Ball").Parent = game.Players.LocalPlayer.Character
+			else
+				if game.Players.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave") then
+					game.Players.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave").Parent = game.Players.LocalPlayer.Character
+				else
+				end
+			end
+		end
 
-		game.Players.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Character
-		local pivot = game.Players:FindFirstChild(tsb_tp_nick).Character:GetPivot()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+		if tsb_tp_nick == "none" then
+		else
+			local pivot = game.Players:FindFirstChild(tsb_tp_nick).Character:GetPivot()
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+		end
 		wait(1)
-		game.Players.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Backpack
+
+		if game.Players.LocalPlayer.Character:FindFirstChild("Flowing Water") then
+			game.Players.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Backpack
+		else
+			if game.Players.LocalPlayer.Character:FindFirstChild("Foul Ball") then
+				game.Players.LocalPlayer.Character:FindFirstChild("Foul Ball").Parent = game.Players.LocalPlayer.Backpack
+			else
+				if game.Players.LocalPlayer.Character:FindFirstChild("Atmos Cleave") then
+					game.Players.LocalPlayer.Character:FindFirstChild("Atmos Cleave").Parent = game.Players.LocalPlayer.Backpack
+				else
+				end
+			end
+		end
+
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
-		wait(1)
+		wait(3)
 
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
-  	end    
+	end    
 })
 
 Tab:AddBind({
@@ -1609,18 +1636,52 @@ Tab:AddBind({
 	Default = Enum.KeyCode.R,
 	Hold = false,
 	Callback = function()
-		game.Players.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Character
-		local pivot = game.Players:FindFirstChild(tsb_tp_nick).Character:GetPivot()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+		local pos = CFrame.new(0,0,0)
+		pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+
+		if game.Players.LocalPlayer.Backpack:FindFirstChild("Flowing Water") then
+			game.Players.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Character
+		else
+			if game.Players.LocalPlayer.Backpack:FindFirstChild("Foul Ball") then
+				game.Players.LocalPlayer.Backpack:FindFirstChild("Foul Ball").Parent = game.Players.LocalPlayer.Character
+			else
+				if game.Players.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave") then
+					game.Players.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave").Parent = game.Players.LocalPlayer.Character
+				else
+				end
+			end
+		end
+
+		if tsb_tp_nick == "none" then
+		else
+			local pivot = game.Players:FindFirstChild(tsb_tp_nick).Character:GetPivot()
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+		end
 		wait(1)
-		--game.Players.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Backpack
+
+		if game.Players.LocalPlayer.Character:FindFirstChild("Flowing Water") then
+			game.Players.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Backpack
+		else
+			if game.Players.LocalPlayer.Character:FindFirstChild("Foul Ball") then
+				game.Players.LocalPlayer.Character:FindFirstChild("Foul Ball").Parent = game.Players.LocalPlayer.Backpack
+			else
+				if game.Players.LocalPlayer.Character:FindFirstChild("Atmos Cleave") then
+					game.Players.LocalPlayer.Character:FindFirstChild("Atmos Cleave").Parent = game.Players.LocalPlayer.Backpack
+				else
+				end
+			end
+		end
+
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
+		wait(3)
+
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
 	end  
 })
 
 Tab:AddDropdown({
 	Name = "player",
-	Default = "default",
+	Default = "none",
 	Options = tsb_tp_nicks,
 	Callback = function(Value)
 		tsb_tp_nick = Value
