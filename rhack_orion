@@ -31,6 +31,14 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local tsb_tp_nicks = {"none"}
+local tsb_tp_nick = "none"
+
+local bb_autoparry2_dist = 10
+
+local autoclick = false
+local autoclick_delay = 0.01
+
 local bb_look_ball = false
 local bb_autoparry_x = 3
 local bb_autoparry_speed = 0.1
@@ -84,6 +92,12 @@ end
 for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 	if v:IsA("Tool") then
 		table.insert(kingl_autof_tools, v.Name)
+	end
+end
+
+for i,v in pairs(game.Players:GetChildren()) do
+	if v.ClassName == "Player" then
+		table.insert(tsb_tp_nicks, v.Name)
 	end
 end
 
@@ -1048,6 +1062,81 @@ Tab:AddTextbox({
 })
 
 Tab:AddToggle({
+	Name = "auto parry",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			local Debug = false -- Set this to true if you want my debug output.
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			local Players = game:GetService("Players")
+
+			local Player = Players.LocalPlayer or Players.PlayerAdded:Wait()
+			local Remotes = ReplicatedStorage:WaitForChild("Remotes", 9e9) -- A second argument in waitforchild what could it mean?
+			local Balls = workspace:WaitForChild("Balls", 9e9)
+
+			-- Functions
+
+			local function print(...) -- Debug print.
+				if Debug then
+					warn(...)
+				end
+			end
+
+			local function VerifyBall(Ball) -- Returns nil if the ball isn't a valid projectile; true if it's the right ball.
+				if typeof(Ball) == "Instance" and Ball:IsA("BasePart") and Ball:IsDescendantOf(Balls) and Ball:GetAttribute("realBall") == true then
+					return true
+				end
+			end
+
+			local function IsTarget() -- Returns true if we are the current target.
+				return (Player.Character and Player.Character:FindFirstChild("Highlight"))
+			end
+
+			local function Parry() -- Parries.
+				Remotes:WaitForChild("ParryButtonPress"):Fire()
+			end
+
+			-- The actual code
+
+			Balls.ChildAdded:Connect(function(Ball)
+				if not VerifyBall(Ball) then
+					return
+				end
+
+				local OldPosition = Ball.Position
+				local OldTick = tick()
+
+				Ball:GetPropertyChangedSignal("Position"):Connect(function()
+					if IsTarget() then -- No need to do the math if we're not being attacked.
+						local Distance = (Ball.Position - workspace.CurrentCamera.Focus.Position).Magnitude
+						local Velocity = (OldPosition - Ball.Position).Magnitude -- Fix for .Velocity not working. Yes I got the lowest possible grade in accuplacer math.
+
+						if (Distance / Velocity) <= bb_autoparry2_dist then -- Sorry for the magic number. This just works. No, you don't get a slider for this because it's 2am.
+							mouse1click()
+							Parry()
+						end
+					end
+
+					if (tick() - OldTick >= 1/60) then -- Don't want it to update too quickly because my velocity implementation is aids. Yes, I tried Ball.Velocity. No, it didn't work.
+						OldTick = tick()
+						OldPosition = Ball.Position
+					end
+				end)
+			end)
+		end
+	end    
+})
+
+Tab:AddTextbox({
+	Name = "parry distance",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		bb_autoparry2_dist = tonumber(Value)
+	end	  
+})
+
+Tab:AddToggle({
 	Name = "auto parry ball",
 	Default = false,
 	Callback = function(Value)
@@ -1491,6 +1580,54 @@ Tab:AddToggle({
 	end    
 })
 
+local Section = Tab:AddSection({
+	Name = "TSB"
+})
+
+Tab:AddButton({
+	Name = "tp players",
+	Callback = function()
+
+		local pos = CFrame.new(0,0,0)
+		pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+
+
+		game.Players.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Character
+		local pivot = game.Players:FindFirstChild(tsb_tp_nick).Character:GetPivot()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+		wait(1)
+		game.Players.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Backpack
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
+		wait(1)
+
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+  	end    
+})
+
+Tab:AddBind({
+	Name = "tp player",
+	Default = Enum.KeyCode.R,
+	Hold = false,
+	Callback = function()
+		game.Players.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Character
+		local pivot = game.Players:FindFirstChild(tsb_tp_nick).Character:GetPivot()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+		wait(1)
+		--game.Players.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Backpack
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
+	end  
+})
+
+Tab:AddDropdown({
+	Name = "player",
+	Default = "default",
+	Options = tsb_tp_nicks,
+	Callback = function(Value)
+		tsb_tp_nick = Value
+	end    
+})
+
+
 
 
 
@@ -1569,6 +1706,36 @@ Tab:AddTextbox({
 	Callback = function(Value)
 		game.Players.LocalPlayer.CameraMode = Enum.CameraMode.Classic
 		game.Players.LocalPlayer.CameraMaxZoomDistance = Value
+	end	  
+})
+
+local Section = Tab:AddSection({
+	Name = "auto click"
+})
+
+Tab:AddBind({
+	Name = "On_Off",
+	Default = Enum.KeyCode.X,
+	Hold = false,
+	Callback = function()
+		if autoclick == false then
+			autoclick = true
+		else
+			autoclick = false
+		end
+
+		while autoclick == true and wait(autoclick_delay) do
+			mouse1click()
+		end
+	end  
+})
+
+Tab:AddTextbox({
+	Name = "delay",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		autoclick_delay = tonumber(Value)
 	end	  
 })
 
