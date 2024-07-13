@@ -31,6 +31,12 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local tp_all_from = "null"
+
+local tsb_deathcounter_alert = false
+
+local ubg_funny = false
+
 local tsb_tp_nicks = {"none"}
 local tsb_tp_nick = "none"
 
@@ -873,6 +879,82 @@ Tab:AddToggle({
 })
 
 local Section = Tab:AddSection({
+	Name = "UBG"
+})
+
+Tab:AddToggle({
+	Name = "funny mode",
+	Default = false,
+	Callback = function(Value)
+		ubg_funny = Value
+		while ubg_funny == true and wait(0.1) do
+
+			game.Players.LocalPlayer.PlayerGui.Characters.FrameLegacy.Gon.Container.TextLabel.Text = "да-да-данечка?!?"
+			game.Players.LocalPlayer.PlayerGui.Characters.FrameLegacy.Nanami.Container.TextLabel.Text = "Проклятый ментос"
+			game.Players.LocalPlayer.PlayerGui.Characters.FrameLegacy.Mob.Container.TextLabel.Text = "Я кмс по квадробике..."
+
+			if game.Players.LocalPlayer.Data:FindFirstChild("Character").Value == "Gon" then
+				game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Text = "головоЛОМКА 2"
+
+				if game.Players.LocalPlayer:FindFirstChild("Info").Transform.Value == false then
+					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Камень по лбу бля"
+					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Фаербол из майна"
+					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "У гарика спиздили"
+					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Сын, собирайся на рыбалку"
+				else
+					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "На попей"
+					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Золотой дождь"
+					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Ты меня подрезал бля!"
+					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Заскамила мамонта"
+				end
+
+			else
+				if game.Players.LocalPlayer.Data:FindFirstChild("Character").Value == "Nanami" then
+					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Text = "Стягивай, Стягивай! Уфф... стянул"
+
+					if game.Players.LocalPlayer:FindFirstChild("Info").Transform.Value == false then
+						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Назад и вперед. И все."
+						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Тактический долбаеб"
+						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Зря я туда полез..."
+						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Шарик на палочке"
+					else
+						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Чорный пенис"
+						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Полетел нахуй отсюда"
+						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Пацаны съебываем"
+						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Камешки"
+					end
+
+				else
+					if game.Players.LocalPlayer.Data:FindFirstChild("Character").Value == "Mob" then
+						if game.Players.LocalPlayer:FindFirstChild("Info").Killstreak.Value >= 2 then
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Text = "Негр в пене"
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Custom.Visible = false
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Visible = true
+						else
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Text = "Я потяну тебя за письку и оторву..."
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Custom.Visible = false
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Visible = true
+						end
+
+						if game.Players.LocalPlayer:FindFirstChild("Info").Transform.Value == false then
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Винтовка калибра 1488"
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Боб строитель..."
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Пенисы из под пола"
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Тюрьма для геев"
+						else
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Дайте мне уже пульт от ядерки..."
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Да не бомбит у меня!"
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Бомбежка ирана"
+							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Расчеленение"
+						end
+					end
+				end
+			end
+		end
+	end    
+})
+
+local Section = Tab:AddSection({
 	Name = "bloxfruits"
 })
 
@@ -1688,7 +1770,16 @@ Tab:AddDropdown({
 	end    
 })
 
+local Section = Tab:AddSection({
+	Name = "UBG"
+})
 
+Tab:AddButton({
+	Name = "give fake MOB",
+	Callback = function()
+		game.Players.LocalPlayer.Data:FindFirstChild("Character").Value = "Mob"
+	end    
+})
 
 
 
@@ -1813,6 +1904,35 @@ Tab:AddButton({
 			end
 		end
   	end    
+})
+
+Tab:AddButton({
+	Name = "teleport all from folder",
+	Callback = function()
+
+		local target
+
+		for i,v in next,  game.Workspace:GetDescendants() do
+			if v.Name == tp_all_from then
+				target = v
+			end
+		end
+
+		for i,v in next, target:GetDescendants() do
+			if v.ClassName == "Part" then
+				v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+			end
+		end
+  	end    
+})
+
+Tab:AddTextbox({
+	Name = "folder name",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		tp_all_from = Value
+	end	  
 })
 
 
