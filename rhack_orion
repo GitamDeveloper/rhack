@@ -31,6 +31,12 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+
+local gef_giveitems = {"none"}
+local gef_giveitem = "none"
+
+local ubg_fling = false
+
 local tp_all_from = "null"
 
 local tsb_deathcounter_alert = false
@@ -104,6 +110,12 @@ end
 for i,v in pairs(game.Players:GetChildren()) do
 	if v.ClassName == "Player" then
 		table.insert(tsb_tp_nicks, v.Name)
+	end
+end
+
+for i,v in pairs(game.Workspace.Pickups:GetDescendants()) do
+	if v.ClassName == "ProximityPrompt" then
+		table.insert(gef_giveitems, v.Parent.Name)
 	end
 end
 
@@ -1714,7 +1726,7 @@ Tab:AddButton({
 })
 
 Tab:AddBind({
-	Name = "tp player",
+	Name = "tp players",
 	Default = Enum.KeyCode.R,
 	Hold = false,
 	Callback = function()
@@ -1778,6 +1790,124 @@ Tab:AddButton({
 	Name = "give fake MOB",
 	Callback = function()
 		game.Players.LocalPlayer.Data:FindFirstChild("Character").Value = "Mob"
+	end    
+})
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+	if ubg_fling == true then
+		if input.KeyCode == Enum.KeyCode.One then
+			if game.Players.LocalPlayer.Data:FindFirstChild("Character").Value == "Gon" then
+				local pos = CFrame.new()
+				pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+
+				local fling_goal = {CFrame = CFrame.new(1000,1000,1000)}
+				local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
+				local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+
+				wait(1)
+
+				fling:Play()
+
+				wait(3)
+
+				local back_goal = {CFrame = pos}
+				local back_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
+				local back = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
+
+				back:Play()
+			end
+        end
+	end
+end)
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+	if ubg_fling == true then
+		if input.KeyCode == Enum.KeyCode.Three then
+			if game.Players.LocalPlayer.Data:FindFirstChild("Character").Value == "Gon" then
+				local pos = CFrame.new()
+				pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+
+				local fling_goal = {CFrame = CFrame.new(1000,1000,1000)}
+				local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
+				local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+
+				wait(1)
+
+				fling:Play()
+
+				wait(3)
+
+				local back_goal = {CFrame = pos}
+				local back_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
+				local back = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
+
+				back:Play()
+			end
+        end
+	end
+end)
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+	if ubg_fling == true then
+		if input.KeyCode == Enum.KeyCode.Four then
+			if game.Players.LocalPlayer.Data:FindFirstChild("Character").Value == "Gon" then
+				local pos = CFrame.new()
+				pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+
+				local fling_goal = {CFrame = CFrame.new(1000,1000,1000)}
+				local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
+				local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+
+				wait(1)
+
+				fling:Play()
+
+				wait(3)
+
+				local back_goal = {CFrame = pos}
+				local back_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
+				local back = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
+
+				back:Play()
+			end
+        end
+	end
+end)
+
+Tab:AddToggle({
+	Name = "fling players",
+	Default = false,
+	Callback = function(Value)
+		ubg_fling = Value
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Gef"
+})
+
+Tab:AddButton({
+	Name = "give item",
+	Callback = function()
+		if game.Workspace.Pickups:FindFirstChild(gef_giveitem) then
+			fireproximityprompt(game.Workspace.Pickups:FindFirstChild(gef_giveitem).ProximityPrompt)
+		else
+			Library:MakeNotification({
+				Name = "Fail!",
+				Content = "give item function couldnt locate the item, because this item doesnt exist now. Please try later.",
+				Image = "",
+				Time = 10
+			})
+		end
+  	end    
+})
+
+Tab:AddDropdown({
+	Name = "item",
+	Default = "none",
+	Options = {"Hammer","Medkit","Lantern","Soda","Food","Bat","Crowbar","GPS","Handgun","Shotgun","Money","Bullets"},
+	Callback = function(Value)
+		gef_giveitem = Value
 	end    
 })
 
@@ -1933,6 +2063,13 @@ Tab:AddTextbox({
 	Callback = function(Value)
 		tp_all_from = Value
 	end	  
+})
+
+Tab:AddButton({
+	Name = "dex explorer",
+	Callback = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/MariyaFurmanova/Library/main/dex2.0", true))()
+  	end    
 })
 
 
@@ -2658,4 +2795,13 @@ Tab:AddToggle({
 	Callback = function(Value)
 		kingl_stats_Fruit = Value
 	end    
+})
+
+local helloplayer = "Hello ".. game.Players.LocalPlayer.Name.. "!"
+
+Library:MakeNotification({
+	Name = helloplayer,
+	Content = "RHACK loaded successfully",
+	Image = "",
+	Time = 10
 })
