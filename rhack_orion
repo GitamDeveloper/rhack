@@ -113,9 +113,11 @@ for i,v in pairs(game.Players:GetChildren()) do
 	end
 end
 
-for i,v in pairs(game.Workspace.Pickups:GetDescendants()) do
-	if v.ClassName == "ProximityPrompt" then
-		table.insert(gef_giveitems, v.Parent.Name)
+if game.Workspace:FindFirstChild("Pickups") then
+	for i,v in pairs(game.Workspace.Pickups:GetDescendants()) do
+		if v.ClassName == "ProximityPrompt" then
+			table.insert(gef_giveitems, v.Parent.Name)
+		end
 	end
 end
 
