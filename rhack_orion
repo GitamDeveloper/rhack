@@ -1,5 +1,8 @@
 local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
+local rhack_version = "0.1"
+local rhack_version_desc = "tsb++"
+
 getgenv().fireproximityprompt=function(pp)
     local oldpos=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
     local oldenabled=pp.Enabled
@@ -30,6 +33,8 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
         Duration = DurationArg
     })
 end
+
+local tsb_autobug1 = false
 
 local tsb_tp_place = "air"
 local tsb_tp_back = true
@@ -1468,7 +1473,7 @@ Tab:AddToggle({
 
 						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								local tween_to_end1_goal = {Position = workspace.BoatStages.NormalStages.CaveStage10.StonePart.Position}
+								local tween_to_end1_goal = {CFrame = workspace.BoatStages.NormalStages.CaveStage10.StonePart.CFrame}
 								local tween_to_end1_info = TweenInfo.new(build_aboat_farmgold_movetime, Enum.EasingStyle.Linear)
 								local tween_to_end1 = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tween_to_end1_info, tween_to_end1_goal)
 
@@ -1686,7 +1691,6 @@ local Section = Tab:AddSection({
 Tab:AddButton({
 	Name = "tp players",
 	Callback = function()
-
 		local pos = CFrame.new(0,0,0)
 		pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 
@@ -1731,6 +1735,10 @@ Tab:AddButton({
 			else
 				if tsb_tp_place == "Atoms" then
 					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").sphere.CFrame
+				else
+					if tsb_tp_place == "Map" then
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Donation Leaderboard").Part.CFrame
+					end
 				end
 			end
 		end
@@ -1792,6 +1800,10 @@ Tab:AddBind({
 			else
 				if tsb_tp_place == "Atoms" then
 					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").sphere.CFrame
+				else
+					if tsb_tp_place == "Map" then
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Donation Leaderboard").Part.CFrame
+					end
 				end
 			end
 		end
@@ -1816,7 +1828,7 @@ Tab:AddDropdown({
 Tab:AddDropdown({
 	Name = "tp place",
 	Default = "air",
-	Options = {"air","Death Cutscene","Atoms"},
+	Options = {"air","Death Cutscene","Atoms","Map"},
 	Callback = function(Value)
 		tsb_tp_place = Value
 	end    
@@ -1829,6 +1841,37 @@ Tab:AddToggle({
 		tsb_tp_back = Value
 	end    
 })
+
+Tab:AddToggle({
+	Name = "atomic auto bug",
+	Default = false,
+	Callback = function(Value)
+		tsb_autobug1 = Value
+	end    
+})
+
+game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
+	if tsb_autobug1 == true then
+		if input.KeyCode == Enum.KeyCode.Two then
+
+			if game.Players.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave") then
+				game.Players.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave").Parent = game.Players.LocalPlayer.Character
+			else
+			end
+
+			wait(1)
+			local ts = game:GetService("TeleportService")
+			local p = game:GetService("Players").LocalPlayer
+			ts:TeleportToPlaceInstance(game.PlaceId, game.JobId, p)
+
+			if game.Players.LocalPlayer.Character:FindFirstChild("Atmos Cleave") then
+				game.Players.LocalPlayer.Character:FindFirstChild("Atmos Cleave").Parent = game.Players.LocalPlayer.Backpack
+			else
+			end
+
+        end
+	end
+end)
 
 local Section = Tab:AddSection({
 	Name = "UBG"
@@ -2849,7 +2892,7 @@ local helloplayer = "Hello ".. game.Players.LocalPlayer.Name.. "!"
 
 Library:MakeNotification({
 	Name = helloplayer,
-	Content = "RHACK loaded successfully",
+	Content = "version ".. rhack_version.. " - ".. rhack_version_desc,
 	Image = "",
 	Time = 10
 })
