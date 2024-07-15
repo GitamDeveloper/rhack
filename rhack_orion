@@ -1,7 +1,7 @@
 local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 local rhack_version = "0.1"
-local rhack_version_desc = "tsb++"
+local rhack_version_desc = "game++"
 
 getgenv().fireproximityprompt=function(pp)
     local oldpos=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -33,6 +33,8 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
         Duration = DurationArg
     })
 end
+
+local join_toid = 0
 
 local tsb_autobug1 = false
 
@@ -1737,7 +1739,13 @@ Tab:AddButton({
 					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").sphere.CFrame
 				else
 					if tsb_tp_place == "Map" then
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Donation Leaderboard").Part.CFrame
+						if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Donation Leaderboard").Part.CFrame
+						else
+							if game.Workspace.Map:FindFirstChild("spone") then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Map:FindFirstChild("spone").CFrame
+							end
+						end
 					end
 				end
 			end
@@ -1802,7 +1810,13 @@ Tab:AddBind({
 					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").sphere.CFrame
 				else
 					if tsb_tp_place == "Map" then
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Donation Leaderboard").Part.CFrame
+						if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Donation Leaderboard").Part.CFrame
+						else
+							if game.Workspace.Map:FindFirstChild("spone") then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Map:FindFirstChild("spone").CFrame
+							end
+						end
 					end
 				end
 			end
@@ -2079,6 +2093,44 @@ Tab:AddTextbox({
 	Callback = function(Value)
 		game.Players.LocalPlayer.CameraMode = Enum.CameraMode.Classic
 		game.Players.LocalPlayer.CameraMaxZoomDistance = Value
+	end	  
+})
+
+local Section = Tab:AddSection({
+	Name = "get server id"
+})
+
+Tab:AddButton({
+	Name = "copy serverid to clipboard",
+	Callback = function()
+		local ts = game:GetService("TeleportService")
+		local p = game:GetService("Players").LocalPlayer
+
+		setclipboard(tostring(game.JobId))
+
+  	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "join to server"
+})
+
+Tab:AddButton({
+	Name = "join",
+	Callback = function()
+		local ts = game:GetService("TeleportService")
+		local p = game:GetService("Players").LocalPlayer
+
+		ts:TeleportToPlaceInstance(game.PlaceId, join_toid, p)
+  	end    
+})
+
+Tab:AddTextbox({
+	Name = "server id",
+	Default = "null",
+	TextDisappear = true,
+	Callback = function(Value)
+		join_toid = Value
 	end	  
 })
 
