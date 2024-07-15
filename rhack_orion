@@ -31,6 +31,9 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local tsb_tp_place = "air"
+local tsb_tp_back = true
+
 
 local gef_giveitems = {"none"}
 local gef_giveitem = "none"
@@ -1720,10 +1723,23 @@ Tab:AddButton({
 			end
 		end
 
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
+		if tsb_tp_place == "air" then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
+		else
+			if tsb_tp_place == "Death Cutscene" then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Death Cutscene").HeadCFrame.CFrame
+			else
+				if tsb_tp_place == "Atoms" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").sphere.CFrame
+				end
+			end
+		end
+
 		wait(3)
 
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+		if tsb_tp_back == true then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+		end
 	end    
 })
 
@@ -1768,10 +1784,23 @@ Tab:AddBind({
 			end
 		end
 
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
+		if tsb_tp_place == "air" then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
+		else
+			if tsb_tp_place == "Death Cutscene" then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Death Cutscene").HeadCFrame.CFrame
+			else
+				if tsb_tp_place == "Atoms" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").sphere.CFrame
+				end
+			end
+		end
+
 		wait(3)
 
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+		if tsb_tp_back == true then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+		end
 	end  
 })
 
@@ -1781,6 +1810,23 @@ Tab:AddDropdown({
 	Options = tsb_tp_nicks,
 	Callback = function(Value)
 		tsb_tp_nick = Value
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "tp place",
+	Default = "air",
+	Options = {"air","Death Cutscene","Atoms"},
+	Callback = function(Value)
+		tsb_tp_place = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "tp back",
+	Default = true,
+	Callback = function(Value)
+		tsb_tp_back = Value
 	end    
 })
 
