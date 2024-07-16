@@ -1864,7 +1864,14 @@ Tab:AddBind({
 							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").ogcircle.CFrame
 						else
 							if tsb_tp_place == "Mountain" then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(395.514648, 699.102539, 398.27771, -0.75630492, -9.94614453e-08, -0.65421927, -6.9310083e-08, 1, -7.19053759e-08, 0.65421927, -9.03839936e-09, -0.75630492)
+
+								if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
+									game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(395.514648, 699.102539, 398.27771, -0.75630492, -9.94614453e-08, -0.65421927, -6.9310083e-08, 1, -7.19053759e-08, 0.65421927, -9.03839936e-09, -0.75630492)
+								else
+									if game.Workspace.Map:FindFirstChild("spone") then
+										game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(490.736969, 688.797913, -362.606781, 0.826861322, -9.94782567e-09, -0.562405884, 7.48708917e-09, 1, -6.6803012e-09, 0.562405884, 1.31289934e-09, 0.826861322)
+									end
+								end
 							end
 						end
 					end
@@ -1892,7 +1899,7 @@ Tab:AddDropdown({
 Tab:AddDropdown({
 	Name = "tp place",
 	Default = "air",
-	Options = {"air","Death Cutscene","Atoms","Map","Map2","Mountain"},
+	Options = {"air","Death Cutscene","Atoms","Map","Map2","Mountain",
 	Callback = function(Value)
 		tsb_tp_place = Value
 	end    
@@ -2119,28 +2126,24 @@ Tab:AddButton({
 Tab:AddDropdown({
 	Name = "item",
 	Default = "none",
-	Options = {"Hammer","Medkit","Lantern","Soda","Food","Bat","Crowbar","GPS","Handgun","Shotgun","Money","Bullets"},
+	Options = {"Hammer","Medkit","Lantern","Soda","Food","Bat","Crowbar","GPS","Handgun","Shotgun","Money","Bullets","Shells"},
 	Callback = function(Value)
 		gef_giveitem = Value
 	end    
 })
 
 Tab:AddButton({
-	Name = "do nearest item unpickable",
+	Name = "do nearest items unpickable",
 	Callback = function()
-		if game.Workspace.Pickups:FindFirstChild(gef_giveitem) then
-			local dist = (game.Workspace.Pickups:FindFirstChild(gef_giveitem).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+		for i,v in game.Workspace.Pickups:GetDescendants() do
+			if v.ClassName == "ProximityPrompt" then
+			else
+				local dist = (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
 
-			if dist <= 10 then
-				game.Workspace.Pickups:FindFirstChild(gef_giveitem).Name = "given"
+				if dist <= 10 then
+					v.Name = "given"
+				end
 			end
-		else
-			Library:MakeNotification({
-				Name = "Fail!",
-				Content = "do unpickable function couldnt locate the item, because this item doesnt exist now. Please try later.",
-				Image = "",
-				Time = 10
-			})
 		end
   	end    
 })
