@@ -1,7 +1,7 @@
 local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 local rhack_version = "0.1"
-local rhack_version_desc = "game++"
+local rhack_version_desc = "visual fix+++"
 
 getgenv().fireproximityprompt=function(pp)
     local oldpos=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -33,6 +33,12 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
         Duration = DurationArg
     })
 end
+
+local tween_to_time = 1
+local tp_to_mode = "tp"
+
+local ubg_fling_back = true
+local ubg_fling_place = "air"
 
 local join_toid = 0
 
@@ -239,16 +245,6 @@ local playerl
 local eplayer = game:GetService("Players").LocalPlayer
 
 local Window = Library:MakeWindow({Name = "RHACK orion", HidePremium = true, SaveConfig = false, ConfigFolder = "rhack_orion", IntroEnabled = true, IntroText = "RHACK", IntroIcon = "rbxassetid://14995912169", Icon = "rbxassetid://14995912169"})
-
-local Tab = Window:MakeTab({
-	Name = "Main",
-	Icon = "",
-	PremiumOnly = false
-})
-
-local Section = Tab:AddSection({
-	Name = "Humanoid Values"
-})
 
 local hb_tp = Instance.new("Part")
 hb_tp.Anchored = true
@@ -531,6 +527,16 @@ game:GetService("UserInputService").InputEnded:Connect(function(input, isProcess
     end
 end)
 
+local Tab = Window:MakeTab({
+	Name = "Main",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Humanoid Values"
+})
+
 Tab:AddTextbox({
 	Name = "Speed",
 	Default = "value",
@@ -576,41 +582,7 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
-Tab:AddToggle({
-	Name = "trigger bot",
-	Default = false,
-	Callback = function(Value)
-		if Value == true then
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/VapingCat/Open-Source-TriggerBot/main/script.lua"))()
-		end
-	end    
-})
-
 local l_targ
-
-Tab:AddToggle({
-	Name = "wall shot",
-	Default = false,
-	Callback = function(Value)
-		if Value == true then
-			ws_oo = true
-			game.Workspace:FindFirstChild("Decoration"):Clone().Parent = game.Players
-			game.Workspace:FindFirstChild("Decoration").Parent = eplayer.Character
-		else
-			ws_oo = false
-			--eplayer.Character:FindFirstChild("Decoration").Parent = game.Workspace
-		end
-	end    
-})
-
-Tab:AddBind({
-	Name = "load map back",
-	Default = Enum.KeyCode.E,
-	Hold = false,
-	Callback = function()
-		game.Players:FindFirstChild("Decoration"):Clone().Parent = eplayer.Character
-	end    
-})
 
 local Section = Tab:AddSection({
 	Name = "Hit boxes"
@@ -782,7 +754,7 @@ Tab:AddDropdown({
 
 Tab:AddBind({
 	Name = "reload",
-	Default = Enum.KeyCode.C,
+	Default = Enum.KeyCode.F7,
 	Hold = false,
 	Callback = function()
 		hitb_oo = false
@@ -861,19 +833,8 @@ local Tab = Window:MakeTab({
 
 local esp_type = "highlight"
 
-Tab:AddDropdown({
-	Name = "type",
-	Default = "highlight",
-	Options = {"3d model", "highlight"},
-	Callback = function(Value)
-		if Value == "3d model" then
-			esp_type = "3d model"
-		end
-
-		if Value == "highlight" then
-			esp_type = "highlight"
-		end
-	end    
+local Section = Tab:AddSection({
+	Name = "esp"
 })
 
 Tab:AddToggle({
@@ -898,6 +859,21 @@ Tab:AddToggle({
                 	end
             	end
         	end
+		end
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "type",
+	Default = "highlight",
+	Options = {"3d model", "highlight"},
+	Callback = function(Value)
+		if Value == "3d model" then
+			esp_type = "3d model"
+		end
+
+		if Value == "highlight" then
+			esp_type = "highlight"
 		end
 	end    
 })
@@ -1006,8 +982,12 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local Section = Tab:AddSection({
+	Name = "air jump"
+})
+
 Tab:AddToggle({
-	Name = "air jump",
+	Name = "on / off",
 	Default = false,
 	Callback = function(Value)
 		if Value == true then
@@ -1055,8 +1035,12 @@ function clip()
     Clip = false
 end
 
+local Section = Tab:AddSection({
+	Name = "no clip"
+})
+
 Tab:AddToggle({
-	Name = "noclip",
+	Name = "on / off",
 	Default = false,
 	Callback = function(Value)
 		if Value == true then
@@ -1069,10 +1053,24 @@ Tab:AddToggle({
 	end    
 })
 
+local Section = Tab:AddSection({
+	Name = "tp to players"
+})
+
 Tab:AddButton({
 	Name = "tp to player",
 	Callback = function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(tpto_plr).Character.HumanoidRootPart.CFrame
+		if tp_to_mode == "tp" then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(tpto_plr).Character.HumanoidRootPart.CFrame
+		else
+			if tp_to_mode == "tween" then
+				local tween_goal = {CFrame = game.Players:FindFirstChild(tpto_plr).Character.HumanoidRootPart.CFrame}
+				local tween_info = TweenInfo.new(tween_to_time, Enum.EasingStyle.Linear)
+				local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tween_info, tween_goal)
+
+				tween:Play()
+			end
+		end
   	end    
 })
 
@@ -1081,8 +1079,37 @@ Tab:AddTextbox({
 	Default = "user name",
 	TextDisappear = true,
 	Callback = function(Value)
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(Value).Character.HumanoidRootPart.CFrame
+		if tp_to_mode == "tp" then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(Value).Character.HumanoidRootPart.CFrame
+		else
+			if tp_to_mode == "tween" then
+				local tween_goal = {CFrame = game.Players:FindFirstChild(Value).Character.HumanoidRootPart.CFrame}
+				local tween_info = TweenInfo.new(tween_to_time, Enum.EasingStyle.Linear)
+				local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tween_info, tween_goal)
+
+				tween:Play()
+			end
+		end
+
 		tpto_plr = Value
+	end	  
+})
+
+Tab:AddDropdown({
+	Name = "mode",
+	Default = "tp",
+	Options = {"tp","tween"},
+	Callback = function(Value)
+		tp_to_mode = Value
+	end    
+})
+
+Tab:AddTextbox({
+	Name = "tween time",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		tween_to_time = tonumber(Value)
 	end	  
 })
 
@@ -1746,6 +1773,21 @@ Tab:AddButton({
 								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Map:FindFirstChild("spone").CFrame
 							end
 						end
+					else
+						if tsb_tp_place == "Map2" then
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").ogcircle.CFrame
+						else
+							if tsb_tp_place == "Mountain" then
+
+								if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
+									game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(395.514648, 699.102539, 398.27771, -0.75630492, -9.94614453e-08, -0.65421927, -6.9310083e-08, 1, -7.19053759e-08, 0.65421927, -9.03839936e-09, -0.75630492)
+								else
+									if game.Workspace.Map:FindFirstChild("spone") then
+										game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(490.736969, 688.797913, -362.606781, 0.826861322, -9.94782567e-09, -0.562405884, 7.48708917e-09, 1, -6.6803012e-09, 0.562405884, 1.31289934e-09, 0.826861322)
+									end
+								end
+							end
+						end
 					end
 				end
 			end
@@ -1761,7 +1803,7 @@ Tab:AddButton({
 
 Tab:AddBind({
 	Name = "tp players",
-	Default = Enum.KeyCode.R,
+	Default = Enum.KeyCode.F7,
 	Hold = false,
 	Callback = function()
 		local pos = CFrame.new(0,0,0)
@@ -1817,6 +1859,14 @@ Tab:AddBind({
 								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Map:FindFirstChild("spone").CFrame
 							end
 						end
+					else
+						if tsb_tp_place == "Map2" then
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").ogcircle.CFrame
+						else
+							if tsb_tp_place == "Mountain" then
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(395.514648, 699.102539, 398.27771, -0.75630492, -9.94614453e-08, -0.65421927, -6.9310083e-08, 1, -7.19053759e-08, 0.65421927, -9.03839936e-09, -0.75630492)
+							end
+						end
 					end
 				end
 			end
@@ -1842,7 +1892,7 @@ Tab:AddDropdown({
 Tab:AddDropdown({
 	Name = "tp place",
 	Default = "air",
-	Options = {"air","Death Cutscene","Atoms","Map"},
+	Options = {"air","Death Cutscene","Atoms","Map","Map2","Mountain"},
 	Callback = function(Value)
 		tsb_tp_place = Value
 	end    
@@ -1905,21 +1955,35 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, isProcess
 				local pos = CFrame.new()
 				pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 
-				local fling_goal = {CFrame = CFrame.new(1000,1000,1000)}
-				local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-				local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+				if ubg_fling_place == "air" then
+					local fling_goal = {CFrame = CFrame.new(1000,1000,1000)}
+					local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
+					local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
 
-				wait(1)
+					wait(1)
 
-				fling:Play()
+					fling:Play()
+				else
+					if ubg_fling_place == "castle" then
+						local fling_goal = {CFrame = CFrame.new(586.419067, 120.410744, -499.891113, -3.6525809e-14, -4.33599396e-08, -1, -3.07723127e-08, 1, -4.33599396e-08, 1, 3.07723127e-08, -3.78600925e-14)}
+						local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
+						local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+
+						wait(1)
+
+						fling:Play()
+					end
+				end
 
 				wait(3)
 
-				local back_goal = {CFrame = pos}
-				local back_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-				local back = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
+				if ubg_fling_back == true then
+					local back_goal = {CFrame = pos}
+					local back_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
+					local back = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
 
-				back:Play()
+					back:Play()
+				end
 			end
         end
 	end
@@ -1932,21 +1996,35 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, isProcess
 				local pos = CFrame.new()
 				pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 
-				local fling_goal = {CFrame = CFrame.new(1000,1000,1000)}
-				local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-				local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+				if ubg_fling_place == "air" then
+					local fling_goal = {CFrame = CFrame.new(1000,1000,1000)}
+					local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
+					local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
 
-				wait(1)
+					wait(1)
 
-				fling:Play()
+					fling:Play()
+				else
+					if ubg_fling_place == "castle" then
+						local fling_goal = {CFrame = CFrame.new(586.419067, 120.410744, -499.891113, -3.6525809e-14, -4.33599396e-08, -1, -3.07723127e-08, 1, -4.33599396e-08, 1, 3.07723127e-08, -3.78600925e-14)}
+						local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
+						local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+
+						wait(1)
+
+						fling:Play()
+					end
+				end
 
 				wait(3)
 
-				local back_goal = {CFrame = pos}
-				local back_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-				local back = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
+				if ubg_fling_back == true then
+					local back_goal = {CFrame = pos}
+					local back_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
+					local back = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
 
-				back:Play()
+					back:Play()
+				end
 			end
         end
 	end
@@ -1959,21 +2037,35 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, isProcess
 				local pos = CFrame.new()
 				pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 
-				local fling_goal = {CFrame = CFrame.new(1000,1000,1000)}
-				local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-				local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+				if ubg_fling_place == "air" then
+					local fling_goal = {CFrame = CFrame.new(1000,1000,1000)}
+					local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
+					local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
 
-				wait(1)
+					wait(1)
 
-				fling:Play()
+					fling:Play()
+				else
+					if ubg_fling_place == "castle" then
+						local fling_goal = {CFrame = CFrame.new(586.419067, 120.410744, -499.891113, -3.6525809e-14, -4.33599396e-08, -1, -3.07723127e-08, 1, -4.33599396e-08, 1, 3.07723127e-08, -3.78600925e-14)}
+						local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
+						local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+
+						wait(1)
+
+						fling:Play()
+					end
+				end
 
 				wait(3)
 
-				local back_goal = {CFrame = pos}
-				local back_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-				local back = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
+				if ubg_fling_back == true then
+					local back_goal = {CFrame = pos}
+					local back_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
+					local back = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
 
-				back:Play()
+					back:Play()
+				end
 			end
         end
 	end
@@ -1984,6 +2076,23 @@ Tab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		ubg_fling = Value
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "place",
+	Default = "air",
+	Options = {"air","castle"},
+	Callback = function(Value)
+		ubg_fling_place = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "tp back",
+	Default = true,
+	Callback = function(Value)
+		ubg_fling_back = Value
 	end    
 })
 
@@ -2014,6 +2123,26 @@ Tab:AddDropdown({
 	Callback = function(Value)
 		gef_giveitem = Value
 	end    
+})
+
+Tab:AddButton({
+	Name = "do nearest item unpickable",
+	Callback = function()
+		if game.Workspace.Pickups:FindFirstChild(gef_giveitem) then
+			local dist = (game.Workspace.Pickups:FindFirstChild(gef_giveitem).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+
+			if dist <= 10 then
+				game.Workspace.Pickups:FindFirstChild(gef_giveitem).Name = "given"
+			end
+		else
+			Library:MakeNotification({
+				Name = "Fail!",
+				Content = "do unpickable function couldnt locate the item, because this item doesnt exist now. Please try later.",
+				Image = "",
+				Time = 10
+			})
+		end
+  	end    
 })
 
 
@@ -2140,7 +2269,7 @@ local Section = Tab:AddSection({
 
 Tab:AddBind({
 	Name = "On_Off",
-	Default = Enum.KeyCode.X,
+	Default = Enum.KeyCode.F7,
 	Hold = false,
 	Callback = function()
 		if autoclick == false then
