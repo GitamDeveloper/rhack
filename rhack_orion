@@ -1,7 +1,7 @@
 local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 local rhack_version = "0.1"
-local rhack_version_desc = "visual fix+++"
+local rhack_version_desc = "tsb+"
 
 getgenv().fireproximityprompt=function(pp)
     local oldpos=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -974,6 +974,31 @@ Tab:AddTextbox({
 	Callback = function(Value)
 		game.Players.LocalPlayer.Data.Beli.Value = Value
 	end	  
+})
+
+local Section = Tab:AddSection({
+	Name = "tsb"
+})
+
+Tab:AddToggle({
+	Name = "death_counter alert",
+	Default = false,
+	Callback = function(Value)
+		tsb_deathcounter_alert = Value
+		while tsb_deathcounter_alert == true and wait(0.1) do
+			for i,v in game.Workspace.Live:GetDescendants() do
+				if v.Name == "Counter" then
+					local alert = Instance.new("Highlight",v.Parent)
+	                alert.FillColor = Color3.fromRGB(252, 3, 3)
+                    alert.Name = "alert"
+				else
+					if v:FindFirstChild("alert") then
+						v:FindFirstChild("alert"):Destroy()
+					end
+				end
+			end
+		end
+	end    
 })
 
 local Tab = Window:MakeTab({
