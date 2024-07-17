@@ -1899,7 +1899,7 @@ Tab:AddDropdown({
 Tab:AddDropdown({
 	Name = "tp place",
 	Default = "air",
-	Options = {"air","Death Cutscene","Atoms","Map","Map2","Mountain",
+	Options = {"air","Death Cutscene","Atoms","Map","Map2","Mountain"},
 	Callback = function(Value)
 		tsb_tp_place = Value
 	end    
