@@ -2173,6 +2173,28 @@ Tab:AddButton({
   	end    
 })
 
+local Section = Tab:AddSection({
+	Name = "kns"
+})
+
+Tab:AddBind({
+	Name = "tp to gunstore 1",
+	Default = Enum.KeyCode.F7,
+	Hold = false,
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-112.885941, 8.05029392, -265.671356, -0.489635348, 2.02202912e-08, -0.871927321, 8.79741933e-08, 1, -2.62120299e-08, 0.871927321, -8.95414374e-08, -0.489635348)
+	end    
+})
+
+Tab:AddBind({
+	Name = "tp to gunstore 2",
+	Default = Enum.KeyCode.F7,
+	Hold = false,
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(210.395386, 8.23800564, 347.192963, -0.228686452, -1.22251265e-07, 0.973500133, -1.71884302e-08, 1, 1.21541333e-07, -0.973500133, 1.10619158e-08, -0.228686452)
+	end    
+})
+
 
 
 local Tab = Window:MakeTab({
