@@ -581,61 +581,6 @@ Tab:AddDropdown({
 	end    
 })
 
-local Section = Tab:AddSection({
-	Name = "invisible"
-})
-
-local safe_part = Instance.new("Part", game.Workspace)
-safe_part.Anchored = true
-safe_part.Size = Vector3.new(10,1,10)
-safe_part.Position = Vector3.new(0,2000,0)
-
-Tab:AddBind({
-	Name = "invisible and god mode",
-	Default = Enum.KeyCode.F7,
-	Hold = false,
-	Callback = function()
-		if tsb_invisible == false then
-			tsb_invisible = true
-
-			game.Players.LocalPlayer.Character:Clone().Parent = game.Workspace.Live
-			game.Players.LocalPlayer.Character.Parent = game.Workspace
-
-			local char = game.Workspace.Live:FindFirstChild(game.Players.LocalPlayer.Name)
-
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,2100,0)
-
-			local speed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
-			local jump = game.Players.LocalPlayer.Character.Humanoid.JumpPower
-			local Maxh = game.Players.LocalPlayer.Character.Humanoid.MaxHealth
-			local h = game.Players.LocalPlayer.Character.Humanoid.Health
-
-			game.Workspace.Camera.CameraSubject = char
-			game.Players.LocalPlayer.Character = char
-
-			char.Humanoid.WalkSpeed = speed
-			char.Humanoid.JumpPower = jump
-			char.Humanoid.MaxHealth = Maxh
-			char.Humanoid.Health = h
-		else
-			tsb_invisible = false
-
-			game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-			game.Players.LocalPlayer.Character = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name)
-			game.Workspace.Camera.CameraSubject = game.Players.LocalPlayer.Character
-			if game.Workspace.Live:FindFirstChild(game.Players.LocalPlayer.Name) then
-				game.Workspace.Live:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
-			end
-
-			game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).Parent = game.Workspace.Live
-
-			if game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name) then
-				game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
-			end
-		end
-	end    
-})
-
 local Tab = Window:MakeTab({
 	Name = "Combat",
 	Icon = "",
@@ -2059,6 +2004,57 @@ Tab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		tsb_autobug1 = Value
+	end    
+})
+
+local safe_part = Instance.new("Part", game.Workspace)
+safe_part.Anchored = true
+safe_part.Size = Vector3.new(10,1,10)
+safe_part.Position = Vector3.new(0,2000,0)
+
+Tab:AddBind({
+	Name = "invisible and god mode",
+	Default = Enum.KeyCode.F7,
+	Hold = false,
+	Callback = function()
+		if tsb_invisible == false then
+			tsb_invisible = true
+
+			game.Players.LocalPlayer.Character:Clone().Parent = game.Workspace.Live
+			game.Players.LocalPlayer.Character.Parent = game.Workspace
+
+			local char = game.Workspace.Live:FindFirstChild(game.Players.LocalPlayer.Name)
+
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,2100,0)
+
+			local speed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+			local jump = game.Players.LocalPlayer.Character.Humanoid.JumpPower
+			local Maxh = game.Players.LocalPlayer.Character.Humanoid.MaxHealth
+			local h = game.Players.LocalPlayer.Character.Humanoid.Health
+
+			game.Workspace.Camera.CameraSubject = char
+			game.Players.LocalPlayer.Character = char
+
+			char.Humanoid.WalkSpeed = speed
+			char.Humanoid.JumpPower = jump
+			char.Humanoid.MaxHealth = Maxh
+			char.Humanoid.Health = h
+		else
+			tsb_invisible = false
+
+			game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+			game.Players.LocalPlayer.Character = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name)
+			game.Workspace.Camera.CameraSubject = game.Players.LocalPlayer.Character
+			if game.Workspace.Live:FindFirstChild(game.Players.LocalPlayer.Name) then
+				game.Workspace.Live:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
+			end
+
+			game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).Parent = game.Workspace.Live
+
+			if game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name) then
+				game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
+			end
+		end
 	end    
 })
 
