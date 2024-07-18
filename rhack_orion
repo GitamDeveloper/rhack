@@ -1126,14 +1126,22 @@ Tab:AddButton({
 	Name = "tp to player",
 	Callback = function()
 		if tp_to_mode == "tp" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(tpto_plr).Character.HumanoidRootPart.CFrame
+			if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+				if game.Players:FindFirstChild(tpto_plr).Character:FindFirstChild("HumanoidRootPart") then
+					game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = game.Players:FindFirstChild(tpto_plr).Character:FindFirstChild("HumanoidRootPart").CFrame
+				end
+			end
 		else
 			if tp_to_mode == "tween" then
-				local tween_goal = {CFrame = game.Players:FindFirstChild(tpto_plr).Character.HumanoidRootPart.CFrame}
-				local tween_info = TweenInfo.new(tween_to_time, Enum.EasingStyle.Linear)
-				local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tween_info, tween_goal)
+				if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+					if game.Players:FindFirstChild(tpto_plr).Character:FindFirstChild("HumanoidRootPart") then
+						local tween_goal = {CFrame = game.Players:FindFirstChild(tpto_plr).Character:FindFirstChild("HumanoidRootPart").CFrame}
+						local tween_info = TweenInfo.new(tween_to_time, Enum.EasingStyle.Linear)
+						local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
 
-				tween:Play()
+						tween:Play()
+					end
+				end
 			end
 		end
   	end    
@@ -1145,14 +1153,22 @@ Tab:AddTextbox({
 	TextDisappear = true,
 	Callback = function(Value)
 		if tp_to_mode == "tp" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players:FindFirstChild(Value).Character.HumanoidRootPart.CFrame
+			if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+				if game.Players:FindFirstChild(Value).Character:FindFirstChild("HumanoidRootPart") then
+					game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = game.Players:FindFirstChild(Value).Character:FindFirstChild("HumanoidRootPart").CFrame
+				end
+			end
 		else
 			if tp_to_mode == "tween" then
-				local tween_goal = {CFrame = game.Players:FindFirstChild(Value).Character.HumanoidRootPart.CFrame}
-				local tween_info = TweenInfo.new(tween_to_time, Enum.EasingStyle.Linear)
-				local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tween_info, tween_goal)
+				if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+					if game.Players:FindFirstChild(Value).Character:FindFirstChild("HumanoidRootPart") then
+						local tween_goal = {CFrame = game.Players:FindFirstChild(Value).Character:FindFirstChild("HumanoidRootPart").CFrame}
+						local tween_info = TweenInfo.new(tween_to_time, Enum.EasingStyle.Linear)
+						local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
 
-				tween:Play()
+						tween:Play()
+					end
+				end
 			end
 		end
 
@@ -2232,6 +2248,33 @@ Tab:AddBind({
 	Hold = false,
 	Callback = function()
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(210.395386, 8.23800564, 347.192963, -0.228686452, -1.22251265e-07, 0.973500133, -1.71884302e-08, 1, 1.21541333e-07, -0.973500133, 1.10619158e-08, -0.228686452)
+	end    
+})
+
+Tab:AddBind({
+	Name = "tp to roof 1",
+	Default = Enum.KeyCode.F7,
+	Hold = false,
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-209.409698, 68.7502899, -235.377487, -0.999950945, -6.89230859e-08, -0.00990741327, -6.89319606e-08, 1, 5.5487509e-10, 0.00990741327, 1.23778532e-09, -0.999950945)
+	end    
+})
+
+Tab:AddBind({
+	Name = "tp to roof 2",
+	Default = Enum.KeyCode.F7,
+	Hold = false,
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(182.125793, 83.3077393, -275.312622, -0.0291994028, 1.69564505e-08, 0.999573588, 1.22869634e-08, 1, -1.66047585e-08, -0.999573588, 1.17968755e-08, -0.0291994028)
+	end    
+})
+
+Tab:AddBind({
+	Name = "tp to roof 3",
+	Default = Enum.KeyCode.F7,
+	Hold = false,
+	Callback = function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(183.735428, 58.8880157, 89.4560928, 0.0663244277, 1.08560432e-08, 0.997798085, -2.3146054e-08, 1, -9.3414636e-09, -0.997798085, -2.24755219e-08, 0.0663244277)
 	end    
 })
 
