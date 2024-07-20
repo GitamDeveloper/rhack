@@ -34,6 +34,17 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local project_s_wagonquesttake_tween = false
+local project_s_ricequesttake_tween = false
+
+local project_s_wagonfarm_tween = false
+local project_s_wagonfarm = false
+local project_s_ricefarm = false
+local project_s_ricefarm_count = 0
+
+local invs_time = 1
+local invs_mode = "tp"
+ 
 local ubg_target_enem = "null"
 local ubg_fling_target = false
 
@@ -533,6 +544,59 @@ game:GetService("UserInputService").InputEnded:Connect(function(input, isProcess
 end)
 
 local Tab = Window:MakeTab({
+	Name = "Help",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Common problems"
+})
+
+Tab:AddButton({
+	Name = "if u have problems with tweens or movement",
+	Callback = function()
+		Library:MakeNotification({
+			Name = "Answer:",
+			Content = "You can try enable noclip (Movement > noclip)",
+			Image = "",
+			Time = 10
+		})
+	end    
+})
+
+Tab:AddButton({
+	Name = "if u have problems with the GUI",
+	Callback = function()
+		Library:MakeNotification({
+			Name = "Answer:",
+			Content = "If u on mobile or any other device except PC (Windows) this is maybe normal",
+			Image = "",
+			Time = 10
+		})
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Other problems or Common problems didnt help"
+})
+
+Tab:AddButton({
+	Name = "u can contact me on discord (de_enote)",
+	Callback = function()
+
+		setclipboard(tostring("de_enote"))
+
+		Library:MakeNotification({
+			Name = "Discord",
+			Content = "Copied to clipboard",
+			Image = "",
+			Time = 10
+		})
+	end    
+})
+
+local Tab = Window:MakeTab({
 	Name = "Main",
 	Icon = "",
 	PremiumOnly = false
@@ -578,6 +642,151 @@ Tab:AddDropdown({
 		if Value == "update" then
 			aac_oo = true
 		end
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "Character"
+})
+
+local safe_part = Instance.new("Part", game.Workspace)
+safe_part.Anchored = true
+safe_part.Size = Vector3.new(10,1,10)
+safe_part.Position = Vector3.new(0,2000,0)
+
+local invs_clones = Instance.new("Folder",game.Workspace)
+invs_clones.Name = "invs_clones"
+
+Tab:AddBind({
+	Name = "invisible and god mode",
+	Default = Enum.KeyCode.F7,
+	Hold = false,
+	Callback = function()
+		if tsb_invisible == false then
+			tsb_invisible = true
+
+			game.Players.LocalPlayer.Character:Clone().Parent = game.Workspace.invs_clones
+			game.Players.LocalPlayer.Character.Parent = game.Workspace
+
+			local char = game.Workspace.invs_clones:FindFirstChild(game.Players.LocalPlayer.Name)
+
+			if invs_mode == "tp" then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,2100,0)
+			else
+				if invs_mode == "tween" then
+					local tween_goal = {CFrame = CFrame.new(0,2100,0)}
+					local tween_info = TweenInfo.new(invs_time, Enum.EasingStyle.Linear)
+					local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+
+					tween:Play()
+				end
+			end
+
+			local speed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+			local jump = game.Players.LocalPlayer.Character.Humanoid.JumpPower
+			local Maxh = game.Players.LocalPlayer.Character.Humanoid.MaxHealth
+			local h = game.Players.LocalPlayer.Character.Humanoid.Health
+
+			game.Workspace.Camera.CameraSubject = char.Humanoid
+			game.Players.LocalPlayer.Character = char
+
+			char.Humanoid.WalkSpeed = speed
+			char.Humanoid.JumpPower = jump
+			char.Humanoid.MaxHealth = Maxh
+			char.Humanoid.Health = h
+		else
+			tsb_invisible = false
+
+			if invs_mode == "tp" then
+				game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+			else
+				if invs_mode == "tween" then
+					local tween_goal = {CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame}
+					local tween_info = TweenInfo.new(invs_time, Enum.EasingStyle.Linear)
+					local tween = game:GetService("TweenService"):Create(game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).HumanoidRootPart.CFrame, tween_info, tween_goal)
+
+					tween:Play()
+				end
+			end
+
+			game.Players.LocalPlayer.Character = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name)
+			game.Workspace.Camera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+			if game.Workspace.invs_clones:FindFirstChild(game.Players.LocalPlayer.Name) then
+				game.Workspace.invs_clones:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
+			end
+
+			game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).Parent = game.Workspace.invs_clones
+
+			if game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name) then
+				game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
+			end
+		end
+	end    
+})
+
+Tab:AddDropdown({
+	Name = "move mode",
+	Default = "tp",
+	Options = {"tp", "tween"},
+	Callback = function(Value)
+		invs_mode = Value
+	end    
+})
+
+Tab:AddTextbox({
+	Name = "tween time",
+	Default = "number",
+	TextDisappear = true,
+	Callback = function(Value)
+		invs_time = tonumber(Value)
+	end	  
+})
+
+local bug_clones = Instance.new("Folder",game.Workspace)
+bug_clones.Name = "bug_clones"
+
+Tab:AddButton({
+	Name = "this is for dev (dont press)",
+	Callback = function()
+		for i,v in game.Workspace.bug_clones:GetDescendants() do
+			v:Destroy()
+		end
+
+
+		game.Players.LocalPlayer.Character:Clone().Parent = bug_clones
+		game.Players.LocalPlayer.Character.Parent = game.Workspace
+
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,2100,0)
+
+		local speed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+		local jump = game.Players.LocalPlayer.Character.Humanoid.JumpPower
+		local Maxh = game.Players.LocalPlayer.Character.Humanoid.MaxHealth
+		local h = game.Players.LocalPlayer.Character.Humanoid.Health
+
+		game.Workspace.Camera.CameraSubject = game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name).Humanoid
+		game.Players.LocalPlayer.Character = game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name)
+
+		game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name).Humanoid.WalkSpeed = speed
+		game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name).Humanoid.JumpPower = jump
+		game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name).Humanoid.MaxHealth = Maxh
+		game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name).Humanoid.Health = h
+
+		wait(1)
+
+		print("hhh")
+		game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+		game.Players.LocalPlayer.Character = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name)
+		game.Workspace.Camera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+		if game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name) then
+			game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
+		end
+
+		game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).Parent = game.Workspace.bug_clones
+
+		if game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name) then
+			game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
+		end
+
 	end    
 })
 
@@ -2007,57 +2216,6 @@ Tab:AddToggle({
 	end    
 })
 
-local safe_part = Instance.new("Part", game.Workspace)
-safe_part.Anchored = true
-safe_part.Size = Vector3.new(10,1,10)
-safe_part.Position = Vector3.new(0,2000,0)
-
-Tab:AddBind({
-	Name = "invisible and god mode",
-	Default = Enum.KeyCode.F7,
-	Hold = false,
-	Callback = function()
-		if tsb_invisible == false then
-			tsb_invisible = true
-
-			game.Players.LocalPlayer.Character:Clone().Parent = game.Workspace.Live
-			game.Players.LocalPlayer.Character.Parent = game.Workspace
-
-			local char = game.Workspace.Live:FindFirstChild(game.Players.LocalPlayer.Name)
-
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,2100,0)
-
-			local speed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
-			local jump = game.Players.LocalPlayer.Character.Humanoid.JumpPower
-			local Maxh = game.Players.LocalPlayer.Character.Humanoid.MaxHealth
-			local h = game.Players.LocalPlayer.Character.Humanoid.Health
-
-			game.Workspace.Camera.CameraSubject = char
-			game.Players.LocalPlayer.Character = char
-
-			char.Humanoid.WalkSpeed = speed
-			char.Humanoid.JumpPower = jump
-			char.Humanoid.MaxHealth = Maxh
-			char.Humanoid.Health = h
-		else
-			tsb_invisible = false
-
-			game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-			game.Players.LocalPlayer.Character = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name)
-			game.Workspace.Camera.CameraSubject = game.Players.LocalPlayer.Character
-			if game.Workspace.Live:FindFirstChild(game.Players.LocalPlayer.Name) then
-				game.Workspace.Live:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
-			end
-
-			game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).Parent = game.Workspace.Live
-
-			if game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name) then
-				game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
-			end
-		end
-	end    
-})
-
 game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
 	if tsb_autobug1 == true then
 		if input.KeyCode == Enum.KeyCode.Two then
@@ -2333,7 +2491,6 @@ Tab:AddBind({
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(183.735428, 58.8880157, 89.4560928, 0.0663244277, 1.08560432e-08, 0.997798085, -2.3146054e-08, 1, -9.3414636e-09, -0.997798085, -2.24755219e-08, 0.0663244277)
 	end    
 })
-
 
 
 local Tab = Window:MakeTab({
@@ -3255,6 +3412,169 @@ Tab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		kingl_stats_Fruit = Value
+	end    
+})
+
+function project_s_removequest()
+	local args = {
+    	[1] = "removequest",
+    	[2] = game:GetService("ReplicatedStorage").Player_Data.scriptgDev3.Quest
+	}
+
+	game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(unpack(args))
+end
+
+function project_s_ricequesttake()
+	local args = {
+    	[1] = "AddQuest",
+    	[2] = "Players.scriptgDev3.PlayerGui.Npc_Dialogue.LocalScript.Functions",
+    	[3] = 122556.271684684,
+    	[4] = game:GetService("ReplicatedStorage").Player_Data.scriptgDev3.Quest,
+    	[5] = {
+        	["List"] = {
+            	[1] = {
+                	["Name"] = "pick 4 strings of rice",
+                	["Progress"] = {
+                    	[1] = 0,
+                    	[2] = 4
+                	}
+            	}
+        	},
+        	["Current"] = "Help Sarah pick rice"
+    	}
+	}
+
+	if game.Workspace:FindFirstChild("Sarah"):FindFirstChild("HumanoidRootPart") then
+		if project_s_ricequesttake_tween == false then
+			project_s_ricequesttake_tween = true
+			local tween_goal = {CFrame = game.Workspace:FindFirstChild("Sarah").HumanoidRootPart.CFrame}
+			local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
+			local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+
+			tween:Play()
+			wait(2)
+			project_s_ricequesttake_tween = false
+		end
+	else
+		if project_s_ricequesttake_tween == false then
+			project_s_ricequesttake_tween = true
+			local tween_goal = {CFrame = CFrame.new(-109.333763, 282.296783, -1697.01953, -0.602081895, -1.32820768e-08, -0.798434317, 8.54455062e-10, 1, -1.72794792e-08, 0.798434317, -1.10858878e-08, -0.602081895)}
+			local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
+			local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+
+			tween:Play()
+			wait(2)
+			project_s_ricequesttake_tween = false
+		end
+	end
+	game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(unpack(args))
+end
+
+function project_s_wagonquesttake()
+	local args = {
+    	[1] = "AddQuest",
+    	[2] = "Players.scriptgDev3.PlayerGui.Npc_Dialogue.LocalScript.Functions",
+    	[3] = 131263.249807559,
+    	[4] = game:GetService("ReplicatedStorage").Player_Data.scriptgDev3.Quest,
+    	[5] = {
+       		["List"] = {
+            	[1] = {
+                	["Name"] = "Deliver wagon",
+                	["Progress"] = {
+                    	[1] = 0,
+                    	[2] = 1
+                	}
+            	}
+        	},
+        	["Current"] = "Deliver grandpa Wagwon's wagon"
+    	}
+	}
+
+	if game.Workspace:FindFirstChild("Grandpa Wagwon"):FindFirstChild("HumanoidRootPart") then
+		if project_s_wagonquesttake_tween == false then
+			project_s_wagonquesttake_tween = true
+			local tween_goal = {CFrame = game.Workspace:FindFirstChild("Grandpa Wagwon").HumanoidRootPart.CFrame}
+			local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
+			local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+
+			tween:Play()
+			wait(2)
+			project_s_wagonquesttake_tween = false
+		end
+	else
+		if project_s_wagonquesttake_tween == false then
+			project_s_wagonquesttake_tween = true
+			local tween_goal = {CFrame = CFrame.new(223.232788, 283.25769, -1605.61755, 0.707134247, 2.56967461e-08, 0.707079291, -5.31856372e-08, 1, 1.68476717e-08, -0.707079291, -4.9520029e-08, 0.707134247)}
+			local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
+			local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+
+			tween:Play()
+			wait(2)
+			project_s_wagonquesttake_tween = false
+		end
+	end
+	game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(unpack(args))
+end
+
+
+local Tab = Window:MakeTab({
+	Name = "PROJECT_S",
+	Icon = "",
+	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "farm quest"
+})
+
+Tab:AddToggle({
+	Name = "Sarah rice farm (105 quest)",
+	Default = false,
+	Callback = function(Value)
+		project_s_ricefarm = Value
+		if Value == true then
+			project_s_removequest()
+			while project_s_ricefarm == true and wait(0.1) do
+				
+				if game.Players.LocalPlayer.PlayerGui.Menu.Quest.Title.Text == "" then
+					project_s_ricequesttake()
+				else
+					if game.Workspace:FindFirstChild("StarterVillage_RiceStrings"):FindFirstChild("RiceString") then
+						if game.Players.LocalPlayer.PlayerGui.Menu.Quest.Title.Text == "" then
+						else
+							fireproximityprompt(game.Workspace:FindFirstChild("StarterVillage_RiceStrings"):FindFirstChild("RiceString"):FindFirstChild("Rice_pick_proximity"))
+						end
+					end
+				end
+			end
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Wagon deliver farm (150 quest)",
+	Default = false,
+	Callback = function(Value)
+		project_s_wagonfarm = Value
+		if Value == true then
+			project_s_removequest()
+			while project_s_wagonfarm == true and wait(0.1) do
+				if game.Players.LocalPlayer.PlayerGui.Menu.Quest.Title.Text == "" then
+					project_s_wagonquesttake()
+				else
+					if project_s_wagonfarm_tween == false then
+						project_s_wagonfarm_tween = true
+						local tween_goal = {CFrame = CFrame.new(452.37561, 275.425903, -2671.28125, -0.998089015, 4.18701447e-08, -0.0617926493, 3.91806232e-08, 1, 4.4736634e-08, 0.0617926493, 4.22300701e-08, -0.998089015)}
+						local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
+						local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+
+						tween:Play()
+						wait(2)
+						project_s_wagonfarm_tween = false
+					end
+				end
+			end
+		end
 	end    
 })
 
