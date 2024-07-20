@@ -3429,7 +3429,7 @@ function project_s_ricequesttake()
     	[1] = "AddQuest",
     	[2] = "Players.scriptgDev3.PlayerGui.Npc_Dialogue.LocalScript.Functions",
     	[3] = 122556.271684684,
-    	[4] = game:GetService("ReplicatedStorage").Player_Data.scriptgDev3.Quest,
+    	[4] = game:GetService("ReplicatedStorage").Player_Data:FindFirstChild(game.Players.LocalPlayer.Name).Quest,
     	[5] = {
         	["List"] = {
             	[1] = {
@@ -3475,7 +3475,7 @@ function project_s_wagonquesttake()
     	[1] = "AddQuest",
     	[2] = "Players.scriptgDev3.PlayerGui.Npc_Dialogue.LocalScript.Functions",
     	[3] = 131263.249807559,
-    	[4] = game:GetService("ReplicatedStorage").Player_Data.scriptgDev3.Quest,
+    	[4] = game:GetService("ReplicatedStorage").Player_Data:FindFirstChild(game.Players.LocalPlayer.Name).Quest,
     	[5] = {
        		["List"] = {
             	[1] = {
