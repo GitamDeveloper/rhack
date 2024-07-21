@@ -34,6 +34,8 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local therake_rake_esp = false
+
 local project_s_tween_noclip = false
 
 local project_s_auto_cup_game_tween = false
@@ -1262,6 +1264,27 @@ Tab:AddToggle({
 					if v:FindFirstChild("alert") then
 						v:FindFirstChild("alert"):Destroy()
 					end
+				end
+			end
+		end
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "The Rake"
+})
+
+Tab:AddToggle({
+	Name = "Monster esp",
+	Default = false,
+	Callback = function(Value)
+		therake_rake_esp = Value
+		while therake_rake_esp == true and wait(0.1) do
+			for i,v in game.Workspace:GetChildren() do
+				if v.Name == "Rake" then
+					local esp = Instance.new("Highlight",v)
+	                esp.FillColor = Color3.fromRGB(199, 199, 199)
+                   	esp.Name = "RakeEsp"
 				end
 			end
 		end
@@ -3694,6 +3717,19 @@ Tab:AddToggle({
 			end
 		end
 	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "other"
+})
+
+Tab:AddButton({
+	Name = "Dodge Thunder auto",
+	Callback = function()
+		project_s_moveto(CFrame.new(-874.841675, 469.14679, -2452.48071, 0.794137478, -4.16772004e-08, -0.607738197, 5.98161805e-08, 1, 9.58483515e-09, 0.607738197, -4.39642527e-08, 0.794137478))
+		wait(1)
+		game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("thnder_gui"):FindFirstChild("Holder"):FindFirstChild("LocalScript"):FindFirstChild("Value").Value = 200
+  	end    
 })
 
 local Section = Tab:AddSection({
