@@ -34,6 +34,14 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local project_s_tween_noclip = false
+
+local project_s_auto_cup_game_tween = false
+local project_s_auto_cup_game = false
+
+local project_s_auto_target_training_tween = false
+local project_s_auto_target_training = false
+
 local project_s_auto_push_ups_tween = false
 local project_s_auto_meditation_tween = false
 local project_s_auto_meditation = false
@@ -3427,6 +3435,24 @@ Tab:AddToggle({
 	end    
 })
 
+function project_s_moveto(cframe, event)
+	local dist = (cframe.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+	local time = dist / 200
+
+	local tween_goal = {CFrame = cframe}
+	local tween_info = TweenInfo.new(time, Enum.EasingStyle.Linear)
+	local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+
+	if project_s_tween_noclip == true then
+		noclip()
+	end
+	tween:Play()
+	wait(time)
+	if project_s_tween_noclip == true then
+		clip()
+	end
+end
+
 function project_s_removequest()
 	local args = {
     	[1] = "removequest",
@@ -3456,28 +3482,10 @@ function project_s_ricequesttake()
     	}
 	}
 
-	if game.Workspace:FindFirstChild("Sarah"):FindFirstChild("HumanoidRootPart") then
-		if project_s_ricequesttake_tween == false then
-			project_s_ricequesttake_tween = true
-			local tween_goal = {CFrame = game.Workspace:FindFirstChild("Sarah").HumanoidRootPart.CFrame}
-			local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
-			local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
-
-			tween:Play()
-			wait(2)
-			project_s_ricequesttake_tween = false
-		end
-	else
-		if project_s_ricequesttake_tween == false then
-			project_s_ricequesttake_tween = true
-			local tween_goal = {CFrame = CFrame.new(-109.333763, 282.296783, -1697.01953, -0.602081895, -1.32820768e-08, -0.798434317, 8.54455062e-10, 1, -1.72794792e-08, 0.798434317, -1.10858878e-08, -0.602081895)}
-			local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
-			local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
-
-			tween:Play()
-			wait(2)
-			project_s_ricequesttake_tween = false
-		end
+	if project_s_ricequesttake_tween == false then
+		project_s_ricequesttake_tween = true
+		project_s_moveto(CFrame.new(-109.333763, 282.296783, -1697.01953, -0.602081895, -1.32820768e-08, -0.798434317, 8.54455062e-10, 1, -1.72794792e-08, 0.798434317, -1.10858878e-08, -0.602081895))
+		project_s_ricequesttake_tween = false
 	end
 	game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(unpack(args))
 end
@@ -3502,28 +3510,11 @@ function project_s_wagonquesttake()
     	}
 	}
 
-	if game.Workspace:FindFirstChild("Grandpa Wagwon"):FindFirstChild("HumanoidRootPart") then
-		if project_s_wagonquesttake_tween == false then
-			project_s_wagonquesttake_tween = true
-			local tween_goal = {CFrame = game.Workspace:FindFirstChild("Grandpa Wagwon").HumanoidRootPart.CFrame}
-			local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
-			local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
-
-			tween:Play()
-			wait(2)
-			project_s_wagonquesttake_tween = false
-		end
-	else
-		if project_s_wagonquesttake_tween == false then
-			project_s_wagonquesttake_tween = true
-			local tween_goal = {CFrame = CFrame.new(223.232788, 283.25769, -1605.61755, 0.707134247, 2.56967461e-08, 0.707079291, -5.31856372e-08, 1, 1.68476717e-08, -0.707079291, -4.9520029e-08, 0.707134247)}
-			local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
-			local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
-
-			tween:Play()
-			wait(2)
-			project_s_wagonquesttake_tween = false
-		end
+	
+	if project_s_wagonquesttake_tween == false then
+		project_s_wagonquesttake_tween = true
+		project_s_moveto(CFrame.new(223.232788, 283.25769, -1605.61755, 0.707134247, 2.56967461e-08, 0.707079291, -5.31856372e-08, 1, 1.68476717e-08, -0.707079291, -4.9520029e-08, 0.707134247))
+		project_s_wagonquesttake_tween = false
 	end
 	game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(unpack(args))
 end
@@ -3531,13 +3522,10 @@ end
 function project_s_go_to_meditate()
 	if project_s_auto_meditation_tween == false then
 		project_s_auto_meditation_tween = true
-		local tween_goal = {CFrame = CFrame.new(2809.93726, 317.404175, -3860.12183, 0.932348847, -1.24495498e-08, -0.361559957, 1.30836915e-08, 1, -6.94172719e-10, 0.361559957, -4.0833279e-09, 0.932348847)}
-		local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
-		local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
 
-		tween:Play()
-		wait(2)
+		project_s_moveto(CFrame.new(2809.93726, 317.404175, -3860.12183, 0.932348847, -1.24495498e-08, -0.361559957, 1.30836915e-08, 1, -6.94172719e-10, 0.361559957, -4.0833279e-09, 0.932348847))
 		game.Workspace:FindFirstChild("Map"):FindFirstChild("Chunk23"):FindFirstChild("Meditate_Mat"):FindFirstChild("Initiated"):FireServer()
+		wait(1)
 		project_s_auto_meditation_tween = false
 	end
 end
@@ -3545,14 +3533,33 @@ end
 function project_s_go_to_push()
 	if project_s_auto_push_ups_tween == false then
 		project_s_auto_push_ups_tween = true
-		local tween_goal = {CFrame = CFrame.new(2805.04736, 317.404175, -3882.11304, -0.899950624, 3.17523252e-09, -0.435991794, -2.08915685e-09, 1, 1.15951044e-08, 0.435991794, 1.13458771e-08, -0.899950624)}
-		local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
-		local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
 
-		tween:Play()
-		wait(2)
+		project_s_moveto(CFrame.new(2805.04736, 317.404175, -3882.11304, -0.899950624, 3.17523252e-09, -0.435991794, -2.08915685e-09, 1, 1.15951044e-08, 0.435991794, 1.13458771e-08, -0.899950624))
 		game.Workspace:FindFirstChild("Map"):FindFirstChild("Chunk23"):FindFirstChild("Push_Ups_Mat"):FindFirstChild("Initiated"):FireServer()
+		wait(1)
 		project_s_auto_push_ups_tween = false
+	end
+end
+
+function project_s_go_to_target_training()
+	if project_s_auto_target_training_tween == false then
+		project_s_auto_target_training_tween = true
+		
+		project_s_moveto(CFrame.new(2857.42651, 317.130005, -4007.625, -0.200307399, -3.93947772e-08, -0.979733109, -5.63740565e-09, 1, -3.90571309e-08, 0.979733109, -2.30027908e-09, -0.200307399))
+		game.Workspace:FindFirstChild("Target_Training"):FindFirstChild("Chair"):FindFirstChild("Detect_Part"):FindFirstChild("Initiated"):FireServer()
+		wait(1)
+		project_s_auto_target_training_tween = false
+	end
+end
+
+function project_s_go_to_cup_game()
+	if project_s_auto_cup_game_tween == false then
+		project_s_auto_cup_game_tween = true
+
+		project_s_moveto(CFrame.new(2758.86035, 317.404175, -3853.07886, 0.220858872, -3.58193901e-08, 0.975305796, -1.71675616e-08, 1, 4.06139264e-08, -0.975305796, -2.57135682e-08, 0.220858872))
+		game.Workspace:FindFirstChild("cup game"):FindFirstChild("Model"):FindFirstChild("Main"):FindFirstChild("Initiated"):FireServer()
+		wait(1)
+		project_s_auto_cup_game_tween = false
 	end
 end
 
@@ -3604,12 +3611,7 @@ Tab:AddToggle({
 				else
 					if project_s_wagonfarm_tween == false then
 						project_s_wagonfarm_tween = true
-						local tween_goal = {CFrame = CFrame.new(452.37561, 275.425903, -2671.28125, -0.998089015, 4.18701447e-08, -0.0617926493, 3.91806232e-08, 1, 4.4736634e-08, 0.0617926493, 4.22300701e-08, -0.998089015)}
-						local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
-						local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
-
-						tween:Play()
-						wait(2)
+						project_s_moveto(CFrame.new(452.37561, 275.425903, -2671.28125, -0.998089015, 4.18701447e-08, -0.0617926493, 3.91806232e-08, 1, 4.4736634e-08, 0.0617926493, 4.22300701e-08, -0.998089015))
 						project_s_wagonfarm_tween = false
 					end
 				end
@@ -3653,6 +3655,56 @@ Tab:AddToggle({
 				project_s_go_to_push()
 			end
 		end
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "auto target training"
+})
+
+Tab:AddToggle({
+	Name = "auto target training",
+	Default = false,
+	Callback = function(Value)
+		project_s_auto_target_training = Value
+		while project_s_auto_target_training == true and wait(0.1) do
+			if game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("chairui") then
+				game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("chairui"):FindFirstChild("Holder"):FindFirstChild("LocalScript"):FindFirstChild("Value").Value = 100
+			else
+				project_s_go_to_target_training()
+			end
+		end
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "auto cup game"
+})
+
+Tab:AddToggle({
+	Name = "auto cup game",
+	Default = false,
+	Callback = function(Value)
+		project_s_auto_cup_game = Value
+		while project_s_auto_cup_game == true and wait(0.1) do
+			if game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("cup_game_gui") then
+				game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("cup_game_gui"):FindFirstChild("Holder"):FindFirstChild("cup_game_script123"):FindFirstChild("Value").Value = 100
+			else
+				project_s_go_to_cup_game()
+			end
+		end
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "settings"
+})
+
+Tab:AddToggle({
+	Name = "auto noclip while tweens",
+	Default = false,
+	Callback = function(Value)
+		project_s_tween_noclip = Value
 	end    
 })
 
