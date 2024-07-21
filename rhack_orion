@@ -1,7 +1,7 @@
 local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 local rhack_version = "0.1"
-local rhack_version_desc = "big update"
+local rhack_version_desc = "project_s update"
 
 getgenv().fireproximityprompt=function(pp)
     local oldpos=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -33,6 +33,11 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
         Duration = DurationArg
     })
 end
+
+local project_s_auto_push_ups_tween = false
+local project_s_auto_meditation_tween = false
+local project_s_auto_meditation = false
+local project_s_auto_push_ups = false
 
 local project_s_wagonquesttake_tween = false
 local project_s_ricequesttake_tween = false
@@ -3523,6 +3528,34 @@ function project_s_wagonquesttake()
 	game:GetService("ReplicatedStorage").Remotes.To_Server.Handle_Initiate_S:FireServer(unpack(args))
 end
 
+function project_s_go_to_meditate()
+	if project_s_auto_meditation_tween == false then
+		project_s_auto_meditation_tween = true
+		local tween_goal = {CFrame = CFrame.new(2809.93726, 317.404175, -3860.12183, 0.932348847, -1.24495498e-08, -0.361559957, 1.30836915e-08, 1, -6.94172719e-10, 0.361559957, -4.0833279e-09, 0.932348847)}
+		local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
+		local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+
+		tween:Play()
+		wait(2)
+		game.Workspace:FindFirstChild("Map"):FindFirstChild("Chunk23"):FindFirstChild("Meditate_Mat"):FindFirstChild("Initiated"):FireServer()
+		project_s_auto_meditation_tween = false
+	end
+end
+
+function project_s_go_to_push()
+	if project_s_auto_push_ups_tween == false then
+		project_s_auto_push_ups_tween = true
+		local tween_goal = {CFrame = CFrame.new(2805.04736, 317.404175, -3882.11304, -0.899950624, 3.17523252e-09, -0.435991794, -2.08915685e-09, 1, 1.15951044e-08, 0.435991794, 1.13458771e-08, -0.899950624)}
+		local tween_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
+		local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+
+		tween:Play()
+		wait(2)
+		game.Workspace:FindFirstChild("Map"):FindFirstChild("Chunk23"):FindFirstChild("Push_Ups_Mat"):FindFirstChild("Initiated"):FireServer()
+		project_s_auto_push_ups_tween = false
+	end
+end
+
 
 local Tab = Window:MakeTab({
 	Name = "PROJECT_S",
@@ -3580,6 +3613,44 @@ Tab:AddToggle({
 						project_s_wagonfarm_tween = false
 					end
 				end
+			end
+		end
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "auto meditation"
+})
+
+Tab:AddToggle({
+	Name = "auto meditation",
+	Default = false,
+	Callback = function(Value)
+		project_s_auto_meditation = Value
+		while project_s_auto_meditation == true and wait(0.1) do
+			if game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Meditate_gui") then
+				game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Meditate_gui"):FindFirstChild("Holder"):FindFirstChild("LocalScript"):FindFirstChild("Value").Value = 100
+			else
+				project_s_go_to_meditate()
+			end
+		end
+	end    
+})
+
+local Section = Tab:AddSection({
+	Name = "auto push_ups"
+})
+
+Tab:AddToggle({
+	Name = "auto push ups",
+	Default = false,
+	Callback = function(Value)
+		project_s_auto_push_ups = Value
+		while project_s_auto_push_ups == true and wait(0.1) do
+			if game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Push_Up_Gui") then
+				game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Push_Up_Gui"):FindFirstChild("Holder"):FindFirstChild("push_up_mat_local_script"):FindFirstChild("Value").Value = 100
+			else
+				project_s_go_to_push()
 			end
 		end
 	end    
