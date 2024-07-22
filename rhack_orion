@@ -34,6 +34,8 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local shrek_getlvl = "none"
+
 local therake_rake_esp = false
 
 local project_s_tween_noclip = false
@@ -1111,19 +1113,20 @@ Tab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		if Value == true then
-			while wait(0.24) do
+			while wait(0.1) do
             	for i, v in pairs(workspace:GetDescendants()) do
                 	if v:FindFirstChild("Humanoid") then
                 		if esp_type == "highlight" then
                 			if not v:FindFirstChild("highEsp") then
-                        		if v ~= game.Players.LocalPlayer.Character then
-	                            	local esp = Instance.new("Highlight",v)
-	                            	esp.FillColor = Color3.fromRGB(178,34,34)
-                            		esp.Name = "highEsp"
-                        		end
+                				if game.Players.LocalPlayer.Character then
+                					if v ~= game.Players.LocalPlayer.Character then
+	                            		local esp = Instance.new("Highlight",v)
+	                            		esp.FillColor = Color3.fromRGB(178,34,34)
+                            			esp.Name = "highEsp"
+                        			end
+                				end
                     		end
                 		else
-                			print(123)
                 		end
                 	end
             	end
@@ -1448,6 +1451,31 @@ local Tab = Window:MakeTab({
 	Name = "Exploits",
 	Icon = "",
 	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+	Name = "Shrek in The Backrooms"
+})
+
+Tab:AddButton({
+	Name = "Unlock level",
+	Callback = function()
+		local args = {
+    		[1] = "Enter",
+    		[2] = shrek_getlvl
+		}
+
+		game:GetService("ReplicatedStorage").Remotes.NewMap:FireServer(unpack(args))
+  	end    
+})
+
+Tab:AddTextbox({
+	Name = "level name",
+	Default = "text",
+	TextDisappear = true,
+	Callback = function(Value)
+		shrek_getlvl = Value
+	end	  
 })
 
 local Section = Tab:AddSection({
@@ -3701,25 +3729,6 @@ Tab:AddToggle({
 })
 
 local Section = Tab:AddSection({
-	Name = "auto cup game"
-})
-
-Tab:AddToggle({
-	Name = "auto cup game",
-	Default = false,
-	Callback = function(Value)
-		project_s_auto_cup_game = Value
-		while project_s_auto_cup_game == true and wait(0.1) do
-			if game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("cup_game_gui") then
-				game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("cup_game_gui"):FindFirstChild("Holder"):FindFirstChild("cup_game_script123"):FindFirstChild("Value").Value = 100
-			else
-				project_s_go_to_cup_game()
-			end
-		end
-	end    
-})
-
-local Section = Tab:AddSection({
 	Name = "other"
 })
 
@@ -3729,6 +3738,15 @@ Tab:AddButton({
 		project_s_moveto(CFrame.new(-874.841675, 469.14679, -2452.48071, 0.794137478, -4.16772004e-08, -0.607738197, 5.98161805e-08, 1, 9.58483515e-09, 0.607738197, -4.39642527e-08, 0.794137478))
 		wait(1)
 		game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("thnder_gui"):FindFirstChild("Holder"):FindFirstChild("LocalScript"):FindFirstChild("Value").Value = 200
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Cup Game auto",
+	Callback = function()
+		project_s_moveto(CFrame.new(2758.86035, 317.404175, -3853.07886, 0.220858872, -3.58193901e-08, 0.975305796, -1.71675616e-08, 1, 4.06139264e-08, -0.975305796, -2.57135682e-08, 0.220858872))
+		wait(1)
+		game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("cup_game_gui"):FindFirstChild("Holder"):FindFirstChild("cup_game_script123"):FindFirstChild("Value").Value = 100
   	end    
 })
 
