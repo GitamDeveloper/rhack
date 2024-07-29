@@ -35,6 +35,11 @@ keyt:AddTextbox({
 })
 
 while iskey_correct == false and wait(0.1) do
+	for i,v in disablekey_people do
+		if v == game.Players.LocalPlayer.Name then
+			iskey_correct = true
+		end
+	end
 	print("Enter Key In RHACK")
 end
 
