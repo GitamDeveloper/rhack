@@ -2,10 +2,25 @@ local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shle
 
 local correct_key = "K1E2Y3B1Y2G3I4T5A5M6"
 local iskey_correct = false
+local key_loaded = false
+local acees_sus = false
 
-local disablekey_people = {"Alone_1755","doorslove1"}
+local disablekey_people = {"Alone_1755","doorslove1","scriptgDev3"}
 
-local keyw = Library:MakeWindow({Name = "RHACK orion", HidePremium = true, SaveConfig = false, ConfigFolder = "rhack_orion", IntroEnabled = true, IntroText = "RHACK", IntroIcon = "rbxassetid://14995912169", Icon = "rbxassetid://14995912169"})
+while iskey_correct == false and wait(0.1) do
+	for i,v in disablekey_people do
+		if v == game.Players.LocalPlayer.Name then
+			acees_sus = true
+		end
+	end
+
+	if acees_sus == true then
+		iskey_correct = true
+	else
+		if key_loaded == false then
+			key_loaded = true
+
+			local keyw = Library:MakeWindow({Name = "RHACK orion", HidePremium = true, SaveConfig = false, ConfigFolder = "rhack_orion", IntroEnabled = true, IntroText = "RHACK", IntroIcon = "rbxassetid://14995912169", Icon = "rbxassetid://14995912169"})
 
 local keyt = keyw:MakeTab({
 	Name = "Get Acces",
@@ -33,11 +48,6 @@ keyt:AddTextbox({
 		end
 	end	  
 })
-
-while iskey_correct == false and wait(0.1) do
-	for i,v in disablekey_people do
-		if v == game.Players.LocalPlayer.Name then
-			iskey_correct = true
 		end
 	end
 	print("Enter Key In RHACK")
@@ -74,7 +84,7 @@ function apply_text(object, name, text, color)
 	gener.Size = UDim2.new(0, 200, 0, 50)
 	gener.StudsOffset = Vector3.new(0, 2, 0)
 	gener.AlwaysOnTop = true
-	gener.Parent = game.CoreGui
+	gener.Parent = object
 	local label = Instance.new("TextLabel")
 	label.Size = UDim2.new(1, 0, 1, 0)
 	label.Text = text
@@ -96,7 +106,10 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
-local pressure_keyesp = false+
+local pressure_fake_locker_esp = false
+local pressure_monster_warning = false
+local pressure_dooresp = false
+local pressure_keyesp = false
 
 local shrek_getlvl = "none"
 
@@ -1367,24 +1380,110 @@ Tab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		pressure_keyesp = Value
-	end    
-})
-
-workspace.DescendantAdded:Connect(function(obj)
-	if obj.Name == "NormalKeyCard" then
-		local cando = true
-		for i,v in game.CoreGui:GetDescendants() do
-			if v.Name == "KeyCardTextEsp" then
-				if v.Adornee == obj.ProxyPart then
-					cando = false
+		while pressure_keyesp == true and wait(0.1) do
+			for i,v in game.Workspace:GetDescendants() do
+				if v.Name == "KeyCardTextEsp" then
+					if v.Adornee == nil then
+						v:Destroy()
+					end
 				end
 			end
 		end
-		if cando == true then
-			apply_text(obj.ProxyPart, "KeyCardTextEsp", "KeyCard", Color3.new(0.141176, 0.482353, 0.72549))
+	end    
+})
+
+Tab:AddToggle({
+	Name = "RealDoor esp",
+	Default = false,
+	Callback = function(Value)
+		pressure_dooresp = Value
+		while pressure_dooresp == true and wait(0.1) do
+			for i,v in game.Workspace:GetDescendants() do
+				if v.Name == "RealDoorTextEsp" then
+					if v.Adornee == nil then
+						v:Destroy()
+					end
+				end
+			end
 		end
-	end
-end)
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Monster alert",
+	Default = false,
+	Callback = function(Value)
+		pressure_monster_warning = Value
+		while pressure_monster_warning == true and wait(0.1) do
+			for i,v in game.Workspace:GetChildren() do
+				if v.Name == "MonsterTextEsp" then
+					if v.Adornee == nil then
+						v:Destroy()
+					end
+				end
+			end
+		end
+	end    
+})
+
+if game.Workspace:FindFirstChild("Rooms") then
+	workspace.Rooms.DescendantAdded:Connect(function(obj)
+		if obj.Name == "NormalKeyCard" then
+			if pressure_keyesp == true then
+				apply_text(obj, "KeyCardTextEsp", "KeyCard", Color3.fromRGB(66, 135, 245))
+			end
+		end
+	end)
+end
+
+if game.Workspace:FindFirstChild("Rooms") then
+	workspace.ChildAdded:Connect(function(obj)
+		if pressure_monster_warning == true then
+			local can_apply = false
+			for i,v in game.ReplicatedStorage.DeathFolder:GetChildren() do
+				if v.Name == obj.Name then
+					can_apply = true
+				else
+				end
+			end
+
+			if can_apply == true then
+				apply_text(obj, "MonsterTextEsp", obj.Name, Color3.fromRGB(250, 5, 5))
+
+            	Library:MakeNotification({
+					Name = "Monster alert!",
+					Content = "[ ".. obj.Name.. " ] is spawned.",
+					Image = "",
+					Time = 5
+				})
+			end
+		end
+	end)
+end
+
+if game.Workspace:FindFirstChild("Rooms") then
+	workspace.Rooms.DescendantAdded:Connect(function(obj)
+		if obj.Name == "NormalDoor" then
+			if pressure_dooresp == true then
+				if obj.ClassName == "Model" then
+
+					for i,v in game.Workspace:GetDescendants() do
+						if v.Name == "RealDoorTextEsp" then
+							v:Destroy()
+						end
+					end
+
+					if obj:FindFirstChild("Lock") then
+						apply_text(obj, "RealDoorTextEsp", "LockedDoor", Color3.fromRGB(212, 224, 36))
+
+					else
+						apply_text(obj, "RealDoorTextEsp", "Door", Color3.fromRGB(14, 168, 12))
+					end
+				end
+			end
+		end
+	end)
+end
 
 local Tab = Window:MakeTab({
 	Name = "Movement",
