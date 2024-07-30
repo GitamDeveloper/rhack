@@ -45,7 +45,7 @@ end
 
 
 local rhack_version = "0.1"
-local rhack_version_desc = "project_s update"
+local rhack_version_desc = ""
 
 getgenv().fireproximityprompt=function(pp)
     local oldpos=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -67,6 +67,24 @@ getgenv().fireproximityprompt=function(pp)
     pp.RequiresLineOfSight=pp.RequiresLineOfSight
 end
 
+function apply_text(object, name, text, color)
+	local gener = Instance.new("BillboardGui")
+	gener.Name = name
+	gener.Adornee = object
+	gener.Size = UDim2.new(0, 200, 0, 50)
+	gener.StudsOffset = Vector3.new(0, 2, 0)
+	gener.AlwaysOnTop = true
+	gener.Parent = game.CoreGui
+	local label = Instance.new("TextLabel")
+	label.Size = UDim2.new(1, 0, 1, 0)
+	label.Text = text
+	label.TextColor3 = color
+	label.BackgroundTransparency = 1
+	label.TextStrokeTransparency = 0
+	label.TextScaled = true
+	label.Parent = gener
+end
+
 -- upd 2
 local StarterGui = game:GetService("StarterGui")
 
@@ -77,6 +95,8 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
         Duration = DurationArg
     })
 end
+
+local pressure_keyesp = false+
 
 local shrek_getlvl = "none"
 
@@ -1337,6 +1357,34 @@ Tab:AddToggle({
 		end
 	end    
 })
+
+local Section = Tab:AddSection({
+	Name = "Pressure"
+})
+
+Tab:AddToggle({
+	Name = "KeyCard esp",
+	Default = false,
+	Callback = function(Value)
+		pressure_keyesp = Value
+	end    
+})
+
+workspace.DescendantAdded:Connect(function(obj)
+	if obj.Name == "NormalKeyCard" then
+		local cando = true
+		for i,v in game.CoreGui:GetDescendants() do
+			if v.Name == "KeyCardTextEsp" then
+				if v.Adornee == obj.ProxyPart then
+					cando = false
+				end
+			end
+		end
+		if cando == true then
+			apply_text(obj.ProxyPart, "KeyCardTextEsp", "KeyCard", Color3.new(0.141176, 0.482353, 0.72549))
+		end
+	end
+end)
 
 local Tab = Window:MakeTab({
 	Name = "Movement",
