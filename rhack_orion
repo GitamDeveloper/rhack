@@ -55,7 +55,7 @@ end
 
 
 local rhack_version = "0.1"
-local rhack_version_desc = "pressure + sound update"
+local rhack_version_desc = "small pressure fixes"
 
 getgenv().fireproximityprompt=function(pp)
     local oldpos=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -1630,6 +1630,12 @@ if game.Workspace:FindFirstChild("Rooms") then
 			if pressure_keyesp == true then
 				apply_text(obj, "KeyCardTextEsp", "KeyCard", Color3.fromRGB(66, 135, 245))
 			end
+		else
+			if obj.Name == "InnerKeyCard" then
+				if pressure_keyesp == true then
+					apply_text(v, "KeyCardTextEsp", "InnerKeyCard", Color3.fromRGB(114, 60, 189))
+				end
+			end
 		end
 	end)
 end
@@ -1929,6 +1935,14 @@ local Section = Tab:AddSection({
 	Name = "Pressure"
 })
 
+Tab:AddButton({
+	Name = "Join to random game",
+	Callback = function()
+		game:GetService("TeleportService"):Teleport(12552538292, game.Players.LocalPlayer)
+  	end    
+})
+
+
 Tab:AddToggle({
 	Name = "Auto open locked doors",
 	Default = false,
@@ -1965,7 +1979,7 @@ Tab:AddToggle({
 })
 
 Tab:AddToggle({
-	Name = "Disable SearchLights",
+	Name = "Disable SearchLights (dont enable)",
 	Default = false,
 	Callback = function(Value)
 		pressure_no_SearchLights = Value
