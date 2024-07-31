@@ -55,7 +55,7 @@ end
 
 
 local rhack_version = "0.1"
-local rhack_version_desc = ""
+local rhack_version_desc = "pressure + sound update"
 
 getgenv().fireproximityprompt=function(pp)
     local oldpos=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -77,6 +77,29 @@ getgenv().fireproximityprompt=function(pp)
     pp.RequiresLineOfSight=pp.RequiresLineOfSight
 end
 
+function fireproximitypromptV2(ProximityPrompt, Amount, Skip)
+    assert(ProximityPrompt, "Argument #1 Missing or nil")
+    assert(typeof(ProximityPrompt) == "Instance" and ProximityPrompt:IsA("ProximityPrompt"), "Attempted to fire a Value that is not a ProximityPrompt")
+
+    local HoldDuration = ProximityPrompt.HoldDuration
+    if Skip then
+        ProximityPrompt.HoldDuration = 0
+    end
+
+    for i = 1, Amount or 1 do
+        ProximityPrompt:InputHoldBegin()
+        if Skip then
+            local RunService = game:GetService("RunService")
+            local Start = time()
+            repeat
+                RunService.Heartbeat:Wait(0.1)
+            until time() - Start > HoldDuration
+        end
+        ProximityPrompt:InputHoldEnd()
+    end
+    ProximityPrompt.HoldDuration = HoldDuration
+end
+
 function apply_text(object, name, text, color)
 	local gener = Instance.new("BillboardGui")
 	gener.Name = name
@@ -95,6 +118,45 @@ function apply_text(object, name, text, color)
 	label.Parent = gener
 end
 
+function play_sound(sound_id, volume)
+	local sound = Instance.new("Sound")
+	sound.SoundId = "rbxassetid://".. tostring(sound_id)
+	sound.Parent = game.Players.LocalPlayer.Character
+	sound.Volume = volume
+	sound:Play()
+	--wait(sound.TimeLength)
+	--sound:Destroy()
+end
+
+function apply_tracer(obj, color, size)
+
+    local esp = Drawing.new("Line")
+    esp.Visible = false
+    esp.Center = true
+    esp.Outline = true
+    esp.Font = 2
+    esp.Color = color
+    esp.Size = size
+
+    while wait(0.1) do
+    	if obj then
+            local obj_pos, obj_onscreen = camera:WorldToViewportPoint(obj.Position)
+
+            if obj_onscreen then
+            	esp.To = Vector2.new(obj_pos.X, obj_pos.Y)
+            	esp.From = Vector2.new(camera.ViewPortSize.X / 2, camera.ViewportSize.Y /2)
+                esp.Position = Vector2.new(obj_pos.X, obj_pos.Y)
+                esp.Visible = true
+            else 
+                esp.Visible = false
+            end
+        else
+            esp.Visible = false
+            esp:Remove()
+        end
+    end
+end
+
 -- upd 2
 local StarterGui = game:GetService("StarterGui")
 
@@ -106,6 +168,16 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local tools_no_pp_hold = false
+
+local pressure_no_SearchLights = false
+local pressure_no_steams = false
+local pressure_no_eye = false
+local pressure_auto_opendoor = false
+local pressure_auto_money_loot = false
+local pressure_locker_esp = false
+local pressure_fakedoor_esp = false
+local pressure_path_helper = false
 local pressure_fake_locker_esp = false
 local pressure_monster_warning = false
 local pressure_dooresp = false
@@ -1389,6 +1461,21 @@ Tab:AddToggle({
 				end
 			end
 		end
+
+		if Value == false then return end
+		for i,v in game.Workspace:GetDescendants() do
+			if v.Name == "NormalKeyCard" then
+				if pressure_keyesp == true then
+					apply_text(v, "KeyCardTextEsp", "KeyCard", Color3.fromRGB(66, 135, 245))
+				end
+			else
+				if v.Name == "InnerKeyCard" then
+					if pressure_keyesp == true then
+						apply_text(v, "KeyCardTextEsp", "InnerKeyCard", Color3.fromRGB(114, 60, 189))
+					end
+				end
+			end
+		end
 	end    
 })
 
@@ -1404,6 +1491,76 @@ Tab:AddToggle({
 						v:Destroy()
 					end
 				end
+			end
+		end
+
+		if Value == false then return end
+		for i,v in game.Workspace:GetDescendants() do
+			if v.Name == "NormalDoor" then
+				if pressure_dooresp == true then
+					if v.ClassName == "Model" then
+
+						if v:FindFirstChild("Lock") then
+							apply_text(v, "RealDoorTextEsp", "LockedDoor", Color3.fromRGB(212, 224, 36))
+
+						else
+							apply_text(v, "RealDoorTextEsp", "Door", Color3.fromRGB(14, 168, 12))
+						end
+					end
+				end
+			end
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "FakeDoor esp",
+	Default = false,
+	Callback = function(Value)
+		pressure_fakedoor_esp = Value
+		while pressure_fakedoor_esp == true and wait(0.1) do
+			for i,v in game.Workspace:GetDescendants() do
+				if v.Name == "FakeDoorTextEsp" then
+					if v.Adornee == nil then
+						v:Destroy()
+					end
+				end
+			end
+		end
+
+		if Value == false then return end
+		for i,v in game.Workspace:GetDescendants() do
+			if v.Name == "TricksterDoor" then
+				if pressure_fakedoor_esp == true then
+					if v.ClassName == "Model" then
+						apply_text(v, "FakeDoorTextEsp", "FakeRoom", Color3.fromRGB(255, 55, 0))
+					end
+				end
+			end
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "FakeLocker esp",
+	Default = false,
+	Callback = function(Value)
+		pressure_fake_locker_esp = Value
+		while pressure_fake_locker_esp == true and wait(0.1) do
+			for i,v in game.Workspace:GetDescendants() do
+				if v.Name == "FakeLockerTextEsp" then
+					if v.Adornee == nil then
+						v:Destroy()
+					end
+				end
+			end
+		end
+
+		if Value == false then return end
+		for i,v in game.Workspace:GetDescendants() do
+			if v.Name == "Locker" then
+				task.wait(0.1)
+				apply_text(v:FindFirstChild("highlight"):FindFirstChild("Root"), "FakeLockerTextEsp", "FakeLocker", Color3.fromRGB(140, 0, 255))
 			end
 		end
 	end    
@@ -1426,6 +1583,47 @@ Tab:AddToggle({
 	end    
 })
 
+Tab:AddToggle({
+	Name = "Find Path Helper",
+	Default = false,
+	Callback = function(Value)
+		pressure_path_helper = Value
+		while pressure_path_helper == true and wait(0.1) do
+			for i,v in game.Workspace:GetDescendants() do
+				if v.Name == "KeyCardTextEsp" then
+					if v.Adornee == nil then
+						v:Destroy()
+					end
+				end
+			end
+		end
+
+		if Value == false then return end
+		for i,v in game.Workspace:GetDescendants() do
+			if v.Name == "Lever" then
+				if pressure_path_helper == true then
+
+					apply_text(v, "LeverTextEsp", "Lever", Color3.fromRGB(0, 26, 255))
+				end
+			end
+
+			if v.Name == "Electricity" then
+				if pressure_path_helper == true then
+
+					apply_text(v, "ElecAlertTextEsp", "!", Color3.fromRGB(255, 170, 0))
+				end
+			end
+
+			if v.Name == "Meshes/Vent" then
+				if pressure_path_helper == true then
+
+					apply_text(v, "VentTextEsp", "Vent", Color3.fromRGB(0, 255, 145))
+				end
+			end
+		end
+	end    
+})
+
 if game.Workspace:FindFirstChild("Rooms") then
 	workspace.Rooms.DescendantAdded:Connect(function(obj)
 		if obj.Name == "NormalKeyCard" then
@@ -1437,10 +1635,61 @@ if game.Workspace:FindFirstChild("Rooms") then
 end
 
 if game.Workspace:FindFirstChild("Rooms") then
+	workspace.Rooms.DescendantAdded:Connect(function(obj)
+		if obj.Name == "Lever" then
+			if pressure_path_helper == true then
+
+				for i,v in game.Workspace:GetDescendants() do
+					if v.Name == "LeverTextEsp" then
+						v:Destroy()
+					end
+				end
+
+				apply_text(obj, "LeverTextEsp", "Lever", Color3.fromRGB(0, 26, 255))
+			end
+		end
+
+		if obj.Name == "Electricity" then
+			if pressure_path_helper == true then
+
+				for i,v in game.Workspace:GetDescendants() do
+					if v.Name == "ElecAlertTextEsp" then
+						v:Destroy()
+					end
+				end
+
+				apply_text(obj, "ElecAlertTextEsp", "!", Color3.fromRGB(255, 170, 0))
+			end
+		end
+	end)
+end
+
+if game.Workspace:FindFirstChild("Rooms") then
+	workspace.Rooms.DescendantAdded:Connect(function(obj)
+		if obj.Name == "MonsterLocker" then
+			if pressure_fake_locker_esp == true then
+				task.wait(0.1)
+				apply_text(obj, "FakeLockerTextEsp", "FakeLocker", Color3.fromRGB(140, 0, 255))
+			end
+		end
+	end)
+end
+
+if game.Workspace:FindFirstChild("Rooms") then
+	workspace.Rooms.DescendantAdded:Connect(function(obj)
+		if obj.Name == "Locker" then
+			if pressure_locker_esp == true then
+				apply_text(obj, "LockerTextEsp", "Locker", Color3.fromRGB(60, 73, 189))
+			end
+		end
+	end)
+end
+
+if game.Workspace:FindFirstChild("Rooms") then
 	workspace.ChildAdded:Connect(function(obj)
 		if pressure_monster_warning == true then
 			local can_apply = false
-			for i,v in game.ReplicatedStorage.DeathFolder:GetChildren() do
+			for i,v in game.ReplicatedStorage.DeathFolder:GetDescendants() do
 				if v.Name == obj.Name then
 					can_apply = true
 				else
@@ -1456,6 +1705,8 @@ if game.Workspace:FindFirstChild("Rooms") then
 					Image = "",
 					Time = 5
 				})
+
+				play_sound(6432593850, 5)
 			end
 		end
 	end)
@@ -1468,9 +1719,19 @@ if game.Workspace:FindFirstChild("Rooms") then
 				if obj.ClassName == "Model" then
 
 					for i,v in game.Workspace:GetDescendants() do
+
+						if v.Name == "LockerTextEsp" then
+							v:Destroy()
+						end
+
+						if v.Name == "FakeLockerTextEsp" then
+							v:Destroy()
+						end
+
 						if v.Name == "RealDoorTextEsp" then
 							v:Destroy()
 						end
+
 					end
 
 					if obj:FindFirstChild("Lock") then
@@ -1479,6 +1740,26 @@ if game.Workspace:FindFirstChild("Rooms") then
 					else
 						apply_text(obj, "RealDoorTextEsp", "Door", Color3.fromRGB(14, 168, 12))
 					end
+				end
+			end
+		end
+	end)
+end
+
+if game.Workspace:FindFirstChild("Rooms") then
+	workspace.Rooms.DescendantAdded:Connect(function(obj)
+		if obj.Name == "TricksterDoor" then
+			if pressure_fakedoor_esp == true then
+				if obj.ClassName == "Model" then
+
+					for i,v in game.Workspace:GetDescendants() do
+						if v.Name == "FakeDoorTextEsp" then
+							v:Destroy()
+						end
+					end
+
+					apply_text(obj, "FakeDoorTextEsp", "FakeRoom", Color3.fromRGB(255, 55, 0))
+
 				end
 			end
 		end
@@ -1643,6 +1924,114 @@ local Tab = Window:MakeTab({
 	Icon = "",
 	PremiumOnly = false
 })
+
+local Section = Tab:AddSection({
+	Name = "Pressure"
+})
+
+Tab:AddToggle({
+	Name = "Auto open locked doors",
+	Default = false,
+	Callback = function(Value)
+		pressure_auto_opendoor = Value
+		while pressure_auto_opendoor == true and wait(0.1) do
+			for i,v in game.Workspace.Rooms:GetDescendants() do
+				if v.Name == "NormalDoor" then
+					if v:FindFirstChild("Root") then
+						if v.Root:FindFirstChild("ProximityPrompt") then
+							fireproximitypromptV2(v.Root:FindFirstChild("ProximityPrompt"), 1, true)
+						end
+					end
+				end
+			end
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Disable Eyefestation",
+	Default = false,
+	Callback = function(Value)
+		pressure_no_eye = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Disable Steams",
+	Default = false,
+	Callback = function(Value)
+		pressure_no_steams = Value
+	end    
+})
+
+Tab:AddToggle({
+	Name = "Disable SearchLights",
+	Default = false,
+	Callback = function(Value)
+		pressure_no_SearchLights = Value
+	end    
+})
+
+Tab:AddButton({
+	Name = "Give Permanent NormalKeyCard",
+	Callback = function()
+		if game.Players.LocalPlayer.PlayerFolder.Inventory:FindFirstChild("NormalKeyCard") then
+			game.Players.LocalPlayer.PlayerFolder.Inventory.NormalKeyCard:Destroy()
+			local perm = Instance.new("NumberValue")
+			perm.Name = "NormalKeyCard"
+			perm.Parent = game.Players.LocalPlayer.PlayerFolder.Inventory
+		else
+			Library:MakeNotification({
+				Name = "Fail!",
+				Content = "Please get the NormalKeyCard first.",
+				Image = "",
+				Time = 5
+			})
+		end
+  	end    
+})
+
+Tab:AddButton({
+	Name = "Give Permanent InnerKeyCard",
+	Callback = function()
+		if game.Players.LocalPlayer.PlayerFolder.Inventory:FindFirstChild("InnerKeyCard") then
+			game.Players.LocalPlayer.PlayerFolder.Inventory.InnerKeyCard:Destroy()
+			local perm = Instance.new("NumberValue")
+			perm.Name = "InnerKeyCard"
+			perm.Parent = game.Players.LocalPlayer.PlayerFolder.Inventory
+		else
+			Library:MakeNotification({
+				Name = "Fail!",
+				Content = "Please get the InnerKeyCard first.",
+				Image = "",
+				Time = 5
+			})
+		end
+  	end    
+})
+
+workspace.DescendantAdded:Connect(function(obj)
+	if obj.Name == "Eyefestation" then
+		if pressure_no_eye == true then
+			task.wait(0.1)
+			obj:Destroy()
+		end
+	end
+
+	if obj.Name == "Steams" then
+		if pressure_no_steams == true then
+			task.wait(0.1)
+			obj:Destroy()
+		end
+	end
+
+	if obj.Name == "SearchlightsEncounter" then
+		if pressure_no_SearchLights == true then
+			task.wait(0.1)
+			obj:Destroy()
+		end
+	end
+end)
 
 local Section = Tab:AddSection({
 	Name = "Shrek in The Backrooms"
@@ -2827,6 +3216,26 @@ Tab:AddTextbox({
 })
 
 local Section = Tab:AddSection({
+	Name = "Disable ProximityPrompt Hold"
+})
+
+Tab:AddToggle({
+	Name = "Disable",
+	Default = false,
+	Callback = function(Value)
+		tools_no_pp_hold = Value
+		while tools_no_pp_hold == true and wait(0.1) do
+			for i,v in game.Workspace:GetDescendants() do
+				if v.ClassName == "ProximityPrompt" then
+					task.wait(0.1)
+					v.HoldDuration = 0
+				end
+			end
+		end
+	end    
+})
+
+local Section = Tab:AddSection({
 	Name = "get server id"
 })
 
@@ -3961,3 +4370,5 @@ Library:MakeNotification({
 	Image = "",
 	Time = 10
 })
+
+play_sound(4835664238, 5)
