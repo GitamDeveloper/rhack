@@ -5,11 +5,13 @@ local iskey_correct = false
 local key_loaded = false
 local acees_sus = false
 
-local disablekey_people = {"Alone_1755","doorslove1","scriptgDev3"}
+local players_gvar = game:GetService("Players")
+
+local disablekey_people = {"Alone_1755","doorslove1","scriptgDev4"}
 
 while iskey_correct == false and wait(0.1) do
 	for i,v in disablekey_people do
-		if v == game.Players.LocalPlayer.Name then
+		if v == game:GetService("Players").LocalPlayer.Name then
 			acees_sus = true
 		end
 	end
@@ -41,7 +43,7 @@ keyt:AddTextbox({
 			iskey_correct = true
 		else
 			for i,v in disablekey_people do
-				if v == game.Players.LocalPlayer.Name then
+				if v == game:GetService("Players").LocalPlayer.Name then
 					iskey_correct = true
 				end
 			end
@@ -57,21 +59,23 @@ end
 local rhack_version = "0.1"
 local rhack_version_desc = "small pressure fixes"
 
+
+
 getgenv().fireproximityprompt=function(pp)
-    local oldpos=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+    local oldpos=players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
     local oldenabled=pp.Enabled
     local oldhold=pp.HoldDuration
     local oldrlos=pp.RequiresLineOfSight
     pp.Enabled=true
     pp.HoldDuration=0
     pp.RequiresLineOfSight=false
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=pp.Parent.CFrame
+    players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame=pp.Parent.CFrame
     wait(.23)
     pp:InputHoldBegin()
     task.wait()
     pp:InputHoldEnd()
     wait(.1)
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=oldpos
+    players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame=oldpos
     pp.Enabled=pp.Enabled
     pp.HoldDuration=pp.HoldDuration
     pp.RequiresLineOfSight=pp.RequiresLineOfSight
@@ -121,7 +125,7 @@ end
 function play_sound(sound_id, volume)
 	local sound = Instance.new("Sound")
 	sound.SoundId = "rbxassetid://".. tostring(sound_id)
-	sound.Parent = game.Players.LocalPlayer.Character
+	sound.Parent = players_gvar.LocalPlayer.Character
 	sound.Volume = volume
 	sound:Play()
 	--wait(sound.TimeLength)
@@ -168,8 +172,18 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local tsb_saitama_ult_esp = false
+
+local esp_outline_only = false
+local esp_colorpick = Color3.fromRGB(255,255,255)
+local esp_onoff = false
+local esp_type = "highlight"
+
 local tools_no_pp_hold = false
 
+local pressure_monster_avoid = false
+local pressure_doorcount = 2
+local pressure_item_esp = false
 local pressure_no_SearchLights = false
 local pressure_no_steams = false
 local pressure_no_eye = false
@@ -293,19 +307,19 @@ local bf_autof_esp = false
 local bf_autof_tool = "null"
 local bf_autof_tools = {"null"}
 
-for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+for i,v in pairs(players_gvar.LocalPlayer.Backpack:GetChildren()) do
 	if v:IsA("Tool") then
 		table.insert(bf_autof_tools, v.Name)
 	end
 end
 
-for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+for i,v in pairs(players_gvar.LocalPlayer.Backpack:GetChildren()) do
 	if v:IsA("Tool") then
 		table.insert(kingl_autof_tools, v.Name)
 	end
 end
 
-for i,v in pairs(game.Players:GetChildren()) do
+for i,v in pairs(players_gvar:GetChildren()) do
 	if v.ClassName == "Player" then
 		table.insert(tsb_tp_nicks, v.Name)
 	end
@@ -409,7 +423,7 @@ local pesp_oo = false
 local oaf_oo = false
 local gaf_oo = false
 local haf_oo = false
-local aac_oo = false
+local aac_type = "default"
 local ak_oo = false
 local tilen = 1
 
@@ -441,12 +455,12 @@ aplva.Transparency = 1
 aplva.CanCollide = false
 aplva.Color = Color3.fromRGB(0,255,0)
 
-local ncw = false
-local ncs = false
-local ncd = false
-local nca = false
-local ncsp = false
-local ncc = false
+ncw = false
+ncs = false
+ncd = false
+nca = false
+ncsp = false
+ncc = false
 
 local rgui = Instance.new("ScreenGui", eplayer.PlayerGui)
 local testbutt = Instance.new("TextButton", rgui)
@@ -599,93 +613,7 @@ game:GetService("UserInputService").JumpRequest:connect(function()
 	end
 end)
 
-local aj = false
-local obj = Instance.new("Part", game.Workspace)
-obj.Anchored = true
-obj.Transparency = 0.70
-obj.Color = Color3.new(1, 0.47451, 0.482353)
---obj.Shape = "Cylinder"
---obj.Rotation = Vector3.new(0,0,90)
-obj.Size = Vector3.new(5,1,5)
-
-local an = false
-game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
-    if an_oo == true then
-        if input.KeyCode == Enum.KeyCode.G then
-            if an == false then
-                eplayer.Character.HumanoidRootPart.Anchored = true
-                an = true
-            else
-                eplayer.Character.HumanoidRootPart.Anchored = false
-                an = false
-            end
-        end
-    end
-end)
-
-game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
-    if jplus_oo == true then
-        if input.KeyCode == Enum.KeyCode.Space then
-            --script.Parent.HumanoidRootPart.Position += Vector3.new(0,10,0)
-            game.Players.LocalPlayer.Character.Humanoid.JumpPower = 1000
-            wait(0.01)
-            game.Players.LocalPlayer.Character.Humanoid.JumpPower = 16
-        end
-    end
-end)
-
-game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
-    if jp_oo == true then
-        if input.KeyCode == Enum.KeyCode.Space then
-            local jumpcircle = Instance.new("Part", game.Workspace)
-            --jumpcircle.Shape = "Cylinder"
-            local jc = false
-            local jcs = 5
-            jumpcircle.Anchored = true
-            jumpcircle.Transparency = 0.70
-            jumpcircle.Color = Color3.new(0.556863, 0.992157, 1)
-            jumpcircle.CanCollide = false
-            jumpcircle.Material = "Neon"
-            --jumpcircle.CFrame.Rotation = 
-            jumpcircle.Size = Vector3.new(0,0.1,0)
-                
-            jcs = 5
-            jumpcircle.Transparency = 0
-            jc = true
-            jumpcircle.CFrame = eplayer.Character.HumanoidRootPart.CFrame
-            jumpcircle.Position -= Vector3.new(0,3,0)
-            while jc == true and wait(0.01) do
-                jcs += 1
-                if jcs >= 50  then
-                    jumpcircle.Transparency = 0.10
-                    wait(0.1)
-                    jumpcircle.Transparency = 0.20
-                    wait(0.1)
-                    jumpcircle.Transparency = 0.30
-                    wait(0.1)
-                    jumpcircle.Transparency = 0.40
-                    wait(0.1)
-                    jumpcircle.Transparency = 0.50
-                    wait(0.1)
-                    jumpcircle.Transparency = 0.60
-                    wait(0.1)
-                    jumpcircle.Transparency = 0.70
-                    wait(0.1)
-                    jumpcircle.Transparency = 0.80
-                    wait(0.1)
-                    jumpcircle.Transparency = 0.90
-                    wait(0.1)
-                    jumpcircle.Transparency = 1
-                    jumpcircle.Size = Vector3.new(0,0.1,0)
-                    jumpcircle:Destroy()
-                    jc = false
-                    jcs = 5
-                end
-                jumpcircle.Size += Vector3.new(0.1,0,0.1)
-            end
-        end
-    end
-end)
+print(2)
 
 game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
     if aj_oo == true and aj_m == "platform bypass" then
@@ -777,9 +705,9 @@ Tab:AddTextbox({
 	Default = "value",
 	TextDisappear = true,
 	Callback = function(Value)
-		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
-    	while aac_oo == true and wait(0.01) do
-        	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+		players_gvar.LocalPlayer.Character.Humanoid.WalkSpeed = Value
+    	while aac_type == "update" and wait(0.01) do
+        	players_gvar.LocalPlayer.Character.Humanoid.WalkSpeed = Value
     	end
 	end	  
 })
@@ -789,9 +717,9 @@ Tab:AddTextbox({
 	Default = "value",
 	TextDisappear = true,
 	Callback = function(Value)
-		game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
-    	while aac_oo == true and wait(0.01) do
-        	game.Players.LocalPlayer.Character.Humanoid.JumpPower = Value
+		players_gvar.LocalPlayer.Character.Humanoid.JumpPower = Value
+    	while aac_type == "update" and wait(0.01) do
+        	players_gvar.LocalPlayer.Character.Humanoid.JumpPower = Value
     	end
 	end	  
 })
@@ -801,13 +729,7 @@ Tab:AddDropdown({
 	Default = "default",
 	Options = {"default", "update"},
 	Callback = function(Value)
-		if Value == "default" then
-			aac_oo = false
-		end
-
-		if Value == "update" then
-			aac_oo = true
-		end
+		aac_type = Value
 	end    
 })
 
@@ -831,30 +753,30 @@ Tab:AddBind({
 		if tsb_invisible == false then
 			tsb_invisible = true
 
-			game.Players.LocalPlayer.Character:Clone().Parent = game.Workspace.invs_clones
-			game.Players.LocalPlayer.Character.Parent = game.Workspace
+			players_gvar.LocalPlayer.Character:Clone().Parent = game.Workspace.invs_clones
+			players_gvar.LocalPlayer.Character.Parent = game.Workspace
 
-			local char = game.Workspace.invs_clones:FindFirstChild(game.Players.LocalPlayer.Name)
+			local char = game.Workspace.invs_clones:FindFirstChild(players_gvar.LocalPlayer.Name)
 
 			if invs_mode == "tp" then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,2100,0)
+				players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,2100,0)
 			else
 				if invs_mode == "tween" then
 					local tween_goal = {CFrame = CFrame.new(0,2100,0)}
 					local tween_info = TweenInfo.new(invs_time, Enum.EasingStyle.Linear)
-					local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+					local tween = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
 
 					tween:Play()
 				end
 			end
 
-			local speed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
-			local jump = game.Players.LocalPlayer.Character.Humanoid.JumpPower
-			local Maxh = game.Players.LocalPlayer.Character.Humanoid.MaxHealth
-			local h = game.Players.LocalPlayer.Character.Humanoid.Health
+			local speed = players_gvar.LocalPlayer.Character.Humanoid.WalkSpeed
+			local jump = players_gvar.LocalPlayer.Character.Humanoid.JumpPower
+			local Maxh = players_gvar.LocalPlayer.Character.Humanoid.MaxHealth
+			local h = players_gvar.LocalPlayer.Character.Humanoid.Health
 
 			game.Workspace.Camera.CameraSubject = char.Humanoid
-			game.Players.LocalPlayer.Character = char
+			players_gvar.LocalPlayer.Character = char
 
 			char.Humanoid.WalkSpeed = speed
 			char.Humanoid.JumpPower = jump
@@ -864,27 +786,27 @@ Tab:AddBind({
 			tsb_invisible = false
 
 			if invs_mode == "tp" then
-				game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+				game.Workspace:FindFirstChild(players_gvar.LocalPlayer.Name).HumanoidRootPart.CFrame = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
 			else
 				if invs_mode == "tween" then
-					local tween_goal = {CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame}
+					local tween_goal = {CFrame = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame}
 					local tween_info = TweenInfo.new(invs_time, Enum.EasingStyle.Linear)
-					local tween = game:GetService("TweenService"):Create(game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).HumanoidRootPart.CFrame, tween_info, tween_goal)
+					local tween = game:GetService("TweenService"):Create(game.Workspace:FindFirstChild(players_gvar.LocalPlayer.Name).HumanoidRootPart.CFrame, tween_info, tween_goal)
 
 					tween:Play()
 				end
 			end
 
-			game.Players.LocalPlayer.Character = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name)
-			game.Workspace.Camera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
-			if game.Workspace.invs_clones:FindFirstChild(game.Players.LocalPlayer.Name) then
-				game.Workspace.invs_clones:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
+			players_gvar.LocalPlayer.Character = game.Workspace:FindFirstChild(players_gvar.LocalPlayer.Name)
+			game.Workspace.Camera.CameraSubject = players_gvar.LocalPlayer.Character.Humanoid
+			if game.Workspace.invs_clones:FindFirstChild(players_gvar.LocalPlayer.Name) then
+				game.Workspace.invs_clones:FindFirstChild(players_gvar.LocalPlayer.Name):Destroy()
 			end
 
-			game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).Parent = game.Workspace.invs_clones
+			game.Workspace:FindFirstChild(players_gvar.LocalPlayer.Name).Parent = game.Workspace.invs_clones
 
-			if game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name) then
-				game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
+			if game.Workspace:FindFirstChild(players_gvar.LocalPlayer.Name) then
+				game.Workspace:FindFirstChild(players_gvar.LocalPlayer.Name):Destroy()
 			end
 		end
 	end    
@@ -919,38 +841,38 @@ Tab:AddButton({
 		end
 
 
-		game.Players.LocalPlayer.Character:Clone().Parent = bug_clones
-		game.Players.LocalPlayer.Character.Parent = game.Workspace
+		players_gvar.LocalPlayer.Character:Clone().Parent = bug_clones
+		players_gvar.LocalPlayer.Character.Parent = game.Workspace
 
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,2100,0)
+		players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,2100,0)
 
-		local speed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
-		local jump = game.Players.LocalPlayer.Character.Humanoid.JumpPower
-		local Maxh = game.Players.LocalPlayer.Character.Humanoid.MaxHealth
-		local h = game.Players.LocalPlayer.Character.Humanoid.Health
+		local speed = players_gvar.LocalPlayer.Character.Humanoid.WalkSpeed
+		local jump = players_gvar.LocalPlayer.Character.Humanoid.JumpPower
+		local Maxh = players_gvar.LocalPlayer.Character.Humanoid.MaxHealth
+		local h = players_gvar.LocalPlayer.Character.Humanoid.Health
 
-		game.Workspace.Camera.CameraSubject = game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name).Humanoid
-		game.Players.LocalPlayer.Character = game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name)
+		game.Workspace.Camera.CameraSubject = game.Workspace.bug_clones:FindFirstChild(players_gvar.LocalPlayer.Name).Humanoid
+		players_gvar.LocalPlayer.Character = game.Workspace.bug_clones:FindFirstChild(players_gvar.LocalPlayer.Name)
 
-		game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name).Humanoid.WalkSpeed = speed
-		game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name).Humanoid.JumpPower = jump
-		game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name).Humanoid.MaxHealth = Maxh
-		game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name).Humanoid.Health = h
+		game.Workspace.bug_clones:FindFirstChild(players_gvar.LocalPlayer.Name).Humanoid.WalkSpeed = speed
+		game.Workspace.bug_clones:FindFirstChild(players_gvar.LocalPlayer.Name).Humanoid.JumpPower = jump
+		game.Workspace.bug_clones:FindFirstChild(players_gvar.LocalPlayer.Name).Humanoid.MaxHealth = Maxh
+		game.Workspace.bug_clones:FindFirstChild(players_gvar.LocalPlayer.Name).Humanoid.Health = h
 
 		wait(1)
 
 		print("hhh")
-		game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-		game.Players.LocalPlayer.Character = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name)
-		game.Workspace.Camera.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
-		if game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name) then
-			game.Workspace.bug_clones:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
+		game.Workspace:FindFirstChild(players_gvar.LocalPlayer.Name).HumanoidRootPart.CFrame = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
+		players_gvar.LocalPlayer.Character = game.Workspace:FindFirstChild(players_gvar.LocalPlayer.Name)
+		game.Workspace.Camera.CameraSubject = players_gvar.LocalPlayer.Character.Humanoid
+		if game.Workspace.bug_clones:FindFirstChild(players_gvar.LocalPlayer.Name) then
+			game.Workspace.bug_clones:FindFirstChild(players_gvar.LocalPlayer.Name):Destroy()
 		end
 
-		game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name).Parent = game.Workspace.bug_clones
+		game.Workspace:FindFirstChild(players_gvar.LocalPlayer.Name).Parent = game.Workspace.bug_clones
 
-		if game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name) then
-			game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name):Destroy()
+		if game.Workspace:FindFirstChild(players_gvar.LocalPlayer.Name) then
+			game.Workspace:FindFirstChild(players_gvar.LocalPlayer.Name):Destroy()
 		end
 
 	end    
@@ -982,7 +904,7 @@ function hitb()
 					if hitb_t == "root part" then
 						if v.Character.Humanoid.Health >= 1 then
 							if frend_nohit == true then
-                				if v:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+                				if v:IsFriendsWith(players_gvar.LocalPlayer.UserId) then
                 				else
                 					if v.Character:FindFirstChild("HumanoidRootPart") then
                 						v.Character.HumanoidRootPart.Size = Vector3.new(hitb_s,hitb_s,hitb_s)
@@ -1041,7 +963,7 @@ function hitb()
 					if hitb_t == "head" then
 						if v.Character.Humanoid.Health >= 1 then
 							if frend_nohit == true then
-                				if v:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+                				if v:IsFriendsWith(players_gvar.LocalPlayer.UserId) then
                 				else
                 					if v.Character:FindFirstChild("Head") then
                 						if v.Character:FindFirstChild("HumanoidRootPart") then
@@ -1213,7 +1135,7 @@ Tab:AddToggle({
             	for i,v in next, game:GetService("Players"):GetPlayers() do
                 	if v.Name ~= game:GetService("Players").LocalPlayer.Name then
                 		if frend_nohit == true then
-                			if v:IsFriendsWith(game.Players.LocalPlayer.UserId) then
+                			if v:IsFriendsWith(players_gvar.LocalPlayer.UserId) then
                 			else
                 				v.Character.HumanoidRootPart.Size = Vector3.new(10,10,10)
                     			v.Character.HumanoidRootPart.CFrame = hbt_p
@@ -1251,8 +1173,6 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
-local esp_type = "highlight"
-
 local Section = Tab:AddSection({
 	Name = "esp"
 })
@@ -1261,21 +1181,46 @@ Tab:AddToggle({
 	Name = "Esp (players)",
 	Default = false,
 	Callback = function(Value)
+		esp_onoff = Value
 		if Value == true then
-			while wait(0.1) do
+			while esp_onoff == true and wait(0.1) do
             	for i, v in pairs(workspace:GetDescendants()) do
-                	if v:FindFirstChild("Humanoid") then
+            		if v.Name == "TextEsp" then
+            			if v.Adornee == nil then
+            				v.Destroy()
+            			end
+            		end
+
+                	if v:FindFirstChild("Humanoid") and players_gvar:FindFirstChild(v.Name) then
                 		if esp_type == "highlight" then
                 			if not v:FindFirstChild("highEsp") then
-                				if game.Players.LocalPlayer.Character then
-                					if v ~= game.Players.LocalPlayer.Character then
-	                            		local esp = Instance.new("Highlight",v)
-	                            		esp.FillColor = Color3.fromRGB(178,34,34)
-                            			esp.Name = "highEsp"
+                				if players_gvar.LocalPlayer.Character then
+                					if v ~= players_gvar.LocalPlayer.Character then
+
+                            			if esp_outline_only == true then
+                            				local esp = Instance.new("Highlight",v)
+	                            			esp.FillTransparency = 1
+	                            			esp.OutlineColor = esp_colorpick
+                            				esp.Name = "highEsp"
+                            			else
+                            				local esp = Instance.new("Highlight",v)
+	                            			esp.FillColor = esp_colorpick
+	                            			esp.OutlineColor = esp_colorpick
+                            				esp.Name = "highEsp"
+                            			end
                         			end
                 				end
                     		end
                 		else
+                			if esp_type == "text" then
+                				if not v:FindFirstChild("TextEsp") then
+                					if players_gvar.LocalPlayer.Character then
+                						if v ~= players_gvar.LocalPlayer.Character then
+                							apply_text(v, "TextEsp", v.Name, esp_colorpick)
+                						end
+                					end
+                				end
+                			end
                 		end
                 	end
             	end
@@ -1287,15 +1232,25 @@ Tab:AddToggle({
 Tab:AddDropdown({
 	Name = "type",
 	Default = "highlight",
-	Options = {"3d model", "highlight"},
+	Options = {"text", "highlight"},
 	Callback = function(Value)
-		if Value == "3d model" then
-			esp_type = "3d model"
-		end
+		esp_type = Value
+	end    
+})
 
-		if Value == "highlight" then
-			esp_type = "highlight"
-		end
+Tab:AddColorpicker({
+	Name = "color",
+	Default = Color3.fromRGB(255, 255, 255),
+	Callback = function(Value)
+		esp_colorpick = Value
+	end	  
+})
+
+Tab:AddToggle({
+	Name = "Outline only",
+	Default = false,
+	Callback = function(Value)
+		esp_outline_only = Value
 	end    
 })
 
@@ -1310,63 +1265,63 @@ Tab:AddToggle({
 		ubg_funny = Value
 		while ubg_funny == true and wait(0.1) do
 
-			game.Players.LocalPlayer.PlayerGui.Characters.FrameLegacy.Gon.Container.TextLabel.Text = "да-да-данечка?!?"
-			game.Players.LocalPlayer.PlayerGui.Characters.FrameLegacy.Nanami.Container.TextLabel.Text = "Проклятый ментос"
-			game.Players.LocalPlayer.PlayerGui.Characters.FrameLegacy.Mob.Container.TextLabel.Text = "Я кмс по квадробике..."
+			players_gvar.LocalPlayer.PlayerGui.Characters.FrameLegacy.Gon.Container.TextLabel.Text = "да-да-данечка?!?"
+			players_gvar.LocalPlayer.PlayerGui.Characters.FrameLegacy.Nanami.Container.TextLabel.Text = "Проклятый ментос"
+			players_gvar.LocalPlayer.PlayerGui.Characters.FrameLegacy.Mob.Container.TextLabel.Text = "Я кмс по квадробике..."
 
-			if game.Players.LocalPlayer.Data:FindFirstChild("Character").Value == "Gon" then
-				game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Text = "головоЛОМКА 2"
+			if players_gvar.LocalPlayer.Data:FindFirstChild("Character").Value == "Gon" then
+				players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Text = "головоЛОМКА 2"
 
-				if game.Players.LocalPlayer:FindFirstChild("Info").Transform.Value == false then
-					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Камень по лбу бля"
-					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Фаербол из майна"
-					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "У гарика спиздили"
-					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Сын, собирайся на рыбалку"
+				if players_gvar.LocalPlayer:FindFirstChild("Info").Transform.Value == false then
+					players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Камень по лбу бля"
+					players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Фаербол из майна"
+					players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "У гарика спиздили"
+					players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Сын, собирайся на рыбалку"
 				else
-					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "На попей"
-					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Золотой дождь"
-					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Ты меня подрезал бля!"
-					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Заскамила мамонта"
+					players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "На попей"
+					players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Золотой дождь"
+					players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Ты меня подрезал бля!"
+					players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Заскамила мамонта"
 				end
 
 			else
-				if game.Players.LocalPlayer.Data:FindFirstChild("Character").Value == "Nanami" then
-					game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Text = "Стягивай, Стягивай! Уфф... стянул"
+				if players_gvar.LocalPlayer.Data:FindFirstChild("Character").Value == "Nanami" then
+					players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Text = "Стягивай, Стягивай! Уфф... стянул"
 
-					if game.Players.LocalPlayer:FindFirstChild("Info").Transform.Value == false then
-						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Назад и вперед. И все."
-						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Тактический долбаеб"
-						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Зря я туда полез..."
-						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Шарик на палочке"
+					if players_gvar.LocalPlayer:FindFirstChild("Info").Transform.Value == false then
+						players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Назад и вперед. И все."
+						players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Тактический долбаеб"
+						players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Зря я туда полез..."
+						players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Шарик на палочке"
 					else
-						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Чорный пенис"
-						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Полетел нахуй отсюда"
-						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Пацаны съебываем"
-						game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Камешки"
+						players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Чорный пенис"
+						players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Полетел нахуй отсюда"
+						players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Пацаны съебываем"
+						players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Камешки"
 					end
 
 				else
-					if game.Players.LocalPlayer.Data:FindFirstChild("Character").Value == "Mob" then
-						if game.Players.LocalPlayer:FindFirstChild("Info").Killstreak.Value >= 2 then
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Text = "Негр в пене"
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Custom.Visible = false
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Visible = true
+					if players_gvar.LocalPlayer.Data:FindFirstChild("Character").Value == "Mob" then
+						if players_gvar.LocalPlayer:FindFirstChild("Info").Killstreak.Value >= 2 then
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Text = "Негр в пене"
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Custom.Visible = false
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Visible = true
 						else
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Text = "Я потяну тебя за письку и оторву..."
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Custom.Visible = false
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Visible = true
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Text = "Я потяну тебя за письку и оторву..."
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Custom.Visible = false
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("UltimateStandard").Ultimate.Base.Label.Visible = true
 						end
 
-						if game.Players.LocalPlayer:FindFirstChild("Info").Transform.Value == false then
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Винтовка калибра 1488"
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Боб строитель..."
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Пенисы из под пола"
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Тюрьма для геев"
+						if players_gvar.LocalPlayer:FindFirstChild("Info").Transform.Value == false then
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Винтовка калибра 1488"
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Боб строитель..."
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Пенисы из под пола"
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Тюрьма для геев"
 						else
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Дайте мне уже пульт от ядерки..."
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Да не бомбит у меня!"
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Бомбежка ирана"
-							game.Players.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Расчеленение"
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability1.Ability1.Label.Text = "Дайте мне уже пульт от ядерки..."
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability2.Ability2.Label.Text = "Да не бомбит у меня!"
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability3.Ability3.Label.Text = "Бомбежка ирана"
+							players_gvar.LocalPlayer.PlayerGui.Backpack.Base:FindFirstChild("Layout").Ability4.Ability4.Label.Text = "Расчеленение"
 						end
 					end
 				end
@@ -1384,7 +1339,7 @@ Tab:AddTextbox({
 	Default = "number",
 	TextDisappear = true,
 	Callback = function(Value)
-		game.Players.LocalPlayer.Data.Level.Value = Value
+		players_gvar.LocalPlayer.Data.Level.Value = Value
 	end	  
 })
 
@@ -1393,7 +1348,7 @@ Tab:AddTextbox({
 	Default = "number",
 	TextDisappear = true,
 	Callback = function(Value)
-		game.Players.LocalPlayer.Data.Beli.Value = Value
+		players_gvar.LocalPlayer.Data.Beli.Value = Value
 	end	  
 })
 
@@ -1409,15 +1364,62 @@ Tab:AddToggle({
 		while tsb_deathcounter_alert == true and wait(0.1) do
 			for i,v in game.Workspace.Live:GetDescendants() do
 				if v.Name == "Counter" then
-					local alert = Instance.new("Highlight",v.Parent)
-	                alert.FillColor = Color3.fromRGB(252, 3, 3)
-                    alert.Name = "alert"
+					if v.Parent.Name ~= players_gvar.LocalPlayer.Character.Name then
+						if v.Parent:FindFirstChild("alert") then
+						else
+							local alert = Instance.new("Highlight",v.Parent)
+	                		alert.FillColor = Color3.fromRGB(252, 3, 3)
+                    		alert.Name = "alert"
+						end
+					end
 				else
 					if v:FindFirstChild("alert") then
 						v:FindFirstChild("alert"):Destroy()
 					end
 				end
 			end
+		end
+	end    
+})
+
+Tab:AddToggle({
+	Name = "saitama ult alert",
+	Default = false,
+	Callback = function(Value)
+		tsb_saitama_ult_esp = Value
+		while tsb_saitama_ult_esp == true and wait(0.1) do
+			for i,v in players_gvar:GetDescendants() do
+				if v.Name == "Death Counter" then
+					if v.Parent.Parent.Name ~= players_gvar.LocalPlayer.Name then
+						if v.Parent.Parent.Character:FindFirstChild("SaitamaUltEsp") then
+						else
+							apply_text(v.Parent.Parent.Character, "SaitamaUltEsp", "UltUsed", Color3.fromRGB(245, 221, 66))
+							Library:MakeNotification({
+								Name = "Ultimate alert!",
+								Content = "[ ".. v.Parent.Parent.Character.Name.. "] used ult.",
+								Image = "",
+								Time = 5
+							})
+						end
+					end
+				end
+			end
+
+			for i,v in game.Workspace.Live:GetDescendants() do
+				if v.Name == "SaitamaUltEsp" then
+
+					for o,b in players_gvar:GetChildren() do
+						if v.Parent and b then
+							if v.Parent.Name == b.Name then
+								if b.Backpack:FindFirstChild("Death Counter") then
+								else
+									v:Destroy()
+								end
+							end
+						end
+					end
+				end
+ 			end
 		end
 	end    
 })
@@ -1461,17 +1463,19 @@ Tab:AddToggle({
 				end
 			end
 		end
+	end    
+})
 
-		if Value == false then return end
-		for i,v in game.Workspace:GetDescendants() do
-			if v.Name == "NormalKeyCard" then
-				if pressure_keyesp == true then
-					apply_text(v, "KeyCardTextEsp", "KeyCard", Color3.fromRGB(66, 135, 245))
-				end
-			else
-				if v.Name == "InnerKeyCard" then
-					if pressure_keyesp == true then
-						apply_text(v, "KeyCardTextEsp", "InnerKeyCard", Color3.fromRGB(114, 60, 189))
+Tab:AddToggle({
+	Name = "Item esp",
+	Default = false,
+	Callback = function(Value)
+		pressure_item_esp = Value
+		while pressure_item_esp == true and wait(0.1) do
+			for i,v in game.Workspace:GetDescendants() do
+				if v.Name == "ItemTextEsp" then
+					if v.Adornee == nil then
+						v:Destroy()
 					end
 				end
 			end
@@ -1493,23 +1497,6 @@ Tab:AddToggle({
 				end
 			end
 		end
-
-		if Value == false then return end
-		for i,v in game.Workspace:GetDescendants() do
-			if v.Name == "NormalDoor" then
-				if pressure_dooresp == true then
-					if v.ClassName == "Model" then
-
-						if v:FindFirstChild("Lock") then
-							apply_text(v, "RealDoorTextEsp", "LockedDoor", Color3.fromRGB(212, 224, 36))
-
-						else
-							apply_text(v, "RealDoorTextEsp", "Door", Color3.fromRGB(14, 168, 12))
-						end
-					end
-				end
-			end
-		end
 	end    
 })
 
@@ -1523,17 +1510,6 @@ Tab:AddToggle({
 				if v.Name == "FakeDoorTextEsp" then
 					if v.Adornee == nil then
 						v:Destroy()
-					end
-				end
-			end
-		end
-
-		if Value == false then return end
-		for i,v in game.Workspace:GetDescendants() do
-			if v.Name == "TricksterDoor" then
-				if pressure_fakedoor_esp == true then
-					if v.ClassName == "Model" then
-						apply_text(v, "FakeDoorTextEsp", "FakeRoom", Color3.fromRGB(255, 55, 0))
 					end
 				end
 			end
@@ -1553,14 +1529,6 @@ Tab:AddToggle({
 						v:Destroy()
 					end
 				end
-			end
-		end
-
-		if Value == false then return end
-		for i,v in game.Workspace:GetDescendants() do
-			if v.Name == "Locker" then
-				task.wait(0.1)
-				apply_text(v:FindFirstChild("highlight"):FindFirstChild("Root"), "FakeLockerTextEsp", "FakeLocker", Color3.fromRGB(140, 0, 255))
 			end
 		end
 	end    
@@ -1597,30 +1565,6 @@ Tab:AddToggle({
 				end
 			end
 		end
-
-		if Value == false then return end
-		for i,v in game.Workspace:GetDescendants() do
-			if v.Name == "Lever" then
-				if pressure_path_helper == true then
-
-					apply_text(v, "LeverTextEsp", "Lever", Color3.fromRGB(0, 26, 255))
-				end
-			end
-
-			if v.Name == "Electricity" then
-				if pressure_path_helper == true then
-
-					apply_text(v, "ElecAlertTextEsp", "!", Color3.fromRGB(255, 170, 0))
-				end
-			end
-
-			if v.Name == "Meshes/Vent" then
-				if pressure_path_helper == true then
-
-					apply_text(v, "VentTextEsp", "Vent", Color3.fromRGB(0, 255, 145))
-				end
-			end
-		end
 	end    
 })
 
@@ -1628,12 +1572,32 @@ if game.Workspace:FindFirstChild("Rooms") then
 	workspace.Rooms.DescendantAdded:Connect(function(obj)
 		if obj.Name == "NormalKeyCard" then
 			if pressure_keyesp == true then
-				apply_text(obj, "KeyCardTextEsp", "KeyCard", Color3.fromRGB(66, 135, 245))
+				apply_text(obj, "KeyCardTextEsp", "KeyCard: Normal", Color3.fromRGB(66, 135, 245))
 			end
-		else
-			if obj.Name == "InnerKeyCard" then
-				if pressure_keyesp == true then
-					apply_text(v, "KeyCardTextEsp", "InnerKeyCard", Color3.fromRGB(114, 60, 189))
+		end
+
+		if obj.Name == "InnerKeyCard" then
+			if pressure_keyesp == true then
+				apply_text(v, "KeyCardTextEsp", "KeyCard: Inner", Color3.fromRGB(114, 60, 189))
+			end
+		end
+	end)
+end
+
+if game.Workspace:FindFirstChild("Rooms") then
+	workspace.Rooms.DescendantAdded:Connect(function(obj)
+		if pressure_item_esp == true then
+
+			local can_apply = false
+			for i,v in game.ReplicatedStorage.EquipableItems:GetChildren() do
+				if obj.Name == v.Name then
+					can_apply = true
+				end
+			end
+
+			if can_apply == true then
+				if obj.Name ~= "NormalKeyCard" and obj.Name ~= "InnerKeyCard" and obj.Name ~= "Notebook" then
+					apply_text(obj, "ItemTextEsp", "Item: ".. obj.Name, Color3.fromRGB(245, 239, 66))
 				end
 			end
 		end
@@ -1651,7 +1615,7 @@ if game.Workspace:FindFirstChild("Rooms") then
 					end
 				end
 
-				apply_text(obj, "LeverTextEsp", "Lever", Color3.fromRGB(0, 26, 255))
+				apply_text(obj, "LeverTextEsp", "Interaction: Lever", Color3.fromRGB(0, 26, 255))
 			end
 		end
 
@@ -1664,7 +1628,7 @@ if game.Workspace:FindFirstChild("Rooms") then
 					end
 				end
 
-				apply_text(obj, "ElecAlertTextEsp", "!", Color3.fromRGB(255, 170, 0))
+				apply_text(obj, "ElecAlertTextEsp", "Danger: Electricity", Color3.fromRGB(255, 170, 0))
 			end
 		end
 	end)
@@ -1675,7 +1639,7 @@ if game.Workspace:FindFirstChild("Rooms") then
 		if obj.Name == "MonsterLocker" then
 			if pressure_fake_locker_esp == true then
 				task.wait(0.1)
-				apply_text(obj, "FakeLockerTextEsp", "FakeLocker", Color3.fromRGB(140, 0, 255))
+				apply_text(obj, "FakeLockerTextEsp", "Monster: FakeLocker", Color3.fromRGB(140, 0, 255))
 			end
 		end
 	end)
@@ -1685,7 +1649,7 @@ if game.Workspace:FindFirstChild("Rooms") then
 	workspace.Rooms.DescendantAdded:Connect(function(obj)
 		if obj.Name == "Locker" then
 			if pressure_locker_esp == true then
-				apply_text(obj, "LockerTextEsp", "Locker", Color3.fromRGB(60, 73, 189))
+				apply_text(obj, "LockerTextEsp", "Safekeeping: Locker", Color3.fromRGB(60, 73, 189))
 			end
 		end
 	end)
@@ -1703,16 +1667,56 @@ if game.Workspace:FindFirstChild("Rooms") then
 			end
 
 			if can_apply == true then
-				apply_text(obj, "MonsterTextEsp", obj.Name, Color3.fromRGB(250, 5, 5))
+				apply_text(obj, "MonsterTextEsp", "Monster: ".. obj.Name, Color3.fromRGB(250, 5, 5))
 
             	Library:MakeNotification({
 					Name = "Monster alert!",
-					Content = "[ ".. obj.Name.. " ] is spawned.",
+					Content = "Monster [ ".. obj.Name.. " ] has spawned.",
 					Image = "",
 					Time = 5
 				})
 
 				play_sound(6432593850, 5)
+
+				if pressure_monster_avoid == true then
+					local old_pos = players_gvar.LocalPlayer.Character.HumanoidRootPart.Position
+					local old_cf = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
+					local RunServicetp = game:GetService("RunService").Heartbeat:Connect(function()
+						players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0,1000,0)
+						wait(0.1)
+						players_gvar.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+					end)
+					obj.Destroying:Wait()
+					RunServicetp:Disconnect()
+					wait(0.1)
+					players_gvar.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+					wait(0.1)
+					players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = old_cf
+				end
+			end
+		end
+
+		local can_apply = false
+		for i,v in game.ReplicatedStorage.DeathFolder:GetDescendants() do
+			if v.Name == obj.Name then
+				can_apply = true
+			else
+			end
+		end
+
+		if can_apply == true then
+			if pressure_monster_avoid == true then
+				local old_pos = players_gvar.LocalPlayer.Character.HumanoidRootPart.Position
+				local old_cf = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
+				local RunServicetp = game:GetService("RunService").Heartbeat:Connect(function()
+					players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = (players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame + CFrame.new(0,100000,0))
+					--players_gvar.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+				end)
+				obj.Destroying:Wait()
+				RunServicetp:Disconnect()
+				players_gvar.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+
+				players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(old_cf)
 			end
 		end
 	end)
@@ -1724,6 +1728,9 @@ if game.Workspace:FindFirstChild("Rooms") then
 			if pressure_dooresp == true then
 				if obj.ClassName == "Model" then
 
+					pressure_doorcount += 1
+					local number = 0
+					local islock = false
 					for i,v in game.Workspace:GetDescendants() do
 
 						if v.Name == "LockerTextEsp" then
@@ -1740,7 +1747,21 @@ if game.Workspace:FindFirstChild("Rooms") then
 
 					end
 
-					if obj:FindFirstChild("Lock") then
+					for i,v in game.Workspace.Rooms:GetChildren() do
+						if v.Name ~= "Start" then
+							if obj.Parent.Name == "Entrances" then
+								number += 1
+							end
+						end
+					end
+
+					for i,v in obj.Parent.Parent:GetDescendants() do
+						if v.Name == "KeycardUnlock" then
+							islock = true
+						end
+					end
+
+					if islock == true then
 						apply_text(obj, "RealDoorTextEsp", "LockedDoor", Color3.fromRGB(212, 224, 36))
 
 					else
@@ -1764,7 +1785,7 @@ if game.Workspace:FindFirstChild("Rooms") then
 						end
 					end
 
-					apply_text(obj, "FakeDoorTextEsp", "FakeRoom", Color3.fromRGB(255, 55, 0))
+					apply_text(obj, "FakeDoorTextEsp", "Monster: FakeDoor", Color3.fromRGB(255, 55, 0))
 
 				end
 			end
@@ -1814,8 +1835,8 @@ Tab:AddDropdown({
 function noclip()
     Clip = true
     local function Nocl()
-        if Clip == true and game.Players.LocalPlayer.Character ~= nil then
-            for _,v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+        if Clip == true and players_gvar.LocalPlayer.Character ~= nil then
+            for _,v in pairs(players_gvar.LocalPlayer.Character:GetDescendants()) do
                 if v:IsA('BasePart') and v.CanCollide and v.Name ~= floatName then
                     v.CanCollide = false
                 end
@@ -1857,18 +1878,18 @@ Tab:AddButton({
 	Name = "tp to player",
 	Callback = function()
 		if tp_to_mode == "tp" then
-			if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-				if game.Players:FindFirstChild(tpto_plr).Character:FindFirstChild("HumanoidRootPart") then
-					game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = game.Players:FindFirstChild(tpto_plr).Character:FindFirstChild("HumanoidRootPart").CFrame
+			if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+				if players_gvar:FindFirstChild(tpto_plr).Character:FindFirstChild("HumanoidRootPart") then
+					players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = players_gvar:FindFirstChild(tpto_plr).Character:FindFirstChild("HumanoidRootPart").CFrame
 				end
 			end
 		else
 			if tp_to_mode == "tween" then
-				if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-					if game.Players:FindFirstChild(tpto_plr).Character:FindFirstChild("HumanoidRootPart") then
-						local tween_goal = {CFrame = game.Players:FindFirstChild(tpto_plr).Character:FindFirstChild("HumanoidRootPart").CFrame}
+				if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+					if players_gvar:FindFirstChild(tpto_plr).Character:FindFirstChild("HumanoidRootPart") then
+						local tween_goal = {CFrame = players_gvar:FindFirstChild(tpto_plr).Character:FindFirstChild("HumanoidRootPart").CFrame}
 						local tween_info = TweenInfo.new(tween_to_time, Enum.EasingStyle.Linear)
-						local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+						local tween = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
 
 						tween:Play()
 					end
@@ -1884,18 +1905,18 @@ Tab:AddTextbox({
 	TextDisappear = true,
 	Callback = function(Value)
 		if tp_to_mode == "tp" then
-			if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-				if game.Players:FindFirstChild(Value).Character:FindFirstChild("HumanoidRootPart") then
-					game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = game.Players:FindFirstChild(Value).Character:FindFirstChild("HumanoidRootPart").CFrame
+			if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+				if players_gvar:FindFirstChild(Value).Character:FindFirstChild("HumanoidRootPart") then
+					players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = players_gvar:FindFirstChild(Value).Character:FindFirstChild("HumanoidRootPart").CFrame
 				end
 			end
 		else
 			if tp_to_mode == "tween" then
-				if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-					if game.Players:FindFirstChild(Value).Character:FindFirstChild("HumanoidRootPart") then
-						local tween_goal = {CFrame = game.Players:FindFirstChild(Value).Character:FindFirstChild("HumanoidRootPart").CFrame}
+				if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+					if players_gvar:FindFirstChild(Value).Character:FindFirstChild("HumanoidRootPart") then
+						local tween_goal = {CFrame = players_gvar:FindFirstChild(Value).Character:FindFirstChild("HumanoidRootPart").CFrame}
 						local tween_info = TweenInfo.new(tween_to_time, Enum.EasingStyle.Linear)
-						local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+						local tween = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
 
 						tween:Play()
 					end
@@ -1938,7 +1959,7 @@ local Section = Tab:AddSection({
 Tab:AddButton({
 	Name = "Join to random game",
 	Callback = function()
-		game:GetService("TeleportService"):Teleport(12552538292, game.Players.LocalPlayer)
+		game:GetService("TeleportService"):Teleport(12552538292, players_gvar.LocalPlayer)
   	end    
 })
 
@@ -1979,21 +2000,21 @@ Tab:AddToggle({
 })
 
 Tab:AddToggle({
-	Name = "Disable SearchLights (dont enable)",
+	Name = "Auto avoid monsters",
 	Default = false,
 	Callback = function(Value)
-		pressure_no_SearchLights = Value
+		pressure_monster_avoid = Value
 	end    
 })
 
 Tab:AddButton({
 	Name = "Give Permanent NormalKeyCard",
 	Callback = function()
-		if game.Players.LocalPlayer.PlayerFolder.Inventory:FindFirstChild("NormalKeyCard") then
-			game.Players.LocalPlayer.PlayerFolder.Inventory.NormalKeyCard:Destroy()
+		if players_gvar.LocalPlayer.PlayerFolder.Inventory:FindFirstChild("NormalKeyCard") then
+			players_gvar.LocalPlayer.PlayerFolder.Inventory.NormalKeyCard:Destroy()
 			local perm = Instance.new("NumberValue")
 			perm.Name = "NormalKeyCard"
-			perm.Parent = game.Players.LocalPlayer.PlayerFolder.Inventory
+			perm.Parent = players_gvar.LocalPlayer.PlayerFolder.Inventory
 		else
 			Library:MakeNotification({
 				Name = "Fail!",
@@ -2008,11 +2029,11 @@ Tab:AddButton({
 Tab:AddButton({
 	Name = "Give Permanent InnerKeyCard",
 	Callback = function()
-		if game.Players.LocalPlayer.PlayerFolder.Inventory:FindFirstChild("InnerKeyCard") then
-			game.Players.LocalPlayer.PlayerFolder.Inventory.InnerKeyCard:Destroy()
+		if players_gvar.LocalPlayer.PlayerFolder.Inventory:FindFirstChild("InnerKeyCard") then
+			players_gvar.LocalPlayer.PlayerFolder.Inventory.InnerKeyCard:Destroy()
 			local perm = Instance.new("NumberValue")
 			perm.Name = "InnerKeyCard"
-			perm.Parent = game.Players.LocalPlayer.PlayerFolder.Inventory
+			perm.Parent = players_gvar.LocalPlayer.PlayerFolder.Inventory
 		else
 			Library:MakeNotification({
 				Name = "Fail!",
@@ -2083,7 +2104,7 @@ Tab:AddToggle({
 		dusty_mfarm = Value
 		while dusty_mfarm == true and wait(0.1) do
 			local tproad = dusty_mfarm_curroad + 1
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.models.roads:FindFirstChild(tproad).CFrame
+			players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.models.roads:FindFirstChild(tproad).CFrame
 			dusty_mfarm_curroad += 1
 		end
 	end    
@@ -2101,8 +2122,8 @@ Tab:AddToggle({
 		if Value == true then
 			while bb_autoparry == true and wait(bb_autoparry_speed) do
 				for _,ball in next, workspace.Balls:GetChildren() do
-					if game.Players.LocalPlayer.Character:FindFirstChild("Highlight") then
-						local dist = (ball.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+					if players_gvar.LocalPlayer.Character:FindFirstChild("Highlight") then
+						local dist = (ball.Position - players_gvar.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
 						local vel = ball.AssemblyLinearVelocity.Magnitude
 
 						--local print = dist + vel
@@ -2329,11 +2350,11 @@ Tab:AddToggle({
 		if Value == true then
 			if build_aboat_farmgold_type == "tp" then
 				while build_aboat_farmgold == true and wait(0.1) do
-					if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+					if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 						build_aboat_farmgold_count = 0
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage1.StonePart.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage1.StonePart.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2341,9 +2362,9 @@ Tab:AddToggle({
 
 						wait(build_aboat_farmgold_time)
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage2.StonePart.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage2.StonePart.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2351,9 +2372,9 @@ Tab:AddToggle({
 
 						wait(build_aboat_farmgold_time)
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage3.StonePart.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage3.StonePart.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2361,9 +2382,9 @@ Tab:AddToggle({
 
 						wait(build_aboat_farmgold_time)
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage4.StonePart.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage4.StonePart.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2371,9 +2392,9 @@ Tab:AddToggle({
 
 						wait(build_aboat_farmgold_time)
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage5.StonePart.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage5.StonePart.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2381,9 +2402,9 @@ Tab:AddToggle({
 
 						wait(build_aboat_farmgold_time)
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage6.StonePart.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage6.StonePart.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2391,9 +2412,9 @@ Tab:AddToggle({
 
 						wait(build_aboat_farmgold_time)
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage7.StonePart.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage7.StonePart.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2401,9 +2422,9 @@ Tab:AddToggle({
 
 						wait(build_aboat_farmgold_time)
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage8.StonePart.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage8.StonePart.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2411,9 +2432,9 @@ Tab:AddToggle({
 
 						wait(build_aboat_farmgold_time)
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage9.StonePart.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage9.StonePart.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2421,9 +2442,9 @@ Tab:AddToggle({
 
 						wait(build_aboat_farmgold_time)
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage10.StonePart.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage10.StonePart.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2431,9 +2452,9 @@ Tab:AddToggle({
 
 						wait(build_aboat_farmgold_time)
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2445,19 +2466,19 @@ Tab:AddToggle({
 				if build_aboat_farmgold_type == "tween" then
 					while build_aboat_farmgold == true and wait(0.1) do
 						build_aboat_farmgold_count = 0
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage1.StonePart.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.CaveStage1.StonePart.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								local tween_to_end1_goal = {CFrame = workspace.BoatStages.NormalStages.CaveStage10.StonePart.CFrame}
 								local tween_to_end1_info = TweenInfo.new(build_aboat_farmgold_movetime, Enum.EasingStyle.Linear)
-								local tween_to_end1 = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tween_to_end1_info, tween_to_end1_goal)
+								local tween_to_end1 = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character.HumanoidRootPart, tween_to_end1_info, tween_to_end1_goal)
 
 								tween_to_end1:Play()
 							end
@@ -2467,70 +2488,70 @@ Tab:AddToggle({
 
 						--time lap
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(build_aboat_farmgold_movetime / 10)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(build_aboat_farmgold_movetime / 10)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(build_aboat_farmgold_movetime / 10)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(build_aboat_farmgold_movetime / 10)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(build_aboat_farmgold_movetime / 10)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(build_aboat_farmgold_movetime / 10)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(build_aboat_farmgold_movetime / 10)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(build_aboat_farmgold_movetime / 10)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(build_aboat_farmgold_movetime / 10)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(build_aboat_farmgold_movetime / 10)
 							end
@@ -2540,18 +2561,18 @@ Tab:AddToggle({
 
 
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame
-								--workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame
+								--workspace.BoatStages.NormalStages.TheEnd.GoldenChest.Trigger.CFrame = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								--game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+								--players_gvar.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2559,35 +2580,35 @@ Tab:AddToggle({
 
 						--time lap2
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(1)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(1)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(1)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(1)
 							end
 						else
 							build_aboat_farmgold_count = 1
 						end
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
 								wait(1)
 							end
@@ -2597,9 +2618,9 @@ Tab:AddToggle({
 
 
 
-						if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+						if players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 							if build_aboat_farmgold_count == 0 then
-								--game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+								--players_gvar.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 							end
 						else
 							build_aboat_farmgold_count = 1
@@ -2646,7 +2667,7 @@ Tab:AddToggle({
 		towerhell_farmmoney = Value
 		if Value == true then
 			while towerhell_farmmoney == true and wait(0.1) do
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.tower.finishes.Finish.CFrame
+				players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.tower.finishes.Finish.CFrame
 				wait(5)
 				if towerhell_farmmoney_rejoin == true then
 					local ts = game:GetService("TeleportService")
@@ -2674,16 +2695,16 @@ Tab:AddButton({
 	Name = "tp players",
 	Callback = function()
 		local pos = CFrame.new(0,0,0)
-		pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+		pos = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
 
-		if game.Players.LocalPlayer.Backpack:FindFirstChild("Flowing Water") then
-			game.Players.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Character
+		if players_gvar.LocalPlayer.Backpack:FindFirstChild("Flowing Water") then
+			players_gvar.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = players_gvar.LocalPlayer.Character
 		else
-			if game.Players.LocalPlayer.Backpack:FindFirstChild("Foul Ball") then
-				game.Players.LocalPlayer.Backpack:FindFirstChild("Foul Ball").Parent = game.Players.LocalPlayer.Character
+			if players_gvar.LocalPlayer.Backpack:FindFirstChild("Foul Ball") then
+				players_gvar.LocalPlayer.Backpack:FindFirstChild("Foul Ball").Parent = players_gvar.LocalPlayer.Character
 			else
-				if game.Players.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave") then
-					game.Players.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave").Parent = game.Players.LocalPlayer.Character
+				if players_gvar.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave") then
+					players_gvar.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave").Parent = players_gvar.LocalPlayer.Character
 				else
 				end
 			end
@@ -2691,52 +2712,52 @@ Tab:AddButton({
 
 		if tsb_tp_nick == "none" then
 		else
-			local pivot = game.Players:FindFirstChild(tsb_tp_nick).Character:GetPivot()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+			local pivot = players_gvar:FindFirstChild(tsb_tp_nick).Character:GetPivot()
+			players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
 		end
 		wait(1)
 
-		if game.Players.LocalPlayer.Character:FindFirstChild("Flowing Water") then
-			game.Players.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Backpack
+		if players_gvar.LocalPlayer.Character:FindFirstChild("Flowing Water") then
+			players_gvar.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = players_gvar.LocalPlayer.Backpack
 		else
-			if game.Players.LocalPlayer.Character:FindFirstChild("Foul Ball") then
-				game.Players.LocalPlayer.Character:FindFirstChild("Foul Ball").Parent = game.Players.LocalPlayer.Backpack
+			if players_gvar.LocalPlayer.Character:FindFirstChild("Foul Ball") then
+				players_gvar.LocalPlayer.Character:FindFirstChild("Foul Ball").Parent = players_gvar.LocalPlayer.Backpack
 			else
-				if game.Players.LocalPlayer.Character:FindFirstChild("Atmos Cleave") then
-					game.Players.LocalPlayer.Character:FindFirstChild("Atmos Cleave").Parent = game.Players.LocalPlayer.Backpack
+				if players_gvar.LocalPlayer.Character:FindFirstChild("Atmos Cleave") then
+					players_gvar.LocalPlayer.Character:FindFirstChild("Atmos Cleave").Parent = players_gvar.LocalPlayer.Backpack
 				else
 				end
 			end
 		end
 
 		if tsb_tp_place == "air" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
+			players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
 		else
 			if tsb_tp_place == "Death Cutscene" then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Death Cutscene").HeadCFrame.CFrame
+				players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Death Cutscene").HeadCFrame.CFrame
 			else
 				if tsb_tp_place == "Atoms" then
-					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").sphere.CFrame
+					players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").sphere.CFrame
 				else
 					if tsb_tp_place == "Map" then
 						if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Donation Leaderboard").Part.CFrame
+							players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Donation Leaderboard").Part.CFrame
 						else
 							if game.Workspace.Map:FindFirstChild("spone") then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Map:FindFirstChild("spone").CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Map:FindFirstChild("spone").CFrame
 							end
 						end
 					else
 						if tsb_tp_place == "Map2" then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").ogcircle.CFrame
+							players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").ogcircle.CFrame
 						else
 							if tsb_tp_place == "Mountain" then
 
 								if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
-									game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(395.514648, 699.102539, 398.27771, -0.75630492, -9.94614453e-08, -0.65421927, -6.9310083e-08, 1, -7.19053759e-08, 0.65421927, -9.03839936e-09, -0.75630492)
+									players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(395.514648, 699.102539, 398.27771, -0.75630492, -9.94614453e-08, -0.65421927, -6.9310083e-08, 1, -7.19053759e-08, 0.65421927, -9.03839936e-09, -0.75630492)
 								else
 									if game.Workspace.Map:FindFirstChild("spone") then
-										game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(490.736969, 688.797913, -362.606781, 0.826861322, -9.94782567e-09, -0.562405884, 7.48708917e-09, 1, -6.6803012e-09, 0.562405884, 1.31289934e-09, 0.826861322)
+										players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(490.736969, 688.797913, -362.606781, 0.826861322, -9.94782567e-09, -0.562405884, 7.48708917e-09, 1, -6.6803012e-09, 0.562405884, 1.31289934e-09, 0.826861322)
 									end
 								end
 							end
@@ -2749,7 +2770,7 @@ Tab:AddButton({
 		wait(3)
 
 		if tsb_tp_back == true then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+			players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
 		end
 	end    
 })
@@ -2760,16 +2781,16 @@ Tab:AddBind({
 	Hold = false,
 	Callback = function()
 		local pos = CFrame.new(0,0,0)
-		pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+		pos = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
 
-		if game.Players.LocalPlayer.Backpack:FindFirstChild("Flowing Water") then
-			game.Players.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Character
+		if players_gvar.LocalPlayer.Backpack:FindFirstChild("Flowing Water") then
+			players_gvar.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = players_gvar.LocalPlayer.Character
 		else
-			if game.Players.LocalPlayer.Backpack:FindFirstChild("Foul Ball") then
-				game.Players.LocalPlayer.Backpack:FindFirstChild("Foul Ball").Parent = game.Players.LocalPlayer.Character
+			if players_gvar.LocalPlayer.Backpack:FindFirstChild("Foul Ball") then
+				players_gvar.LocalPlayer.Backpack:FindFirstChild("Foul Ball").Parent = players_gvar.LocalPlayer.Character
 			else
-				if game.Players.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave") then
-					game.Players.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave").Parent = game.Players.LocalPlayer.Character
+				if players_gvar.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave") then
+					players_gvar.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave").Parent = players_gvar.LocalPlayer.Character
 				else
 				end
 			end
@@ -2777,52 +2798,52 @@ Tab:AddBind({
 
 		if tsb_tp_nick == "none" then
 		else
-			local pivot = game.Players:FindFirstChild(tsb_tp_nick).Character:GetPivot()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+			local pivot = players_gvar:FindFirstChild(tsb_tp_nick).Character:GetPivot()
+			players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
 		end
 		wait(1)
 
-		if game.Players.LocalPlayer.Character:FindFirstChild("Flowing Water") then
-			game.Players.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = game.Players.LocalPlayer.Backpack
+		if players_gvar.LocalPlayer.Character:FindFirstChild("Flowing Water") then
+			players_gvar.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = players_gvar.LocalPlayer.Backpack
 		else
-			if game.Players.LocalPlayer.Character:FindFirstChild("Foul Ball") then
-				game.Players.LocalPlayer.Character:FindFirstChild("Foul Ball").Parent = game.Players.LocalPlayer.Backpack
+			if players_gvar.LocalPlayer.Character:FindFirstChild("Foul Ball") then
+				players_gvar.LocalPlayer.Character:FindFirstChild("Foul Ball").Parent = players_gvar.LocalPlayer.Backpack
 			else
-				if game.Players.LocalPlayer.Character:FindFirstChild("Atmos Cleave") then
-					game.Players.LocalPlayer.Character:FindFirstChild("Atmos Cleave").Parent = game.Players.LocalPlayer.Backpack
+				if players_gvar.LocalPlayer.Character:FindFirstChild("Atmos Cleave") then
+					players_gvar.LocalPlayer.Character:FindFirstChild("Atmos Cleave").Parent = players_gvar.LocalPlayer.Backpack
 				else
 				end
 			end
 		end
 
 		if tsb_tp_place == "air" then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
+			players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
 		else
 			if tsb_tp_place == "Death Cutscene" then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Death Cutscene").HeadCFrame.CFrame
+				players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Death Cutscene").HeadCFrame.CFrame
 			else
 				if tsb_tp_place == "Atoms" then
-					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").sphere.CFrame
+					players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").sphere.CFrame
 				else
 					if tsb_tp_place == "Map" then
 						if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Donation Leaderboard").Part.CFrame
+							players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Donation Leaderboard").Part.CFrame
 						else
 							if game.Workspace.Map:FindFirstChild("spone") then
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Map:FindFirstChild("spone").CFrame
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Map:FindFirstChild("spone").CFrame
 							end
 						end
 					else
 						if tsb_tp_place == "Map2" then
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").ogcircle.CFrame
+							players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").ogcircle.CFrame
 						else
 							if tsb_tp_place == "Mountain" then
 
 								if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
-									game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(395.514648, 699.102539, 398.27771, -0.75630492, -9.94614453e-08, -0.65421927, -6.9310083e-08, 1, -7.19053759e-08, 0.65421927, -9.03839936e-09, -0.75630492)
+									players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(395.514648, 699.102539, 398.27771, -0.75630492, -9.94614453e-08, -0.65421927, -6.9310083e-08, 1, -7.19053759e-08, 0.65421927, -9.03839936e-09, -0.75630492)
 								else
 									if game.Workspace.Map:FindFirstChild("spone") then
-										game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(490.736969, 688.797913, -362.606781, 0.826861322, -9.94782567e-09, -0.562405884, 7.48708917e-09, 1, -6.6803012e-09, 0.562405884, 1.31289934e-09, 0.826861322)
+										players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(490.736969, 688.797913, -362.606781, 0.826861322, -9.94782567e-09, -0.562405884, 7.48708917e-09, 1, -6.6803012e-09, 0.562405884, 1.31289934e-09, 0.826861322)
 									end
 								end
 							end
@@ -2835,7 +2856,7 @@ Tab:AddBind({
 		wait(3)
 
 		if tsb_tp_back == true then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+			players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
 		end
 	end  
 })
@@ -2878,8 +2899,8 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, isProcess
 	if tsb_autobug1 == true then
 		if input.KeyCode == Enum.KeyCode.Two then
 
-			if game.Players.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave") then
-				game.Players.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave").Parent = game.Players.LocalPlayer.Character
+			if players_gvar.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave") then
+				players_gvar.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave").Parent = players_gvar.LocalPlayer.Character
 			else
 			end
 
@@ -2888,8 +2909,8 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, isProcess
 			local p = game:GetService("Players").LocalPlayer
 			ts:TeleportToPlaceInstance(game.PlaceId, game.JobId, p)
 
-			if game.Players.LocalPlayer.Character:FindFirstChild("Atmos Cleave") then
-				game.Players.LocalPlayer.Character:FindFirstChild("Atmos Cleave").Parent = game.Players.LocalPlayer.Backpack
+			if players_gvar.LocalPlayer.Character:FindFirstChild("Atmos Cleave") then
+				players_gvar.LocalPlayer.Character:FindFirstChild("Atmos Cleave").Parent = players_gvar.LocalPlayer.Backpack
 			else
 			end
 
@@ -2904,21 +2925,21 @@ local Section = Tab:AddSection({
 Tab:AddButton({
 	Name = "give fake MOB",
 	Callback = function()
-		game.Players.LocalPlayer.Data:FindFirstChild("Character").Value = "Mob"
+		players_gvar.LocalPlayer.Data:FindFirstChild("Character").Value = "Mob"
 	end    
 })
 
 game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
 	if ubg_fling == true then
 		if input.KeyCode == Enum.KeyCode.One then
-			if game.Players.LocalPlayer.Data:FindFirstChild("Character").Value == "Gon" then
+			if players_gvar.LocalPlayer.Data:FindFirstChild("Character").Value == "Gon" then
 				local pos = CFrame.new()
-				pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+				pos = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
 
 				if ubg_fling_place == "air" then
 					local fling_goal = {CFrame = CFrame.new(1000,1000,1000)}
 					local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-					local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+					local fling = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
 
 					wait(1)
 
@@ -2927,7 +2948,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, isProcess
 					if ubg_fling_place == "castle" then
 						local fling_goal = {CFrame = CFrame.new(586.419067, 120.410744, -499.891113, -3.6525809e-14, -4.33599396e-08, -1, -3.07723127e-08, 1, -4.33599396e-08, 1, 3.07723127e-08, -3.78600925e-14)}
 						local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-						local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+						local fling = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
 
 						wait(1)
 
@@ -2940,7 +2961,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, isProcess
 				if ubg_fling_back == true then
 					local back_goal = {CFrame = pos}
 					local back_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
-					local back = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
+					local back = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
 
 					back:Play()
 				end
@@ -2952,14 +2973,14 @@ end)
 game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
 	if ubg_fling == true then
 		if input.KeyCode == Enum.KeyCode.Three then
-			if game.Players.LocalPlayer.Data:FindFirstChild("Character").Value == "Gon" then
+			if players_gvar.LocalPlayer.Data:FindFirstChild("Character").Value == "Gon" then
 				local pos = CFrame.new()
-				pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+				pos = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
 
 				if ubg_fling_place == "air" then
 					local fling_goal = {CFrame = CFrame.new(1000,1000,1000)}
 					local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-					local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+					local fling = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
 
 					wait(1)
 
@@ -2968,7 +2989,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, isProcess
 					if ubg_fling_place == "castle" then
 						local fling_goal = {CFrame = CFrame.new(586.419067, 120.410744, -499.891113, -3.6525809e-14, -4.33599396e-08, -1, -3.07723127e-08, 1, -4.33599396e-08, 1, 3.07723127e-08, -3.78600925e-14)}
 						local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-						local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+						local fling = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
 
 						wait(1)
 
@@ -2981,7 +3002,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, isProcess
 				if ubg_fling_back == true then
 					local back_goal = {CFrame = pos}
 					local back_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
-					local back = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
+					local back = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
 
 					back:Play()
 				end
@@ -2993,14 +3014,14 @@ end)
 game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
 	if ubg_fling == true then
 		if input.KeyCode == Enum.KeyCode.Four then
-			if game.Players.LocalPlayer.Data:FindFirstChild("Character").Value == "Gon" then
+			if players_gvar.LocalPlayer.Data:FindFirstChild("Character").Value == "Gon" then
 				local pos = CFrame.new()
-				pos = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+				pos = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
 
 				if ubg_fling_place == "air" then
 					local fling_goal = {CFrame = CFrame.new(1000,1000,1000)}
 					local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-					local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+					local fling = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
 
 					wait(1)
 
@@ -3009,7 +3030,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, isProcess
 					if ubg_fling_place == "castle" then
 						local fling_goal = {CFrame = CFrame.new(586.419067, 120.410744, -499.891113, -3.6525809e-14, -4.33599396e-08, -1, -3.07723127e-08, 1, -4.33599396e-08, 1, 3.07723127e-08, -3.78600925e-14)}
 						local fling_info = TweenInfo.new(1, Enum.EasingStyle.Linear)
-						local fling = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
+						local fling = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character.HumanoidRootPart, fling_info, fling_goal)
 
 						wait(1)
 
@@ -3022,7 +3043,7 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, isProcess
 				if ubg_fling_back == true then
 					local back_goal = {CFrame = pos}
 					local back_info = TweenInfo.new(2, Enum.EasingStyle.Linear)
-					local back = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
+					local back = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character.HumanoidRootPart, back_info, back_goal)
 
 					back:Play()
 				end
@@ -3091,7 +3112,7 @@ Tab:AddButton({
 		for i,v in game.Workspace.Pickups:GetDescendants() do
 			if v.ClassName == "ProximityPrompt" then
 			else
-				local dist = (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+				local dist = (v.Position - players_gvar.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
 
 				if dist <= 10 then
 					v.Name = "given"
@@ -3110,7 +3131,7 @@ Tab:AddBind({
 	Default = Enum.KeyCode.F7,
 	Hold = false,
 	Callback = function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-112.885941, 8.05029392, -265.671356, -0.489635348, 2.02202912e-08, -0.871927321, 8.79741933e-08, 1, -2.62120299e-08, 0.871927321, -8.95414374e-08, -0.489635348)
+		players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-112.885941, 8.05029392, -265.671356, -0.489635348, 2.02202912e-08, -0.871927321, 8.79741933e-08, 1, -2.62120299e-08, 0.871927321, -8.95414374e-08, -0.489635348)
 	end    
 })
 
@@ -3119,7 +3140,7 @@ Tab:AddBind({
 	Default = Enum.KeyCode.F7,
 	Hold = false,
 	Callback = function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(210.395386, 8.23800564, 347.192963, -0.228686452, -1.22251265e-07, 0.973500133, -1.71884302e-08, 1, 1.21541333e-07, -0.973500133, 1.10619158e-08, -0.228686452)
+		players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(210.395386, 8.23800564, 347.192963, -0.228686452, -1.22251265e-07, 0.973500133, -1.71884302e-08, 1, 1.21541333e-07, -0.973500133, 1.10619158e-08, -0.228686452)
 	end    
 })
 
@@ -3128,7 +3149,7 @@ Tab:AddBind({
 	Default = Enum.KeyCode.F7,
 	Hold = false,
 	Callback = function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-209.409698, 68.7502899, -235.377487, -0.999950945, -6.89230859e-08, -0.00990741327, -6.89319606e-08, 1, 5.5487509e-10, 0.00990741327, 1.23778532e-09, -0.999950945)
+		players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-209.409698, 68.7502899, -235.377487, -0.999950945, -6.89230859e-08, -0.00990741327, -6.89319606e-08, 1, 5.5487509e-10, 0.00990741327, 1.23778532e-09, -0.999950945)
 	end    
 })
 
@@ -3137,7 +3158,7 @@ Tab:AddBind({
 	Default = Enum.KeyCode.F7,
 	Hold = false,
 	Callback = function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(182.125793, 83.3077393, -275.312622, -0.0291994028, 1.69564505e-08, 0.999573588, 1.22869634e-08, 1, -1.66047585e-08, -0.999573588, 1.17968755e-08, -0.0291994028)
+		players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(182.125793, 83.3077393, -275.312622, -0.0291994028, 1.69564505e-08, 0.999573588, 1.22869634e-08, 1, -1.66047585e-08, -0.999573588, 1.17968755e-08, -0.0291994028)
 	end    
 })
 
@@ -3146,7 +3167,7 @@ Tab:AddBind({
 	Default = Enum.KeyCode.F7,
 	Hold = false,
 	Callback = function()
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(183.735428, 58.8880157, 89.4560928, 0.0663244277, 1.08560432e-08, 0.997798085, -2.3146054e-08, 1, -9.3414636e-09, -0.997798085, -2.24755219e-08, 0.0663244277)
+		players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(183.735428, 58.8880157, 89.4560928, 0.0663244277, 1.08560432e-08, 0.997798085, -2.3146054e-08, 1, -9.3414636e-09, -0.997798085, -2.24755219e-08, 0.0663244277)
 	end    
 })
 
@@ -3164,7 +3185,7 @@ local Section = Tab:AddSection({
 Tab:AddButton({
 	Name = "Reset",
 	Callback = function()
-		game.Players.LocalPlayer.Character.Humanoid.Health = 0
+		players_gvar.LocalPlayer.Character.Humanoid.Health = 0
   	end    
 })
 
@@ -3224,8 +3245,8 @@ Tab:AddTextbox({
 	Default = "number",
 	TextDisappear = true,
 	Callback = function(Value)
-		game.Players.LocalPlayer.CameraMode = Enum.CameraMode.Classic
-		game.Players.LocalPlayer.CameraMaxZoomDistance = Value
+		players_gvar.LocalPlayer.CameraMode = Enum.CameraMode.Classic
+		players_gvar.LocalPlayer.CameraMaxZoomDistance = Value
 	end	  
 })
 
@@ -3346,7 +3367,7 @@ Tab:AddButton({
 
 		for i,v in next, target:GetDescendants() do
 			if v.ClassName == "Part" then
-				v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+				v.CFrame = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
 			end
 		end
   	end    
@@ -3410,11 +3431,11 @@ local Section = Tab:AddSection({
 })
 
 function tpto_bf(cframe)
-	local dist = (cframe.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+	local dist = (cframe.Position - players_gvar.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
 	local tw_speed = 200
-	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+	players_gvar.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 	if dist < 100 then
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = cframe
+		players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = cframe
 		tw_speed = 350
 	elseif dist < 1000 then
 		tw_speed = 350
@@ -3424,7 +3445,7 @@ function tpto_bf(cframe)
 
 	local tw_pos = {CFrame = cframe}
 	local tw_info = TweenInfo.new(dist/tw_speed, Enum.EasingStyle.Linear)
-	local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tw_info, tw_pos)
+	local tween = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character.HumanoidRootPart, tw_info, tw_pos)
 	tweenend_time = dist/tw_speed
 	tween:Play()
 
@@ -3436,7 +3457,7 @@ function getto_closest(object, search_name, esp, esp_color)
 
 	for i,v in next, object:GetDescendants() do
 		if v.Name == search_name then
-			local dist = (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+			local dist = (v.Position - players_gvar.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
 
 			if nearby then
 				if nearby_dist > dist then
@@ -3445,7 +3466,7 @@ function getto_closest(object, search_name, esp, esp_color)
 				end
 			else
 				nearby = object:FindFirstChild(search_name)
-				nearby_dist = (object:FindFirstChild(search_name).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+				nearby_dist = (object:FindFirstChild(search_name).Position - players_gvar.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
 			end
 
 		end
@@ -3461,7 +3482,7 @@ function getto_closest(object, search_name, esp, esp_color)
 end
 
 function Quest_lvl()
-	local lvl = game.Players.LocalPlayer.Data.Level.Value
+	local lvl = players_gvar.LocalPlayer.Data.Level.Value
 	if bf_autof_skip_bos_quest == true then
 		if lvl < 10 then
 			questg = "Bandit Quest Giver"
@@ -3518,7 +3539,7 @@ Tab:AddToggle({
 		if gravity_err == false then
 			game.Workspace.Gravity = 100
 		end
-		game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+		players_gvar.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 		bf_autof = Value
 		while bf_autof == true and wait(0.1) do
 			if game:GetService("Players").LocalPlayer.PlayerGui.Main.Quest.Visible == false then
@@ -3565,17 +3586,17 @@ Tab:AddToggle({
 																v.HumanoidRootPart.Transparency = 1
 
 																if bf_autof_coll == true then
-																	local dist = (v.HumanoidRootPart.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+																	local dist = (v.HumanoidRootPart.Position - players_gvar.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
 																	if dist <= bf_autof_coll_range then
 																		for i,v in next, game.Workspace.Enemies:GetDescendants() do
 																			if v.Name == enem_name then
-																				v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
+																				v.HumanoidRootPart.CFrame = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-20,0)
 																			end
 																		end
 																	end
 																end
 
-																if game.Players.LocalPlayer.Character.HumanoidRootPart.Position == v.HumanoidRootPart.Position then
+																if players_gvar.LocalPlayer.Character.HumanoidRootPart.Position == v.HumanoidRootPart.Position then
 																else
 																	tpto_bf(v.HumanoidRootPart.CFrame * CFrame.new(0,20,0))
 
@@ -3590,13 +3611,13 @@ Tab:AddToggle({
 																	if bf_autof_esp == true then
 																		espp.Enabled = false
 																	end
-																	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+																	players_gvar.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 																end
 
-																if game.Players.LocalPlayer.Character:FindFirstChild(bf_autof_tool) then
+																if players_gvar.LocalPlayer.Character:FindFirstChild(bf_autof_tool) then
 																else
 
-																game.Players.LocalPlayer.Backpack:FindFirstChild(bf_autof_tool).Parent = game.Players.LocalPlayer.Character
+																players_gvar.LocalPlayer.Backpack:FindFirstChild(bf_autof_tool).Parent = players_gvar.LocalPlayer.Character
 																local args = {
     																[1] = "weaponChange",
     																[2] = bf_autof_tool
@@ -3633,11 +3654,11 @@ Tab:AddToggle({
 							end
 						else
 							local enem_spawn = game.Workspace._WorldOrigin.EnemySpawns:FindFirstChild(enem_name)
-							if game.Players.LocalPlayer.Character.HumanoidRootPart.Position == enem_spawn.Position then
+							if players_gvar.LocalPlayer.Character.HumanoidRootPart.Position == enem_spawn.Position then
 							else
 								tpto_bf(enem_spawn.CFrame * CFrame.new(0,20,0))
 								wait(tweenend_time)
-								game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+								players_gvar.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 							end
 						end
 					end
@@ -3756,7 +3777,7 @@ Tab:AddToggle({
 		bf_autosb = Value
 		while bf_autosb == true and wait(0.1) do
 			if bf_autosb_dir == "x+" then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame += Vector3.new(10,0,0)
+				players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame += Vector3.new(10,0,0)
 			end
 		end
 	end    
@@ -3773,7 +3794,7 @@ local Section = Tab:AddSection({
 })
 
 function kingl_getquest()
-	local lvl = game.Players.LocalPlayer.PlayerStats.lvl.Value
+	local lvl = players_gvar.LocalPlayer.PlayerStats.lvl.Value
 	if lvl < 10 then
 		local args = {
     		[1] = "take",
@@ -3862,7 +3883,7 @@ function kingl_getquest()
 end
 
 function kingl_getenem_name()
-	local lvl = game.Players.LocalPlayer.PlayerStats.lvl.Value
+	local lvl = players_gvar.LocalPlayer.PlayerStats.lvl.Value
 	if lvl < 10 then
 		kingl_autof_enemname = "Soldier [Lv. 1]"
 		kingl_autof_area = "Starter Island Quest"
@@ -3941,7 +3962,7 @@ Tab:AddToggle({
 	Callback = function(Value)
 		kingl_autof = Value
 		while kingl_autof == true and wait(0.1) do
-			if game.Players.LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
+			if players_gvar.LocalPlayer.PlayerGui.MainGui.QuestBoard.Visible == false then
 				kingl_getquest()
 			else
 				kingl_getenem_name()
@@ -3956,7 +3977,7 @@ Tab:AddToggle({
 											if v.Name == kingl_autof_enemname then
 												if v:FindFirstChild("Humanoid").Health > 0 then
 													local pivot = v:GetPivot()
-													game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, kingl_autof_dist)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+													players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, kingl_autof_dist)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
 
 													kingl_attack()
 												else
@@ -3977,7 +3998,7 @@ Tab:AddToggle({
 							end
 						else
 							local tppos = game.Workspace.AllNPC:FindFirstChild(kingl_autof_area).CFrame
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = tppos
+							players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = tppos
 						end
 					else
 						if game.Workspace.Monster.Boss:FindFirstChild(kingl_autof_enemname) then
@@ -3986,7 +4007,7 @@ Tab:AddToggle({
 									if v.Name == kingl_autof_enemname then
 										if v:FindFirstChild("Humanoid").Health > 0 then
 											local pivot = v:GetPivot()
-											game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, kingl_autof_dist)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+											players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, kingl_autof_dist)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
 
 											kingl_attack()
 										end
@@ -3995,7 +4016,7 @@ Tab:AddToggle({
 							end
 						else
 							local tppos = game.Workspace.AllNPC:FindFirstChild(kingl_autof_area).CFrame
-							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = tppos
+							players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = tppos
 						end
 					end
 				end
@@ -4101,12 +4122,12 @@ Tab:AddToggle({
 })
 
 function project_s_moveto(cframe, event)
-	local dist = (cframe.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+	local dist = (cframe.Position - players_gvar.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
 	local time = dist / 200
 
 	local tween_goal = {CFrame = cframe}
 	local tween_info = TweenInfo.new(time, Enum.EasingStyle.Linear)
-	local tween = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
+	local tween = game:GetService("TweenService"):Create(players_gvar.LocalPlayer.Character:FindFirstChild("HumanoidRootPart"), tween_info, tween_goal)
 
 	if project_s_tween_noclip == true then
 		noclip()
@@ -4132,7 +4153,7 @@ function project_s_ricequesttake()
     	[1] = "AddQuest",
     	[2] = "Players.scriptgDev3.PlayerGui.Npc_Dialogue.LocalScript.Functions",
     	[3] = 122556.271684684,
-    	[4] = game:GetService("ReplicatedStorage").Player_Data:FindFirstChild(game.Players.LocalPlayer.Name).Quest,
+    	[4] = game:GetService("ReplicatedStorage").Player_Data:FindFirstChild(players_gvar.LocalPlayer.Name).Quest,
     	[5] = {
         	["List"] = {
             	[1] = {
@@ -4160,7 +4181,7 @@ function project_s_wagonquesttake()
     	[1] = "AddQuest",
     	[2] = "Players.scriptgDev3.PlayerGui.Npc_Dialogue.LocalScript.Functions",
     	[3] = 131263.249807559,
-    	[4] = game:GetService("ReplicatedStorage").Player_Data:FindFirstChild(game.Players.LocalPlayer.Name).Quest,
+    	[4] = game:GetService("ReplicatedStorage").Player_Data:FindFirstChild(players_gvar.LocalPlayer.Name).Quest,
     	[5] = {
        		["List"] = {
             	[1] = {
@@ -4248,11 +4269,11 @@ Tab:AddToggle({
 			project_s_removequest()
 			while project_s_ricefarm == true and wait(0.1) do
 				
-				if game.Players.LocalPlayer.PlayerGui.Menu.Quest.Title.Text == "" then
+				if players_gvar.LocalPlayer.PlayerGui.Menu.Quest.Title.Text == "" then
 					project_s_ricequesttake()
 				else
 					if game.Workspace:FindFirstChild("StarterVillage_RiceStrings"):FindFirstChild("RiceString") then
-						if game.Players.LocalPlayer.PlayerGui.Menu.Quest.Title.Text == "" then
+						if players_gvar.LocalPlayer.PlayerGui.Menu.Quest.Title.Text == "" then
 						else
 							fireproximityprompt(game.Workspace:FindFirstChild("StarterVillage_RiceStrings"):FindFirstChild("RiceString"):FindFirstChild("Rice_pick_proximity"))
 						end
@@ -4271,7 +4292,7 @@ Tab:AddToggle({
 		if Value == true then
 			project_s_removequest()
 			while project_s_wagonfarm == true and wait(0.1) do
-				if game.Players.LocalPlayer.PlayerGui.Menu.Quest.Title.Text == "" then
+				if players_gvar.LocalPlayer.PlayerGui.Menu.Quest.Title.Text == "" then
 					project_s_wagonquesttake()
 				else
 					if project_s_wagonfarm_tween == false then
@@ -4295,8 +4316,8 @@ Tab:AddToggle({
 	Callback = function(Value)
 		project_s_auto_meditation = Value
 		while project_s_auto_meditation == true and wait(0.1) do
-			if game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Meditate_gui") then
-				game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Meditate_gui"):FindFirstChild("Holder"):FindFirstChild("LocalScript"):FindFirstChild("Value").Value = 100
+			if players_gvar.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Meditate_gui") then
+				players_gvar.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Meditate_gui"):FindFirstChild("Holder"):FindFirstChild("LocalScript"):FindFirstChild("Value").Value = 100
 			else
 				project_s_go_to_meditate()
 			end
@@ -4314,8 +4335,8 @@ Tab:AddToggle({
 	Callback = function(Value)
 		project_s_auto_push_ups = Value
 		while project_s_auto_push_ups == true and wait(0.1) do
-			if game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Push_Up_Gui") then
-				game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Push_Up_Gui"):FindFirstChild("Holder"):FindFirstChild("push_up_mat_local_script"):FindFirstChild("Value").Value = 100
+			if players_gvar.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Push_Up_Gui") then
+				players_gvar.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("Push_Up_Gui"):FindFirstChild("Holder"):FindFirstChild("push_up_mat_local_script"):FindFirstChild("Value").Value = 100
 			else
 				project_s_go_to_push()
 			end
@@ -4333,8 +4354,8 @@ Tab:AddToggle({
 	Callback = function(Value)
 		project_s_auto_target_training = Value
 		while project_s_auto_target_training == true and wait(0.1) do
-			if game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("chairui") then
-				game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("chairui"):FindFirstChild("Holder"):FindFirstChild("LocalScript"):FindFirstChild("Value").Value = 100
+			if players_gvar.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("chairui") then
+				players_gvar.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("chairui"):FindFirstChild("Holder"):FindFirstChild("LocalScript"):FindFirstChild("Value").Value = 100
 			else
 				project_s_go_to_target_training()
 			end
@@ -4351,7 +4372,7 @@ Tab:AddButton({
 	Callback = function()
 		project_s_moveto(CFrame.new(-874.841675, 469.14679, -2452.48071, 0.794137478, -4.16772004e-08, -0.607738197, 5.98161805e-08, 1, 9.58483515e-09, 0.607738197, -4.39642527e-08, 0.794137478))
 		wait(1)
-		game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("thnder_gui"):FindFirstChild("Holder"):FindFirstChild("LocalScript"):FindFirstChild("Value").Value = 200
+		players_gvar.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("thnder_gui"):FindFirstChild("Holder"):FindFirstChild("LocalScript"):FindFirstChild("Value").Value = 200
   	end    
 })
 
@@ -4360,7 +4381,7 @@ Tab:AddButton({
 	Callback = function()
 		project_s_moveto(CFrame.new(2758.86035, 317.404175, -3853.07886, 0.220858872, -3.58193901e-08, 0.975305796, -1.71675616e-08, 1, 4.06139264e-08, -0.975305796, -2.57135682e-08, 0.220858872))
 		wait(1)
-		game.Players.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("cup_game_gui"):FindFirstChild("Holder"):FindFirstChild("cup_game_script123"):FindFirstChild("Value").Value = 100
+		players_gvar.LocalPlayer.PlayerGui:FindFirstChild("ExcessGuis"):FindFirstChild("cup_game_gui"):FindFirstChild("Holder"):FindFirstChild("cup_game_script123"):FindFirstChild("Value").Value = 100
   	end    
 })
 
@@ -4376,7 +4397,7 @@ Tab:AddToggle({
 	end    
 })
 
-local helloplayer = "Hello ".. game.Players.LocalPlayer.Name.. "!"
+helloplayer = "Hello ".. players_gvar.LocalPlayer.Name.. "!"
 
 Library:MakeNotification({
 	Name = helloplayer,
