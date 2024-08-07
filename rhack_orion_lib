@@ -1761,7 +1761,4 @@ function OrionLib:Destroy()
 	Orion:Destroy()
 end
 
-local avadakidabra = OrionLib:MakeWindow({Name = "RHACK orion", HidePremium = true, SaveConfig = false, ConfigFolder = "rhack_orion", IntroEnabled = true, IntroText = "RHACK", IntroIcon = "rbxassetid://14995912169", Icon = "rbxassetid://14995912169"})
-
-
 return OrionLib
