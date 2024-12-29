@@ -1,4 +1,4 @@
-local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/GitamDeveloper/rhack/main/rhack_orion_lib')))()
 
 local correct_key = "K1E2Y3B1Y2G3I4T5A5M6"
 local iskey_correct = false
@@ -7,7 +7,7 @@ local acees_sus = false
 
 local players_gvar = game:GetService("Players")
 
-local disablekey_people = {"Alone_1755","doorslove1","scriptgDev4"}
+local disablekey_people = {"scriptgDev4","scriptgDev3","scriptgDev8","Immortal_YarikDev"}
 
 while iskey_correct == false and wait(0.1) do
 	for i,v in disablekey_people do
@@ -172,6 +172,38 @@ local function SendNotification(TitleArg, DescriptionArg, DurationArg)
     })
 end
 
+local tsb_auto_char_lock = false
+local tsb_auto_char_lock_1 = 0
+local tsb_auto_char_lock_2 = 0
+local tsb_auto_char_lock_3 = 0
+local tsb_auto_char_lock_4 = 0
+
+
+local tsb_tp_target = false
+
+local char_lock = false
+
+local fspin = false
+
+local aim_helper = false
+
+local tsb_auto_frozenlock = false
+
+devas_autokill = false
+devas_autokill_range = 10
+devas_autokill_add_guid = ""
+devas_autokill_add_name = ""
+devas_autokill_list = {}
+devas_autokill_delay = 0.5
+devas_autokill_weapon = "Sword"
+
+devas_autoloot_name = ""
+devas_autoloot_min = 0
+devas_autoloot_max = 0
+devas_autokill_last_inst = nil
+devas_autoloot_list = {}
+devas_autoloot = false
+
 local tsb_saitama_ult_esp = false
 
 local esp_outline_only = false
@@ -181,21 +213,21 @@ local esp_type = "highlight"
 
 local tools_no_pp_hold = false
 
-local pressure_monster_avoid = false
-local pressure_doorcount = 2
-local pressure_item_esp = false
-local pressure_no_SearchLights = false
-local pressure_no_steams = false
-local pressure_no_eye = false
-local pressure_auto_opendoor = false
-local pressure_auto_money_loot = false
-local pressure_locker_esp = false
-local pressure_fakedoor_esp = false
-local pressure_path_helper = false
-local pressure_fake_locker_esp = false
-local pressure_monster_warning = false
-local pressure_dooresp = false
-local pressure_keyesp = false
+pressure_monster_avoid = false
+pressure_doorcount = 2
+pressure_item_esp = false
+pressure_no_SearchLights = false
+pressure_no_steams = false
+pressure_no_eye = false
+pressure_auto_opendoor = false
+pressure_auto_money_loot = false
+pressure_locker_esp = false
+pressure_fakedoor_esp = false
+pressure_path_helper = false
+pressure_fake_locker_esp = false
+pressure_monster_warning = false
+pressure_dooresp = false
+pressure_keyesp = false
 
 local shrek_getlvl = "none"
 
@@ -466,21 +498,6 @@ local rgui = Instance.new("ScreenGui", eplayer.PlayerGui)
 local testbutt = Instance.new("TextButton", rgui)
 
 local Mouse = eplayer:GetMouse()
-
-local satp = Instance.new("Part", game.Workspace)
---jumpcircle.Shape = "Cylinder"
---local jc = false
---local jcs = 5
-satp.Anchored = true
-satp.Transparency = 0.30
-satp.Color = Color3.new(255,140,0)
-satp.CanCollide = false
-satp.Material = "Neon"
---jumpcircle.CFrame.Rotation = 
-satp.Size = Vector3.new(2,4,2)
-satp.CFrame = eplayer.Character.HumanoidRootPart.CFrame
-satp.Position -= Vector3.new(0,0,0)
-
 
 
 game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
@@ -1177,13 +1194,27 @@ local Section = Tab:AddSection({
 	Name = "esp"
 })
 
+function create_new_espbox()
+    local box = Drawing.new("Square")
+    box.Thickness = 2
+    box.Filled = false
+    box.Size = Vector2.new(0,0)
+    box.Visible = false
+
+    return box
+end
+
+local players_box = {}
+
 Tab:AddToggle({
 	Name = "Esp (players)",
 	Default = false,
 	Callback = function(Value)
 		esp_onoff = Value
+
 		if Value == true then
-			while esp_onoff == true and wait(0.1) do
+            
+			while esp_onoff == true and wait() do
             	for i, v in pairs(workspace:GetDescendants()) do
             		if v.Name == "TextEsp" then
             			if v.Adornee == nil then
@@ -1220,19 +1251,79 @@ Tab:AddToggle({
                 						end
                 					end
                 				end
-                			end
+                			else
+                                if esp_type == "2d" then
+                                    if players_gvar.LocalPlayer.Character then
+                                        if v ~= players_gvar.LocalPlayer.Character then
+
+
+                                            local find_in_plrbox = false
+                                            local box = nil
+
+                                            for o,m in ipairs(players_box) do
+                                                if m[1] and m[2] then
+                                                    if m[1] == v.Name then
+                                                        box = m[2]
+                                                        find_in_plrbox = true
+
+                                                        print("find box")
+                                                    end
+                                                end
+                                            end
+
+                                            if find_in_plrbox == false then
+                                                local to_insert = {v.Name,create_new_espbox()}
+
+                                                table.insert(players_box,to_insert)
+
+                                                box = to_insert[2]
+
+                                                print("created new box")
+                                            end
+
+                                            if box ~= nil then
+
+                                                print("moving box")
+                                                local player_scr_pos = camera:WorldToScreenPoint(v.HumanoidRootPart.Position)
+
+                                                local pos_dif = (players_gvar.LocalPlayer.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).Magnitude
+
+                                                if pos_dif == 0 then
+                                                    pos_dif = 1
+                                                end
+
+                                                if pos_dif < 0 then
+                                                    pos_dif = pos_dif * -1
+                                                end
+
+                                                local box_pos = Vector2.new(player_scr_pos.X,player_scr_pos.Y)
+
+                                                local box_size_x = box_pos.X - (pos_dif / 10)
+                                                local box_size_y = box_pos.Y - (pos_dif / 10)
+
+                                                local box_size = box_pos - Vector2.new((pos_dif ),(pos_dif))
+
+                                                box.Position = box_pos
+                                                box.Size = box_size
+                                                box.Visible = true
+                                            end
+                                        end
+                                    end
+                                end
+                            end
                 		end
                 	end
             	end
         	end
-		end
+        else
+        end
 	end    
 })
 
 Tab:AddDropdown({
 	Name = "type",
 	Default = "highlight",
-	Options = {"text", "highlight"},
+	Options = {"text", "highlight","2d"},
 	Callback = function(Value)
 		esp_type = Value
 	end    
@@ -1950,6 +2041,346 @@ local Tab = Window:MakeTab({
 	Name = "Exploits",
 	Icon = "",
 	PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+    Name = "Aim"
+})
+
+local circlec = Drawing.new("Circle")
+circlec.Transparency = 1
+circlec.Thickness = 2
+circlec.Radius = 180
+circlec.Filled = false
+circlec.Position = Vector2.new(0,0)
+circlec.Color3 = Color3.fromRGB(255,0,0)
+circlec.Visible = false
+
+Tab:AddToggle({
+    Name = "aim helper",
+    Default = false,
+    Callback = function(Value)
+        aim_helper = Value
+
+        if Value == true then
+            circlec.Transparency = 0.5
+            circlec.Visible = true
+        else
+            circlec.Transparency = 1
+            circlec.Position = Vector2.new(0,0)
+            circlec.Visible = false
+        end
+
+        while aim_helper == true and wait() do
+            local mouse = players_gvar.LocalPlayer:GetMouse()
+
+            local hit_pos = mouse.Hit.p
+
+            circlec.Position = Vector2.new(mouse.X,mouse.Y)
+
+            for i,v in players_gvar:GetChildren() do
+                --wait()
+
+                if v.Character and v.Character:FindFirstChild("HumanoidRootPart") and v.Character:FindFirstChild("Head") and v ~= players_gvar.LocalPlayer then
+
+                    local player_pos = v.Character.HumanoidRootPart.Position
+
+                    local _, OnScreen = workspace.CurrentCamera:WorldToScreenPoint(player_pos)
+
+                    --if OnScreen then
+                        --if #workspace.CurrentCamera:GetPartsObscuringTarget({workspace.CurrentCamera.CFrame.Position,player_pos},{v.Character.HumanoidRootPart}) == 0 then
+                            local dif = (hit_pos - player_pos).Magnitude
+
+                            local pos_player_dif = (players_gvar.LocalPlayer.Character.HumanoidRootPart.Position - player_pos).Magnitude
+
+                            local linen = Drawing.new("Line")
+                            linen.Transparency = 1
+                            linen.Thickness = 0.5
+                            linen.From = Vector2.new(0,0)
+                            linen.To = Vector2.new(0,0)
+                            --linen.Color3 = Color3.fromRGB(240,255,255)
+
+                            if dif < 0 then
+                                dif = dif * -1
+                            end
+
+                            if dif == 0 then
+                                dif = 1
+                            end
+
+                            local player_scr_pos = camera:WorldToScreenPoint(player_pos)
+
+                            local hit_scr_pos = {["X"] = mouse.X, ["Y"] = mouse.Y}
+
+                            local scr_dif_x = player_scr_pos.X - hit_scr_pos.X
+                            local scr_dif_y = player_scr_pos.Y - hit_scr_pos.Y
+
+                            if scr_dif_x < 0 then
+                                scr_dif_x = scr_dif_x * -1
+                            end
+
+                            if scr_dif_x == 0 then
+                                scr_dif_x = 1
+                            end
+
+                            if scr_dif_y < 0 then
+                                scr_dif_y = scr_dif_y * -1
+                            end
+
+                            if scr_dif_y == 0 then
+                                scr_dif_y = 1
+                            end
+
+                            local scr_dif = scr_dif_x + scr_dif_y
+
+                            if scr_dif <= 250 then
+
+                                linen.Transparency = 0.5
+                                linen.From = Vector2.new(mouse.X,mouse.Y)
+                                linen.To = Vector2.new(player_scr_pos.X,player_scr_pos.Y)
+
+                                local sizez = (pos_player_dif / 50) * (scr_dif / 10)
+
+                                v.Character.Head.CanCollide = false
+                                v.Character.Head.Size = Vector3.new(sizez,sizez,sizez)
+                                v.Character.Head.Transparency = 0.5
+                                v.Character.Head.Color = Color3.fromRGB(255,0,0)
+
+                                v.Character.HumanoidRootPart.CanCollide = false
+                                v.Character.HumanoidRootPart.Size = Vector3.new(sizez,sizez,sizez)
+                                v.Character.HumanoidRootPart.Transparency = 0.5
+                                v.Character.HumanoidRootPart.Color = Color3.fromRGB(255,0,0)
+
+                                --wait()
+
+                            else
+                                linen:Remove()
+
+                                v.Character.Head.Size = Vector3.new(1,1,1)
+                                v.Character.HumanoidRootPart.Size = Vector3.new(2,4,2)
+                            end
+                        --end
+                    --end
+                end
+            end
+        end
+    end    
+})
+
+local Section = Tab:AddSection({
+    Name = "Char lock"
+})
+
+local char_lock_sel = nil
+local char_lock_target = nil
+
+Tab:AddBind({
+    Name = "char lock",
+    Default = Enum.KeyCode.F7,
+    Hold = false,
+    Callback = function()
+        char_lock_sel = nil
+        --char_lock_target = nil
+
+        if char_lock == false then
+            char_lock = true
+        else
+            char_lock = false
+
+            if char_lock_target ~= nil and char_lock_target:FindFirstChild("char_lock_esp_target")then
+                char_lock_target:FindFirstChild("char_lock_esp_target"):Destroy()
+            end
+        end
+
+        while char_lock == true and wait() do
+            local mouse = players_gvar.LocalPlayer:GetMouse()
+
+            local hit_pos = mouse.Hit.p
+
+            if char_lock_target ~= nil and char_lock_target:FindFirstChild("HumanoidRootPart") then
+                local cf = CFrame.lookAt(players_gvar.LocalPlayer.Character.HumanoidRootPart.Position,Vector3.new(char_lock_target.HumanoidRootPart.Position.X,players_gvar.LocalPlayer.Character.HumanoidRootPart.Position.Y,char_lock_target.HumanoidRootPart.Position.Z))
+                players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = cf
+
+                if not char_lock_target:FindFirstChild("char_lock_esp_target") then
+                    if char_lock == true then
+                         print("added target")
+                        local high = Instance.new("Highlight",char_lock_target)
+                        high.OutlineColor = Color3.fromRGB(200,200,255)
+                        high.FillColor = Color3.fromRGB(150,150,205)
+                        high.FillTransparency = 0.5
+                        high.Name = "char_lock_esp_target"
+                    end
+                end
+            end
+
+            for i,v in players_gvar:GetChildren() do
+
+
+                if v.Character and v.Character:FindFirstChild("HumanoidRootPart") and v.Character:FindFirstChild("Head") and v ~= players_gvar.LocalPlayer then
+
+                    local player_pos = v.Character.HumanoidRootPart.Position
+
+                    local _, OnScreen = workspace.CurrentCamera:WorldToScreenPoint(player_pos)
+
+                    --if OnScreen then
+                        --if #workspace.CurrentCamera:GetPartsObscuringTarget({workspace.CurrentCamera.CFrame.Position,player_pos},{v.Character.HumanoidRootPart}) == 0 then
+                            local dif = (hit_pos - player_pos).Magnitude
+
+                            local pos_player_dif = (players_gvar.LocalPlayer.Character.HumanoidRootPart.Position - player_pos).Magnitude
+
+                            if dif < 0 then
+                                dif = dif * -1
+                            end
+
+                            if dif == 0 then
+                                dif = 1
+                            end
+
+                            local player_scr_pos = camera:WorldToScreenPoint(player_pos)
+
+                            local hit_scr_pos = {["X"] = mouse.X, ["Y"] = mouse.Y}
+
+                            local scr_dif_x = player_scr_pos.X - hit_scr_pos.X
+                            local scr_dif_y = player_scr_pos.Y - hit_scr_pos.Y
+
+                            if scr_dif_x < 0 then
+                                scr_dif_x = scr_dif_x * -1
+                            end
+
+                            if scr_dif_x == 0 then
+                                scr_dif_x = 1
+                            end
+
+                            if scr_dif_y < 0 then
+                                scr_dif_y = scr_dif_y * -1
+                            end
+
+                            if scr_dif_y == 0 then
+                                scr_dif_y = 1
+                            end
+
+                            local scr_dif = scr_dif_x + scr_dif_y
+
+                            if scr_dif <= 50 then
+
+                                char_lock_sel = v.Character
+
+                                if char_lock_sel ~= nil and not char_lock_sel:FindFirstChild("char_lock_esp") then
+                                    local high = Instance.new("Highlight",v.Character)
+                                    high.OutlineColor = Color3.fromRGB(200,200,255)
+                                    high.FillTransparency = 1
+                                    high.Name = "char_lock_esp"
+                                end
+                            else
+                                if v.Character:FindFirstChild("char_lock_esp") then
+                                    v.Character:FindFirstChild("char_lock_esp"):Destroy()
+                                    if v.Character == char_lock_sel then
+                                        char_lock_sel = nil
+                                    end
+                                end
+                            end
+                        --end
+                    --end
+                end
+            end
+        end
+    end    
+})
+
+
+
+Tab:AddBind({
+    Name = "select target",
+    Default = Enum.KeyCode.F7,
+    Hold = false,
+    Callback = function()
+        if char_lock_sel ~= nil then
+
+            if char_lock_target ~= nil and char_lock_target:FindFirstChild("char_lock_esp_target") then
+                char_lock_target:FindFirstChild("char_lock_esp_target"):Destroy()
+            end
+            char_lock_target = char_lock_sel
+        end
+    end    
+})
+
+
+local Section = Tab:AddSection({
+    Name = "Spin"
+})
+
+local fspin_deg = 0
+
+local fspin_x = false
+local fspin_y = false
+local fspin_z = false
+
+Tab:AddToggle({
+    Name = "fast spin",
+    Default = false,
+    Callback = function(Value)
+        fspin = Value
+
+        if Value == true then
+            --players_gvar.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        else
+            --players_gvar.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+        end
+
+        while fspin == true and wait() do
+            local humplr = players_gvar.LocalPlayer.Character.HumanoidRootPart
+
+            local spin_x = fspin_deg
+            local spin_y = fspin_deg
+            local spin_z = fspin_deg
+
+            if fspin_x == false then
+                spin_x = 0
+            end
+            if fspin_y == false then
+                spin_y = 0
+            end
+            if fspin_z == false then
+                spin_z = 0
+            end
+
+            humplr.CFrame = humplr.CFrame * CFrame.fromEulerAnglesXYZ(spin_x,spin_y,spin_z)
+            print("spin")
+        end
+    end    
+})
+
+Tab:AddTextbox({
+    Name = "deg",
+    Default = "350",
+    TextDisappear = true,
+    Callback = function(Value)
+        fspin_deg = tonumber(Value)
+    end   
+})
+
+Tab:AddToggle({
+    Name = "X",
+    Default = false,
+    Callback = function(Value)
+        fspin_x = Value
+    end    
+})
+
+Tab:AddToggle({
+    Name = "Y",
+    Default = false,
+    Callback = function(Value)
+        fspin_y = Value
+    end    
+})
+
+Tab:AddToggle({
+    Name = "Z",
+    Default = false,
+    Callback = function(Value)
+        fspin_z = Value
+    end    
 })
 
 local Section = Tab:AddSection({
@@ -2697,6 +3128,8 @@ Tab:AddButton({
 		local pos = CFrame.new(0,0,0)
 		pos = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
 
+        local move = ""
+
 		if players_gvar.LocalPlayer.Backpack:FindFirstChild("Flowing Water") then
 			players_gvar.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = players_gvar.LocalPlayer.Character
 		else
@@ -2706,16 +3139,30 @@ Tab:AddButton({
 				if players_gvar.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave") then
 					players_gvar.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave").Parent = players_gvar.LocalPlayer.Character
 				else
+                    if players_gvar.LocalPlayer.Backpack:FindFirstChild("Crushing Pull") then
+                        players_gvar.LocalPlayer.Backpack:FindFirstChild("Crushing Pull").Parent = players_gvar.LocalPlayer.Character
+                    else
+                        if players_gvar.LocalPlayer.Backpack:FindFirstChild("Head First") then
+                            players_gvar.LocalPlayer.Backpack:FindFirstChild("Head First").Parent = players_gvar.LocalPlayer.Character
+                        else
+                            if players_gvar.LocalPlayer.Backpack:FindFirstChild("Freezing Path") then
+                                players_gvar.LocalPlayer.Backpack:FindFirstChild("Freezing Path").Parent = players_gvar.LocalPlayer.Character
+                                move = "Freezing Path"
+                            else
+                            end
+                        end
+                    end
 				end
 			end
 		end
+
+        wait(1)
 
 		if tsb_tp_nick == "none" then
 		else
 			local pivot = players_gvar:FindFirstChild(tsb_tp_nick).Character:GetPivot()
 			players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
 		end
-		wait(1)
 
 		if players_gvar.LocalPlayer.Character:FindFirstChild("Flowing Water") then
 			players_gvar.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = players_gvar.LocalPlayer.Backpack
@@ -2726,6 +3173,18 @@ Tab:AddButton({
 				if players_gvar.LocalPlayer.Character:FindFirstChild("Atmos Cleave") then
 					players_gvar.LocalPlayer.Character:FindFirstChild("Atmos Cleave").Parent = players_gvar.LocalPlayer.Backpack
 				else
+                    if players_gvar.LocalPlayer.Character:FindFirstChild("Crushing Pull") then
+                        players_gvar.LocalPlayer.Character:FindFirstChild("Crushing Pull").Parent = players_gvar.LocalPlayer.Backpack
+                    else
+                        if players_gvar.LocalPlayer.Character:FindFirstChild("Head First") then
+                            players_gvar.LocalPlayer.Character:FindFirstChild("Head First").Parent = players_gvar.LocalPlayer.Backpack
+                        else
+                            if players_gvar.LocalPlayer.Character:FindFirstChild("Freezing Path") then
+                                players_gvar.LocalPlayer.Character:FindFirstChild("Freezing Path").Parent = players_gvar.LocalPlayer.Backpack
+                            else
+                            end
+                        end
+                    end
 				end
 			end
 		end
@@ -2760,14 +3219,25 @@ Tab:AddButton({
 										players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(490.736969, 688.797913, -362.606781, 0.826861322, -9.94782567e-09, -0.562405884, 7.48708917e-09, 1, -6.6803012e-09, 0.562405884, 1.31289934e-09, 0.826861322)
 									end
 								end
-							end
+							else
+                                if tsb_tp_place == "WaterMountain" then
+                                    if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
+                                        players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1174.80054, 816.735291, -810.939575, -0.622790992, 2.38599718e-08, 0.78238821, -3.14645945e-08, 1, -5.55425501e-08, -0.78238821, -5.92089293e-08, -0.622790992)
+                                    end
+                                end
+                            end
 						end
 					end
 				end
 			end
 		end
 
-		wait(3)
+		if move == "Freezing Path" then
+            print("move")
+            wait(6)
+        else
+            wait(3)
+        end
 
 		if tsb_tp_back == true then
 			players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
@@ -2780,84 +3250,123 @@ Tab:AddBind({
 	Default = Enum.KeyCode.F7,
 	Hold = false,
 	Callback = function()
-		local pos = CFrame.new(0,0,0)
-		pos = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
+        local pos = CFrame.new(0,0,0)
+        pos = players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame
 
-		if players_gvar.LocalPlayer.Backpack:FindFirstChild("Flowing Water") then
-			players_gvar.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = players_gvar.LocalPlayer.Character
-		else
-			if players_gvar.LocalPlayer.Backpack:FindFirstChild("Foul Ball") then
-				players_gvar.LocalPlayer.Backpack:FindFirstChild("Foul Ball").Parent = players_gvar.LocalPlayer.Character
-			else
-				if players_gvar.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave") then
-					players_gvar.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave").Parent = players_gvar.LocalPlayer.Character
-				else
-				end
-			end
-		end
+        local move = ""
 
-		if tsb_tp_nick == "none" then
-		else
-			local pivot = players_gvar:FindFirstChild(tsb_tp_nick).Character:GetPivot()
-			players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
-		end
-		wait(1)
+        if players_gvar.LocalPlayer.Backpack:FindFirstChild("Flowing Water") then
+            players_gvar.LocalPlayer.Backpack:FindFirstChild("Flowing Water").Parent = players_gvar.LocalPlayer.Character
+        else
+            if players_gvar.LocalPlayer.Backpack:FindFirstChild("Foul Ball") then
+                players_gvar.LocalPlayer.Backpack:FindFirstChild("Foul Ball").Parent = players_gvar.LocalPlayer.Character
+            else
+                if players_gvar.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave") then
+                    players_gvar.LocalPlayer.Backpack:FindFirstChild("Atmos Cleave").Parent = players_gvar.LocalPlayer.Character
+                else
+                    if players_gvar.LocalPlayer.Backpack:FindFirstChild("Crushing Pull") then
+                        players_gvar.LocalPlayer.Backpack:FindFirstChild("Crushing Pull").Parent = players_gvar.LocalPlayer.Character
+                    else
+                        if players_gvar.LocalPlayer.Backpack:FindFirstChild("Head First") then
+                            players_gvar.LocalPlayer.Backpack:FindFirstChild("Head First").Parent = players_gvar.LocalPlayer.Character
+                        else
+                            if players_gvar.LocalPlayer.Backpack:FindFirstChild("Freezing Path") then
+                                players_gvar.LocalPlayer.Backpack:FindFirstChild("Freezing Path").Parent = players_gvar.LocalPlayer.Character
+                                move = "Freezing Path"
+                            else
+                            end
+                        end
+                    end
+                end
+            end
+        end
 
-		if players_gvar.LocalPlayer.Character:FindFirstChild("Flowing Water") then
-			players_gvar.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = players_gvar.LocalPlayer.Backpack
-		else
-			if players_gvar.LocalPlayer.Character:FindFirstChild("Foul Ball") then
-				players_gvar.LocalPlayer.Character:FindFirstChild("Foul Ball").Parent = players_gvar.LocalPlayer.Backpack
-			else
-				if players_gvar.LocalPlayer.Character:FindFirstChild("Atmos Cleave") then
-					players_gvar.LocalPlayer.Character:FindFirstChild("Atmos Cleave").Parent = players_gvar.LocalPlayer.Backpack
-				else
-				end
-			end
-		end
+        wait(1)
 
-		if tsb_tp_place == "air" then
-			players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
-		else
-			if tsb_tp_place == "Death Cutscene" then
-				players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Death Cutscene").HeadCFrame.CFrame
-			else
-				if tsb_tp_place == "Atoms" then
-					players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").sphere.CFrame
-				else
-					if tsb_tp_place == "Map" then
-						if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
-							players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Donation Leaderboard").Part.CFrame
-						else
-							if game.Workspace.Map:FindFirstChild("spone") then
-								players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Map:FindFirstChild("spone").CFrame
-							end
-						end
-					else
-						if tsb_tp_place == "Map2" then
-							players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").ogcircle.CFrame
-						else
-							if tsb_tp_place == "Mountain" then
+        if tsb_tp_nick == "none" then
+        else
+            local pivot = players_gvar:FindFirstChild(tsb_tp_nick).Character:GetPivot()
+            players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(pivot:PointToWorldSpace(Vector3.new(0, 0, 1)), pivot:PointToWorldSpace(Vector3.new(0, 0, 4)))
+        end
 
-								if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
-									players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(395.514648, 699.102539, 398.27771, -0.75630492, -9.94614453e-08, -0.65421927, -6.9310083e-08, 1, -7.19053759e-08, 0.65421927, -9.03839936e-09, -0.75630492)
-								else
-									if game.Workspace.Map:FindFirstChild("spone") then
-										players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(490.736969, 688.797913, -362.606781, 0.826861322, -9.94782567e-09, -0.562405884, 7.48708917e-09, 1, -6.6803012e-09, 0.562405884, 1.31289934e-09, 0.826861322)
-									end
-								end
-							end
-						end
-					end
-				end
-			end
-		end
+        if players_gvar.LocalPlayer.Character:FindFirstChild("Flowing Water") then
+            players_gvar.LocalPlayer.Character:FindFirstChild("Flowing Water").Parent = players_gvar.LocalPlayer.Backpack
+        else
+            if players_gvar.LocalPlayer.Character:FindFirstChild("Foul Ball") then
+                players_gvar.LocalPlayer.Character:FindFirstChild("Foul Ball").Parent = players_gvar.LocalPlayer.Backpack
+            else
+                if players_gvar.LocalPlayer.Character:FindFirstChild("Atmos Cleave") then
+                    players_gvar.LocalPlayer.Character:FindFirstChild("Atmos Cleave").Parent = players_gvar.LocalPlayer.Backpack
+                else
+                    if players_gvar.LocalPlayer.Character:FindFirstChild("Crushing Pull") then
+                        players_gvar.LocalPlayer.Character:FindFirstChild("Crushing Pull").Parent = players_gvar.LocalPlayer.Backpack
+                    else
+                        if players_gvar.LocalPlayer.Character:FindFirstChild("Head First") then
+                            players_gvar.LocalPlayer.Character:FindFirstChild("Head First").Parent = players_gvar.LocalPlayer.Backpack
+                        else
+                            if players_gvar.LocalPlayer.Character:FindFirstChild("Freezing Path") then
+                                players_gvar.LocalPlayer.Character:FindFirstChild("Freezing Path").Parent = players_gvar.LocalPlayer.Backpack
+                            else
+                            end
+                        end
+                    end
+                end
+            end
+        end
 
-		wait(3)
+        if tsb_tp_place == "air" then
+            players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(100000,1000,100000)
+        else
+            if tsb_tp_place == "Death Cutscene" then
+                players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Death Cutscene").HeadCFrame.CFrame
+            else
+                if tsb_tp_place == "Atoms" then
+                    players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").sphere.CFrame
+                else
+                    if tsb_tp_place == "Map" then
+                        if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
+                            players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Donation Leaderboard").Part.CFrame
+                        else
+                            if game.Workspace.Map:FindFirstChild("spone") then
+                                players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Map:FindFirstChild("spone").CFrame
+                            end
+                        end
+                    else
+                        if tsb_tp_place == "Map2" then
+                            players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Cutscenes:FindFirstChild("Atoms").ogcircle.CFrame
+                        else
+                            if tsb_tp_place == "Mountain" then
 
-		if tsb_tp_back == true then
-			players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
-		end
+                                if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
+                                    players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(395.514648, 699.102539, 398.27771, -0.75630492, -9.94614453e-08, -0.65421927, -6.9310083e-08, 1, -7.19053759e-08, 0.65421927, -9.03839936e-09, -0.75630492)
+                                else
+                                    if game.Workspace.Map:FindFirstChild("spone") then
+                                        players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(490.736969, 688.797913, -362.606781, 0.826861322, -9.94782567e-09, -0.562405884, 7.48708917e-09, 1, -6.6803012e-09, 0.562405884, 1.31289934e-09, 0.826861322)
+                                    end
+                                end
+                            else
+                                if tsb_tp_place == "WaterMountain" then
+                                    if game.Workspace.Thrown:FindFirstChild("Donation Leaderboard") then
+                                        players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1174.80054, 816.735291, -810.939575, -0.622790992, 2.38599718e-08, 0.78238821, -3.14645945e-08, 1, -5.55425501e-08, -0.78238821, -5.92089293e-08, -0.622790992)
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        if move == "Freezing Path" then
+            print("move")
+            wait(6)
+        else
+            wait(3)
+        end
+
+        if tsb_tp_back == true then
+            players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = pos
+        end
 	end  
 })
 
@@ -2873,7 +3382,7 @@ Tab:AddDropdown({
 Tab:AddDropdown({
 	Name = "tp place",
 	Default = "air",
-	Options = {"air","Death Cutscene","Atoms","Map","Map2","Mountain"},
+	Options = {"air","Death Cutscene","Atoms","Map","Map2","Mountain","WaterMountain"},
 	Callback = function(Value)
 		tsb_tp_place = Value
 	end    
@@ -2887,13 +3396,53 @@ Tab:AddToggle({
 	end    
 })
 
+--Tab:AddToggle({
+	--Name = "atomic auto bug",
+	--Default = false,
+	--Callback = function(Value)
+		--tsb_autobug1 = Value
+	--end    
+--})
 Tab:AddToggle({
-	Name = "atomic auto bug",
-	Default = false,
-	Callback = function(Value)
-		tsb_autobug1 = Value
-	end    
+    Name = "auto frozen lock",
+    Default = false,
+    Callback = function(Value)
+        tsb_auto_frozenlock = Value
+        while wait() and tsb_auto_frozenlock == true  do
+            if game.Workspace.Thrown:FindFirstChild("Frozen Lock") then
+                players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Thrown:FindFirstChild("Frozen Lock").Cube.CFrame
+                tsb_auto_frozenlock = false
+            end
+        end
+    end    
 })
+
+local tsb_tp_target_plr = nil
+
+Tab:AddToggle({
+    Name = "target plr",
+    Default = false,
+    Callback = function(Value)
+        tsb_tp_target = Value
+
+        while tsb_tp_target == true and wait() do
+            players_gvar.LocalPlayer.Character.HumanoidRootPart.CFrame = tsb_tp_target_plr.Character.HumanoidRootPart.CFrame
+        end
+    end    
+})
+
+Tab:AddTextbox({
+    Name = "plr",
+    Default = "username",
+    TextDisappear = true,
+    Callback = function(Value)
+        if players_gvar:FindFirstChild(Value) then
+            tsb_tp_target_plr = players_gvar:FindFirstChild(Value)
+        end
+    end   
+})
+
+
 
 game:GetService("UserInputService").InputBegan:Connect(function(input, isProcessed)
 	if tsb_autobug1 == true then
@@ -3393,6 +3942,7 @@ Tab:AddButton({
 	Name = "RemoteSpy",
 	Callback = function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/REDzHUB/RS/main/SimpleSpyMobile"))()
+
   	end    
 })
 
@@ -4407,3 +4957,318 @@ Library:MakeNotification({
 })
 
 play_sound(4835664238, 5)
+
+local Tab = Window:MakeTab({
+    Name = "DEVAS",
+    Icon = "",
+    PremiumOnly = false
+})
+
+local Section = Tab:AddSection({
+    Name = "Auto Kill"
+})
+
+Tab:AddToggle({
+    Name = "On/Off",
+    Default = false,
+    Callback = function(Value)
+        devas_autokill = Value
+        while wait() and devas_autokill == true do
+            for i,v in game.Workspace.Game.Regions.Dion.Areas.AncientRuins.MobsSpots:GetChildren() do
+                local acces1 = false
+                for i,b in devas_autokill_list do
+                    if v.Name == b[2] then
+                        acces1 = true
+                    end
+                end
+
+                if acces1 == true then
+
+                    for i,n in v:GetChildren() do
+                        local acces2 = false
+                        local uuid = ""
+                        for i,m in devas_autokill_list do
+                            if n.Name == m[2] then
+                                acces2 = true
+                                uuid = m[1]
+                            end
+                        end
+
+                        if acces2 == true then
+                            local Distance = (n.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+
+                            if Distance <= devas_autokill_range then
+                                local acces3 = false
+
+                                for i,j in n:GetDescendants() do
+                                    if j.ClassName == "Humanoid" then
+                                        if j.Health >= 1 then
+                                            acces3 = true
+                                        end
+                                    end
+                                end
+
+                                if acces3 == true then
+                                    if devas_autokill_weapon == "Sword" then
+
+                                        local args = {
+                                            [1] = {
+                                                [uuid] = {
+                                                    ["clientAuthoroty"] = true,
+                                                    ["additionalData"] = {
+                                                        ["hittedPartName"] = ""
+                                                    },
+                                                    ["aimedTarget"] = uuid
+                                                }
+                                            }
+                                        }
+
+                                        game:GetService("ReplicatedStorage").Events.Combat.MeleeWeaponAttackHit:FireServer(unpack(args))
+
+                                    else
+                                        if devas_autokill_weapon == "Bow" then
+
+                                            local args1 = {
+                                                [1] = 1,
+                                                [2] = "rhack_gitam",
+                                                [3] = game.Players.LocalPlayer.Character.HumanoidRootPart.Position,
+                                                [4] = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+                                            }
+
+                                            game:GetService("ReplicatedStorage").Events.Combat.RangeWeaponAttack:FireServer(unpack(args1))
+
+
+
+                                            local args2 = {
+                                                [1] = "rhack_gitam",
+                                                [2] = uuid,
+                                                [3] = {
+                                                    ["additionalData"] = {
+                                                        ["targetsHitData"] = {
+                                                            [uuid] = {
+                                                                ["isCriticalDamage"] = true,
+                                                                ["targetHRP"] = nil,
+                                                                ["damage"] = 1
+                                                            }
+                                                        },
+                                                        ["hittedPartName"] = "",
+                                                        ["hitPosition"] = game.Players.LocalPlayer.Character.HumanoidRootPart.Position,
+                                                        ["attackId"] = "made_by_gitam"
+                                                    },
+                                                    ["casterId"] = game.Players.LocalPlayer.UserId,
+                                                    ["weaponType"] = "Bow"
+                                                }
+                                            }
+
+                                            game:GetService("ReplicatedStorage").Events.Combat.RangeWeaponAttackHit:FireServer(unpack(args2))
+    
+                                        end
+                                    end
+
+                                    wait(devas_autokill_delay)
+                                else
+
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end    
+})
+
+Tab:AddTextbox({
+    Name = "Range",
+    Default = "enter killing range",
+    TextDisappear = true,
+    Callback = function(Value)
+        devas_autokill_range = tonumber(Value)
+    end   
+})
+
+Tab:AddTextbox({
+    Name = "Delay",
+    Default = "enter attack delay",
+    TextDisappear = true,
+    Callback = function(Value)
+        devas_autokill_delay = tonumber(Value)
+    end   
+})
+
+Tab:AddDropdown({
+    Name = "Weapon",
+    Default = "Sword",
+    Options = {"Sword", "Bow"},
+    Callback = function(Value)
+        devas_autokill_weapon = Value
+    end    
+})
+
+local devas_listtt_value = ""
+
+local devas_listtt = Tab:AddParagraph("Connected Instances","nil")
+
+Tab:AddTextbox({
+    Name = "GUID",
+    Default = "enter entity guid",
+    TextDisappear = true,
+    Callback = function(Value)
+        devas_autokill_add_guid = Value
+    end   
+})
+
+Tab:AddTextbox({
+    Name = "Name",
+    Default = "enter entity name",
+    TextDisappear = true,
+    Callback = function(Value)
+        devas_autokill_add_name = Value
+    end   
+})
+
+Tab:AddButton({
+    Name = "Add Instance",
+    Callback = function()
+        table.insert(devas_autokill_list,{devas_autokill_add_guid,devas_autokill_add_name})
+        devas_listtt_value = devas_listtt_value.. "\n".. devas_autokill_add_guid.. " ".. devas_autokill_add_name.. "\n"
+        devas_listtt:Set(devas_listtt_value)
+    end    
+})
+
+local Section = Tab:AddSection({
+    Name = "Auto Loot Drop"
+})
+
+Tab:AddTextbox({
+    Name = "drop name",
+    Default = "enter drop name",
+    TextDisappear = true,
+    Callback = function(Value)
+        devas_autoloot_name = Value
+    end   
+})
+
+Tab:AddTextbox({
+    Name = "drop min amount",
+    Default = "enter drop min amount",
+    TextDisappear = true,
+    Callback = function(Value)
+        devas_autoloot_min = tonumber(Value)
+    end   
+})
+
+Tab:AddTextbox({
+    Name = "drop max amount",
+    Default = "enter drop max amount",
+    TextDisappear = true,
+    Callback = function(Value)
+        devas_autoloot_max = tonumber(Value)
+    end   
+})
+
+Tab:AddButton({
+    Name = "Add AutoLoot to last Instance",
+    Callback = function()
+        table.insert(devas_autoloot_list,{devas_autokill_add_guid,devas_autoloot_name,devas_autoloot_min,devas_autoloot_max})
+    end    
+})
+
+Tab:AddToggle({
+    Name = "On/Off",
+    Default = false,
+    Callback = function(Value)
+        devas_autokill = Value
+        while wait() and devas_autokill == true do
+            for i,v in game.Workspace.Game.Regions.Dion.Areas.AncientRuins.MobsSpots:GetChildren() do
+                local acces1 = false
+                for i,b in devas_autokill_list do
+                    if v.Name == b[2] then
+                        acces1 = true
+                    end
+                end
+
+                if acces1 == true then
+
+                    for i,n in v:GetChildren() do
+                        local acces2 = false
+                        local uuid = ""
+                        for i,m in devas_autokill_list do
+                            if n.Name == m[2] then
+                                acces2 = true
+                                uuid = m[1]
+                            end
+                        end
+
+                        if acces2 == true then
+                            local Distance = (n.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+
+                            if Distance <= devas_autokill_range then
+                                local acces3 = false
+
+                                for i,j in n:GetDescendants() do
+                                    if j.ClassName == "Humanoid" then
+                                        if j.Health >= 1 then
+                                            acces3 = true
+                                        end
+                                    end
+                                end
+
+                                if acces3 == true then
+                                    for i,u in devas_autoloot_list do
+
+                                        if u[1] == uuid then
+                                            local categor = ""
+                                            if u[2] == "Gold" then
+                                                categor = "currency"
+                                            else
+                                                categor = "resources"
+                                            end
+
+                                            for i = u[3],u[4] do
+                                                wait()
+
+                                                local args = {
+                                                    [1] = {
+                                                        [categor] = {
+                                                            [u[2]] = {
+                                                                ["luckActivated"] = false,
+                                                                ["amount"] = i
+                                                            }
+                                                        }
+                                                    },
+                                                    [2] = {
+                                                        [u[1]] = true
+                                                    }
+                                                }
+
+                                                game:GetService("ReplicatedStorage").Events.Drop.CollectDrop:FireServer(unpack(args))
+
+                                                print(i)
+                                            end
+                                        end
+                                    end
+
+                                else
+
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end    
+})
+
+local Section = Tab:AddSection({
+    Name = "Anti Cheat"
+})
+
+Tab:AddButton({
+    Name = "Disable Ping Remote",
+    Callback = function()
+        game.ReplicatedStorage.Events.Player.PingEvent:Destroy()
+    end    
+})
+
