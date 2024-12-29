@@ -7,7 +7,7 @@ local acees_sus = false
 
 local players_gvar = game:GetService("Players")
 
-local disablekey_people = {"scriptgDev4","scriptgDev3","scriptgDev8","Immortal_YarikDev"}
+local disablekey_people = {"scriptgDev4","scriptgDev3","scriptgDev8","Immortal_YarikDev","standoWILLneverDIE"}
 
 while iskey_correct == false and wait(0.1) do
 	for i,v in disablekey_people do
